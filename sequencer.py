@@ -7,7 +7,6 @@
 
 import bpy
 from . import sequencer_functions as func
-from . import properties
 from importlib import reload
 reload(func)
 
@@ -16,7 +15,7 @@ class VIEW3D_OT_milkshake_sync_timeline(bpy.types.Operator):
     """Syncs Blender's timeline and markers with the pipeline information."""
 
     bl_idname = "scene.milkshake_sync_timeline"
-    bl_label = "Timeline"
+    bl_label = "Sync Timeline"
     bl_options = {"REGISTER","UNDO"}
 
     def execute(self, context):

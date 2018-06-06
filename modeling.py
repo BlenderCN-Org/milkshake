@@ -27,7 +27,7 @@ class VIEW3D_OT_milkshake_set_subdivision(bpy.types.Operator):
     """Add or set the subdivision modifier for all selected objects."""
 
     bl_idname = "object.milkshake_set_subdivision"
-    bl_label = "Set Subdivisions"
+    bl_label = "Iterations"
     bl_options = {"REGISTER","UNDO"}
     iterations = bpy.props.IntProperty(name = "Iterations", default = 1, min = 0, max = 11)
 

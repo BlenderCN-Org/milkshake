@@ -12,7 +12,7 @@ reload(func)
 
 
 class VIEW3D_OT_milkshake_assign_material(bpy.types.Operator):
-    """Assign a material to all selected objects."""
+    """Assign a material to all selected objects"""
 
     bl_idname = "object.milkshake_assign_material"
     bl_label = "Assign Material to Selection"
@@ -28,7 +28,7 @@ class VIEW3D_OT_milkshake_assign_material(bpy.types.Operator):
 
 
 class VIEW3D_OT_milkshake_render_setup(bpy.types.Operator):
-    """Sets up the scene and layers for rendering."""
+    """Sets up the scene and layers for rendering"""
 
     bl_idname = "scene.milkshake_render_setup"
     bl_label = "Render Setup"
@@ -37,4 +37,3 @@ class VIEW3D_OT_milkshake_render_setup(bpy.types.Operator):
     def execute(self, context):
         func.render_setup(context)
         return {"FINISHED"}
-

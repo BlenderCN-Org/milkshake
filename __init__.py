@@ -16,7 +16,6 @@ bl_info = {
 
 if "bpy" in locals():
     from importlib import reload
-    reload(properties)
     reload(cleanup)
     reload(lighting)
     reload(modeling)
@@ -26,10 +25,28 @@ if "bpy" in locals():
     print("[Milkshake] Reloaded package modules")
 
 else:
-    from . import properties, cleanup, lighting, modeling, sequencer, setdress, utilities
+    from . import cleanup, lighting, modeling, sequencer, setdress, utilities
     print("[Milkshake] Loaded package modules")
 
 import bpy
+
+
+##############################################################################
+# Properties
+##############################################################################
+
+
+class Milkshake_Log(bpy.types.PropertyGroup):
+
+    output                          = bpy.props.StringProperty(name = "Output Log", default = "")
+
+
+class Milkshake_SequencerShot(bpy.types.PropertyGroup):
+
+    code                            = bpy.props.StringProperty(name = "Shot Code", default = "Shot")
+    camera_name                     = bpy.props.StringProperty(name = "Camera", default = "")
+    duration                        = bpy.props.IntProperty(name = "Frames", default = 24, min = 1)
+    camera                          = bpy.props.PointerProperty(name = "Camera", type = bpy.types.Camera)
 
 
 ##############################################################################
@@ -48,7 +65,7 @@ class VIEW3D_PT_milkshake_cleanup(bpy.types.Panel):
 
     def draw(self, context):
         lay = self.layout
-        lay.label(text = "Rename:")
+        lay.label(text = "Rename:", icon = "OUTLINER_OB_FONT")
         row = lay.row(align = True)
         row.operator("object.milkshake_rename", text = "Object to Data")
         row.operator("object.milkshake_rename", text = "Data to Object").data_to_object = False
@@ -60,14 +77,14 @@ class VIEW3D_PT_milkshake_lighting(bpy.types.Panel):
     bl_region_type = "TOOLS"
     bl_category = "Milkshake"
     bl_context = "objectmode"
-    bl_label = "Lighting"
+    bl_label = "Lookdev"
     bl_idname = "milkshake_lighting_panel"
 
     def draw(self, context):
         lay = self.layout
         col = lay.column(align = True)
-        col.operator("object.milkshake_assign_material")
-        col.operator("scene.milkshake_render_setup")
+        col.operator("object.milkshake_assign_material", icon = "MATERIAL")
+        col.operator("scene.milkshake_render_setup", icon = "RENDERLAYERS")
 
 
 class VIEW3D_PT_milkshake_modeling(bpy.types.Panel):
@@ -82,10 +99,11 @@ class VIEW3D_PT_milkshake_modeling(bpy.types.Panel):
     def draw(self, context):
         lay = self.layout
         col = lay.column(align = True)
-        col.operator("object.milkshake_clear_sharp")
-        sub = col.row(align = True)
-        sub.operator("object.milkshake_set_subdivision")
-        sub.operator("object.milkshake_set_subdivision_to_adaptive")
+        col.operator("object.milkshake_clear_sharp", icon = "EDGESEL")
+        lay.label(text = "Subdivisions:", icon = "MOD_SUBSURF")
+        row = lay.row(align = True)
+        row.operator("object.milkshake_set_subdivision")
+        row.operator("object.milkshake_set_subdivision_to_adaptive")
 
 
 class VIEW3D_PT_milkshake_sequencer(bpy.types.Panel):
@@ -127,7 +145,7 @@ class VIEW3D_PT_milkshake_setdress(bpy.types.Panel):
 
     def draw(self, context):
         lay = self.layout
-        lay.operator("scene.milkshake_generate_placeholders")
+        lay.operator("scene.milkshake_generate_placeholders", icon = "OUTLINER_OB_EMPTY")
 
 
 class VIEW3D_PT_milkshake_utilities(bpy.types.Panel):
@@ -142,9 +160,8 @@ class VIEW3D_PT_milkshake_utilities(bpy.types.Panel):
     def draw(self, context):
         lay = self.layout
         col = lay.column(align = True)
-        col.operator("object.milkshake_mass_scale")
-        col.operator("scene.milkshake_toggle_wire")
-        col.operator("scene.milkshake_unlock_transforms")
+        col.operator("scene.milkshake_toggle_wire", icon = "WIRE")
+        col.operator("scene.milkshake_unlock_transforms", icon = "UNLOCKED")
 
 
 ##############################################################################
@@ -154,8 +171,8 @@ class VIEW3D_PT_milkshake_utilities(bpy.types.Panel):
 
 def register():
     bpy.utils.register_module(__name__)
-    bpy.types.Scene.milkshake_log = bpy.props.PointerProperty(type = properties.Milkshake_Log)
-    bpy.types.Scene.milkshake_shots = bpy.props.CollectionProperty(type = properties.Milkshake_SequencerShot)
+    bpy.types.Scene.milkshake_log = bpy.props.PointerProperty(type = Milkshake_Log)
+    bpy.types.Scene.milkshake_shots = bpy.props.CollectionProperty(type = Milkshake_SequencerShot)
 
 
 def unregister():
