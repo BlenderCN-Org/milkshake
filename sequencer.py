@@ -24,7 +24,7 @@ class VIEW3D_OT_milkshake_sync_timeline(bpy.types.Operator):
 
 
 class VIEW3D_OT_milkshake_new_shot(bpy.types.Operator):
-    """Creates a new shot."""
+    """Creates a new shot and camera."""
 
     bl_idname = "scene.milkshake_new_shot"
     bl_label = "New Shot"
@@ -32,6 +32,8 @@ class VIEW3D_OT_milkshake_new_shot(bpy.types.Operator):
 
     def execute(self, context):
         func.new_shot(context)
+        func.autorename_shots(context)
+        func.sync_timeline(context)
         return {"FINISHED"}
 
 
@@ -44,5 +46,34 @@ class VIEW3D_OT_milkshake_delete_shot(bpy.types.Operator):
     index = bpy.props.IntProperty()
 
     def execute(self, context):
-        func.delete_shot(context, self.index)
+        context.scene.milkshake_shots.remove(self.index)
+        func.autorename_shots(context)
+        func.sync_timeline(context)
+        return {"FINISHED"}
+
+
+class VIEW3D_OT_milkshake_autorename_shots(bpy.types.Operator):
+    """Auto renames all shots and their associated cameras."""
+
+    bl_idname = "scene.milkshake_autorename_shots"
+    bl_label = "Rename All"
+    bl_options = {"REGISTER","UNDO"}
+
+    def execute(self, context):
+        func.autorename_shots(context)
+        func.sync_timeline(context)
+        return {"FINISHED"}
+
+
+class VIEW3D_OT_milkshake_clear_shots(bpy.types.Operator):
+    """Clears the shot list."""
+
+    bl_idname = "scene.milkshake_clear_shots"
+    bl_label = "Clear"
+    bl_options = {"REGISTER","UNDO"}
+    index = bpy.props.IntProperty()
+
+    def execute(self, context):
+        context.scene.milkshake_shots.clear()
+        func.sync_timeline(context)
         return {"FINISHED"}

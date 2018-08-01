@@ -44,7 +44,6 @@ class Milkshake_Log(bpy.types.PropertyGroup):
 class Milkshake_SequencerShot(bpy.types.PropertyGroup):
 
     code                            = bpy.props.StringProperty(name = "Shot Code", default = "Shot")
-    camera_name                     = bpy.props.StringProperty(name = "Camera", default = "")
     duration                        = bpy.props.IntProperty(name = "Frames", default = 24, min = 1)
     camera                          = bpy.props.PointerProperty(name = "Camera", type = bpy.types.Camera)
 
@@ -121,6 +120,9 @@ class VIEW3D_PT_milkshake_sequencer(bpy.types.Panel):
         sub = col.row(align = True)
         sub.operator("scene.milkshake_new_shot", icon = "ZOOMIN")
         sub.operator("scene.milkshake_sync_timeline", icon = "FILE_REFRESH")
+        sub = col.row(align = True)
+        sub.operator("scene.milkshake_autorename_shots", icon = "FONT_DATA")
+        sub.operator("scene.milkshake_clear_shots", icon = "X")
         box_shots = col.box()
         if len(context.scene.milkshake_shots) == 0:
             box_shots.label(text = "No shots yet.")
