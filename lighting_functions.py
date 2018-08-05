@@ -1,11 +1,15 @@
-################################################################################
-#
-# lighting_functions.py
-#
-################################################################################
+##############################################################################
+# Imports
+##############################################################################
 
 
 import bpy
+from . import core_functions as core
+
+
+##############################################################################
+# Functions
+##############################################################################
 
 
 def assign_material(context:bpy.types.Context, material:bpy.props.EnumProperty):
@@ -21,6 +25,7 @@ def assign_material(context:bpy.types.Context, material:bpy.props.EnumProperty):
             if material != "None":
                 bpy.ops.object.material_slot_add()
                 slots[0].material = bpy.data.materials[material]
+            core.log("Assigned {} to {}".format(material, i.name))
 
 
 def read_materials(self, context:bpy.types.Context):
@@ -193,6 +198,8 @@ def render_setup(context:bpy.types.Context):
             layer.samples = template["samples"]
 
     render_layers.remove(old)
+
+    core.log("Finished setting up render layers.")
 
 
 def _translate_layer_configuration(layer_numbers:list, invert:bool = False):

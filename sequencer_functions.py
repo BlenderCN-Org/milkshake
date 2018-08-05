@@ -1,11 +1,15 @@
-################################################################################
-#
-# sequencer_functions.py
-#
-################################################################################
+##############################################################################
+# Imports
+##############################################################################
 
 
 import bpy
+from . import core_functions as core
+
+
+##############################################################################
+# Functions
+##############################################################################
 
 
 def new_shot(context:bpy.types.Context):
@@ -16,6 +20,7 @@ def new_shot(context:bpy.types.Context):
     camera_object = bpy.data.objects.new("Camera", camera)
     context.scene.objects.link(camera_object)
     shot.camera = camera
+    core.log("Created new shot and camera.")
 
 
 def sync_timeline(context:bpy.types.Context):
@@ -24,10 +29,11 @@ def sync_timeline(context:bpy.types.Context):
     context.scene.timeline_markers.clear()
     start_frame = 0
     for s in context.scene.milkshake_shots:
-        marker = context.scene.timeline_markers.new(s.code[-6:], frame = start_frame)
+        marker = context.scene.timeline_markers.new(s.code, frame = start_frame)
         for o in context.scene.objects:
             if o.data == s.camera:
                 marker.camera = o
+                core.log("Synced shot {}".format(s.code))
                 break
         start_frame += s.duration
     context.scene.frame_start = 0
@@ -44,4 +50,4 @@ def autorename_shots(context:bpy.types.Context):
             if i.data == shot.camera:
                 i.name = shot.camera.name
                 break
-        print("[Milkshake] Renamed shot {} and camera {}".format(shot.code, shot.camera.name))
+        core.log("Renamed shot {} and camera {}".format(shot.code, shot.camera.name))

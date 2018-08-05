@@ -36,11 +36,6 @@ import bpy
 ##############################################################################
 
 
-class Milkshake_Log(bpy.types.PropertyGroup):
-
-    output                          = bpy.props.StringProperty(name = "Output Log", default = "")
-
-
 class Milkshake_SequencerShot(bpy.types.PropertyGroup):
 
     code                            = bpy.props.StringProperty(name = "Shot Code", default = "Shot")
@@ -173,14 +168,12 @@ class VIEW3D_PT_milkshake_utilities(bpy.types.Panel):
 
 def register():
     bpy.utils.register_module(__name__)
-    bpy.types.Scene.milkshake_log = bpy.props.PointerProperty(type = Milkshake_Log)
     bpy.types.Scene.milkshake_shots = bpy.props.CollectionProperty(type = Milkshake_SequencerShot)
 
 
 def unregister():
     bpy.utils.unregister_module(__name__)
     try:
-        del bpy.types.Scene.milkshake_log
         del bpy.types.Scene.milkshake_shots
     except:
         pass

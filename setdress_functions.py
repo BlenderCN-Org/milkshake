@@ -1,11 +1,15 @@
-################################################################################
-#
-# setdress_functions.py
-#
-################################################################################
+##############################################################################
+# Imports
+##############################################################################
 
 
 import bpy
+from . import core_functions as core
+
+
+##############################################################################
+# Functions
+##############################################################################
 
 
 def generate_placeholders(context:bpy.types.Context):
@@ -21,3 +25,4 @@ def generate_placeholders(context:bpy.types.Context):
         context.scene.objects.link(object_empty)
         object_empty.parent = category_empty
         object_empty.location = o.location
+        core.log("Created placeholder {}".format(object_empty.name))

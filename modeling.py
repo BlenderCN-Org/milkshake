@@ -1,14 +1,17 @@
-################################################################################
-#
-# modeling.py
-#
-################################################################################
+##############################################################################
+# Imports
+##############################################################################
 
 
 import bpy
 from . import modeling_functions as func
 from importlib import reload
 reload(func)
+
+
+##############################################################################
+# Operators
+##############################################################################
 
 
 class VIEW3D_OT_milkshake_clear_sharp(bpy.types.Operator):
@@ -27,7 +30,7 @@ class VIEW3D_OT_milkshake_set_subdivision(bpy.types.Operator):
     """Add or set the subdivision modifier for all selected objects."""
 
     bl_idname = "object.milkshake_set_subdivision"
-    bl_label = "Iterations"
+    bl_label = "Set Iterations"
     bl_options = {"REGISTER","UNDO"}
     iterations = bpy.props.IntProperty(name = "Iterations", default = 1, min = 0, max = 11)
 

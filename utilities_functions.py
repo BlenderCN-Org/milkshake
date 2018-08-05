@@ -1,11 +1,15 @@
-################################################################################
-#
-# utilities_functions.py
-#
-################################################################################
+##############################################################################
+# Imports
+##############################################################################
 
 
 import bpy
+from . import core_functions as core
+
+
+##############################################################################
+# Functions
+##############################################################################
 
 
 def toggle_wire(context:bpy.types.Context):
@@ -15,6 +19,7 @@ def toggle_wire(context:bpy.types.Context):
     for i in context.scene.objects:
         i.show_wire = not on
         i.show_all_edges = True
+        core.log("Toggled wire display for {}".format(i.name))
 
 
 def unlock_transforms(context:bpy.types.Context):
@@ -24,6 +29,7 @@ def unlock_transforms(context:bpy.types.Context):
         i.lock_location = (False, False, False)
         i.lock_rotation = (False, False, False)
         i.lock_scale = (False, False, False)
+        core.log("Unlocked transforms for {}".format(i.name))
 
 
 def get_bounding_box_limits(m):
