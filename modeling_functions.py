@@ -16,7 +16,7 @@ def clear_sharp():
     for me in bpy.data.meshes:
         for e in me.edges:
             e.use_edge_sharp = False
-        core.log("Cleared sharp edges for {}".format(me.name))
+        core.log(message = "Cleared sharp edges for {}".format(me.name))
 
 
 def set_subdivision(context:bpy.types.Context, iterations:bpy.props.IntProperty):
@@ -35,10 +35,10 @@ def set_subdivision(context:bpy.types.Context, iterations:bpy.props.IntProperty)
                 s.use_subsurf_uv = True
                 context.scene.objects.active = i
                 bpy.ops.object.shade_smooth()
-                core.log("Set subdivision for {} to {}".format(i.name, iterations))
+                core.log(message = "Set subdivision for {} to {}".format(i.name, iterations))
 
 
 def set_subdivision_to_adaptive(context:bpy.types.Context):
     for i in context.selected_objects:
         i.cycles.use_adaptive_subdivision = True
-        core.log("Enabled adaptive subdivision for {}".format(i.name))
+        core.log(message = "Enabled adaptive subdivision for {}".format(i.name))

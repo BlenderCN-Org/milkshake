@@ -3,7 +3,7 @@
 ##############################################################################
 
 
-import bpy
+import bpy, os
 from . import core_functions as core
 
 
@@ -12,13 +12,28 @@ from . import core_functions as core
 ##############################################################################
 
 
-def rename(context:bpy.types.Context, data_to_object:bpy.props.BoolProperty):
-    """Auto-rename the selected objects."""
+def rename(context:bpy.types.Context, object_to_data:bpy.props.BoolProperty = False):
+    """Auto-rename the selected objects"""
 
-    for i in context.selected_objects:
+    if len(context.selected_objects) == 0:
+        objects = bpy.data.objects
+    else:
+        objects = context.selected_objects
+
+    for i in objects:
         if i.data:
-            if data_to_object:
-                i.name = i.data.name
-            else:
+            if object_to_data:
                 i.data.name = i.name
-            core.log("Renamed {}".format(i.name))
+            else:
+                i.name = i.data.name
+            core.log(message = "Renamed {}".format(i.name))
+
+
+def rename_images(context:bpy.types.Context):
+    """Auto-rename all images to their respective filename"""
+
+    for image in bpy.data.images:
+        filename = os.path.splitext(os.path.basename(image.filepath))[0]
+        if filename != "":
+            image.name = filename
+            core.log(message = "Renamed {}".format(image.name))

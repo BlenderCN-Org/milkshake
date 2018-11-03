@@ -25,4 +25,4 @@ def generate_placeholders(context:bpy.types.Context):
         context.scene.objects.link(object_empty)
         object_empty.parent = category_empty
         object_empty.location = o.location
-        core.log("Created placeholder {}".format(object_empty.name))
+        core.log(message = "Created placeholder {}".format(object_empty.name))

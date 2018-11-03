@@ -3,7 +3,7 @@ bl_info = {
     "description": "A random collection of tools I've written over the years, as and when they came in handy.",
     "author": "Sam Van Hulle",
     "version": (1, 0, 0),
-    "blender": (2, 79, 0),
+    "blender": (2, 80, 0),
     "location": "View3D > Tools",
     "category": "Tools"
 }
@@ -36,11 +36,11 @@ import bpy
 ##############################################################################
 
 
-class Milkshake_SequencerShot(bpy.types.PropertyGroup):
+class MilkshakeSequencerShot(bpy.types.PropertyGroup):
 
-    code                            = bpy.props.StringProperty(name = "Shot Code", default = "Shot")
-    duration                        = bpy.props.IntProperty(name = "Frames", default = 24, min = 1)
-    camera                          = bpy.props.PointerProperty(name = "Camera", type = bpy.types.Camera)
+    code                            : bpy.props.StringProperty(name = "Shot Code", default = "Shot")
+    duration                        : bpy.props.IntProperty(name = "Frames", default = 24, min = 1)
+    camera                          : bpy.props.PointerProperty(name = "Camera", type = bpy.types.Camera)
 
 
 ##############################################################################
@@ -48,76 +48,63 @@ class Milkshake_SequencerShot(bpy.types.PropertyGroup):
 ##############################################################################
 
 
-class VIEW3D_PT_milkshake_cleanup(bpy.types.Panel):
+class VIEW3D_PT_main(bpy.types.Panel):
 
-    bl_space_type = "VIEW_3D"
-    bl_region_type = "TOOLS"
-    bl_category = "Milkshake"
     bl_context = "objectmode"
-    bl_label = "Cleanup"
-    bl_idname = "milkshake_cleanup_panel"
+    bl_idname = "milkshake.view3d_pt_main"
+    bl_label = "Milkshake: Scene Tools"
+    bl_region_type = "TOOLS"
+    bl_space_type = "VIEW_3D"
 
     def draw(self, context):
         lay = self.layout
-        lay.label(text = "Rename:", icon = "OUTLINER_OB_FONT")
-        row = lay.row(align = True)
-        row.operator("object.milkshake_rename", text = "Object to Data")
-        row.operator("object.milkshake_rename", text = "Data to Object").data_to_object = False
 
-
-class VIEW3D_PT_milkshake_lighting(bpy.types.Panel):
-
-    bl_space_type = "VIEW_3D"
-    bl_region_type = "TOOLS"
-    bl_category = "Milkshake"
-    bl_context = "objectmode"
-    bl_label = "Lookdev"
-    bl_idname = "milkshake_lighting_panel"
-
-    def draw(self, context):
-        lay = self.layout
+        lay.label(text = "Cleanup")
         col = lay.column(align = True)
-        col.operator("object.milkshake_assign_material", icon = "MATERIAL")
-        col.operator("scene.milkshake_render_setup", icon = "RENDERLAYERS")
+        sub = col.row(align = True)
+        sub.label(text = "Rename")
+        sub.operator("milkshake.cleanup_ot_rename", text = "Objects").object_to_data = False
+        sub.operator("milkshake.cleanup_ot_rename", text = "Data").object_to_data = True
+        col.operator("milkshake.cleanup_ot_rename_images")
 
-
-class VIEW3D_PT_milkshake_modeling(bpy.types.Panel):
-
-    bl_space_type = "VIEW_3D"
-    bl_region_type = "TOOLS"
-    bl_category = "Milkshake"
-    bl_context = "objectmode"
-    bl_label = "Modeling"
-    bl_idname = "milkshake_modeling_panel"
-
-    def draw(self, context):
-        lay = self.layout
+        lay.label(text = "Lookdev")
         col = lay.column(align = True)
-        col.operator("object.milkshake_clear_sharp", icon = "EDGESEL")
-        lay.label(text = "Subdivisions:", icon = "MOD_SUBSURF")
-        row = lay.row(align = True)
-        row.operator("object.milkshake_set_subdivision")
-        row.operator("object.milkshake_set_subdivision_to_adaptive")
+        col.operator("milkshake.lighting_ot_render_setup", icon = "RENDERLAYERS")
+
+        lay.label(text = "Modeling")
+        col = lay.column(align = True)
+        col.operator("milkshake.modeling_ot_clear_sharp", icon = "EDGESEL")
+        row = col.row(align = True)
+        row.operator("milkshake.modeling_ot_set_subdivision", icon = "MOD_SUBSURF")
+        row.operator("milkshake.modeling_ot_set_subdivision_to_adaptive")
+
+        lay.label(text = "Setdress")
+        col = lay.column(align = True)
+        col.operator("milkshake.setdress_ot_generate_placeholders", icon = "OUTLINER_OB_EMPTY")
+
+        lay.label(text = "Utilities")
+        col = lay.column(align = True)
+        col.operator("milkshake.utilities_ot_toggle_wire", icon = "QUESTION")
+        col.operator("milkshake.utilities_ot_unlock_transforms", icon = "UNLOCKED")
 
 
-class VIEW3D_PT_milkshake_sequencer(bpy.types.Panel):
+class PROPERTIES_PT_sequencer(bpy.types.Panel):
 
-    bl_space_type = "VIEW_3D"
-    bl_region_type = "TOOLS"
-    bl_category = "Milkshake"
-    bl_context = "objectmode"
-    bl_label = "Sequencer"
-    bl_idname = "milkshake_sequencer_panel"
+    bl_context = "scene"
+    bl_idname = "milkshake.properties_pt_sequencer"
+    bl_label = "Milkshake: Sequencer"
+    bl_region_type = "WINDOW"
+    bl_space_type = "PROPERTIES"
 
     def draw(self, context):
         lay = self.layout
         col = lay.column(align = True)
         sub = col.row(align = True)
-        sub.operator("scene.milkshake_new_shot", icon = "ZOOMIN")
-        sub.operator("scene.milkshake_sync_timeline", icon = "FILE_REFRESH")
+        sub.operator("milkshake.sequencer_ot_new_shot", icon = "PLUS")
+        sub.operator("milkshake.sequencer_ot_sync_timeline", icon = "FILE_REFRESH")
         sub = col.row(align = True)
-        sub.operator("scene.milkshake_autorename_shots", icon = "FONT_DATA")
-        sub.operator("scene.milkshake_clear_shots", icon = "X")
+        sub.operator("milkshake.sequencer_ot_autorename_shots", icon = "FONT_DATA")
+        sub.operator("milkshake.sequencer_ot_clear_shots", icon = "X")
         box_shots = col.box()
         if len(context.scene.milkshake_shots) == 0:
             box_shots.label(text = "No shots yet.")
@@ -128,37 +115,7 @@ class VIEW3D_PT_milkshake_sequencer(bpy.types.Panel):
             sub.prop(data = shot, property = "duration", text = "Frames")
             sub = col_shot.row(align = True)
             sub.prop(data = shot, property = "camera", text = "")
-            sub.operator("scene.milkshake_delete_shot", icon = "X").index = index
-
-
-class VIEW3D_PT_milkshake_setdress(bpy.types.Panel):
-
-    bl_space_type = "VIEW_3D"
-    bl_region_type = "TOOLS"
-    bl_category = "Milkshake"
-    bl_context = "objectmode"
-    bl_label = "Setdress"
-    bl_idname = "milkshake_setdress_panel"
-
-    def draw(self, context):
-        lay = self.layout
-        lay.operator("scene.milkshake_generate_placeholders", icon = "OUTLINER_OB_EMPTY")
-
-
-class VIEW3D_PT_milkshake_utilities(bpy.types.Panel):
-
-    bl_space_type = "VIEW_3D"
-    bl_region_type = "TOOLS"
-    bl_category = "Milkshake"
-    bl_context = "objectmode"
-    bl_label = "Utilities"
-    bl_idname = "milkshake_utilities_panel"
-
-    def draw(self, context):
-        lay = self.layout
-        col = lay.column(align = True)
-        col.operator("scene.milkshake_toggle_wire", icon = "WIRE")
-        col.operator("scene.milkshake_unlock_transforms", icon = "UNLOCKED")
+            sub.operator("milkshake.sequencer_ot_delete_shot", icon = "X").index = index
 
 
 ##############################################################################
@@ -166,13 +123,34 @@ class VIEW3D_PT_milkshake_utilities(bpy.types.Panel):
 ##############################################################################
 
 
+classes = [
+    MilkshakeSequencerShot,
+    PROPERTIES_PT_sequencer,
+    VIEW3D_PT_main
+]
+
+
 def register():
-    bpy.utils.register_module(__name__)
-    bpy.types.Scene.milkshake_shots = bpy.props.CollectionProperty(type = Milkshake_SequencerShot)
+    cleanup.register()
+    lighting.register()
+    modeling.register()
+    sequencer.register()
+    setdress.register()
+    utilities.register()
+    for i in classes:
+        bpy.utils.register_class(i)
+    bpy.types.Scene.milkshake_shots = bpy.props.CollectionProperty(type = MilkshakeSequencerShot)
 
 
 def unregister():
-    bpy.utils.unregister_module(__name__)
+    cleanup.unregister()
+    lighting.unregister()
+    modeling.unregister()
+    sequencer.unregister()
+    setdress.unregister()
+    utilities.unregister()
+    for i in classes:
+        bpy.utils.unregister_class(i)
     try:
         del bpy.types.Scene.milkshake_shots
     except:

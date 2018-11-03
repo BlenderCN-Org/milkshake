@@ -20,7 +20,7 @@ def new_shot(context:bpy.types.Context):
     camera_object = bpy.data.objects.new("Camera", camera)
     context.scene.objects.link(camera_object)
     shot.camera = camera
-    core.log("Created new shot and camera.")
+    core.log(message = "Created new shot and camera.")
 
 
 def sync_timeline(context:bpy.types.Context):
@@ -33,7 +33,7 @@ def sync_timeline(context:bpy.types.Context):
         for o in context.scene.objects:
             if o.data == s.camera:
                 marker.camera = o
-                core.log("Synced shot {}".format(s.code))
+                core.log(message = "Synced shot {}".format(s.code))
                 break
         start_frame += s.duration
     context.scene.frame_start = 0
@@ -50,4 +50,4 @@ def autorename_shots(context:bpy.types.Context):
             if i.data == shot.camera:
                 i.name = shot.camera.name
                 break
-        core.log("Renamed shot {} and camera {}".format(shot.code, shot.camera.name))
+        core.log(message = "Renamed shot {} and camera {}".format(shot.code, shot.camera.name))
