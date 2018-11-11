@@ -44,6 +44,8 @@ def render_setup(context:bpy.types.Context):
     context.scene.cycles.use_motion_blur = False
     context.scene.cycles.film_transparent = True
 
+    # Add a light falloff node to every light that doesn't already have one
+
     collections = bpy.data.collections
     layers = context.scene.view_layers
 
@@ -62,8 +64,8 @@ def render_setup(context:bpy.types.Context):
         "vol_lights"              : collections.new("VOL Lights"),
         "hidden"                  : collections.new("Hidden")
     }
-    for c in new_collections:
-        context.scene.link(c)
+    for c in new_collections.values():
+        context.scene.collection.children.link(c)
 
     # Set up view layers
     layer_templates = [
@@ -121,14 +123,12 @@ def render_setup(context:bpy.types.Context):
             layers.remove(l)
         except:
             pass
-    old = layers[0]
-    old.name = "delete"
+    layers[0].name = "delete"
 
     # Create new ones
     for l in range(len(layer_templates)):
         template = layer_templates[l]
         layer = layers.new(template["name"])
-        layer.name = template["name"]
         if "indirect_only" in template:
             # Adapt to 2.80
             pass
@@ -151,6 +151,6 @@ def render_setup(context:bpy.types.Context):
                 setattr(layer, "use_pass_{}".format(p), True)
         if "default" in template:
             layer.use = template["default"]
-    layers.remove(old)
 
+    layers.remove(layers[0])
     core.log(message = "Finished setting up layers.")
