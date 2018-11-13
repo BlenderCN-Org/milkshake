@@ -41,7 +41,7 @@ class SEQUENCER_OT_new_shot(bpy.types.Operator):
 
 
 class SEQUENCER_OT_delete_shot(bpy.types.Operator):
-    """Deletes the selected shot."""
+    """Deletes the selected shot and the associated camera."""
 
     bl_idname = "milkshake.sequencer_ot_delete_shot"
     bl_label = "Delete"
@@ -50,7 +50,7 @@ class SEQUENCER_OT_delete_shot(bpy.types.Operator):
     index : bpy.props.IntProperty()
 
     def execute(self, context):
-        context.scene.milkshake_shots.remove(self.index)
+        func.delete_shot(context, self.index)
         func.autorename_shots(context)
         func.sync_timeline(context)
         return {"FINISHED"}

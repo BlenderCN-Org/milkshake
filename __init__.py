@@ -16,16 +16,13 @@ bl_info = {
 
 if "bpy" in locals():
     from importlib import reload
-    reload(cleanup)
-    reload(lighting)
-    reload(modeling)
-    reload(sequencer)
-    reload(setdress)
-    reload(utilities)
+    for m in modules:
+        reload(m)
     print("[Milkshake] Reloaded package modules")
 
 else:
     from . import cleanup, lighting, modeling, sequencer, setdress, utilities
+    modules = [ cleanup, lighting, modeling, sequencer, setdress, utilities ]
     print("[Milkshake] Loaded package modules")
 
 import bpy
@@ -80,7 +77,6 @@ class VIEW3D_PT_main(bpy.types.Panel):
 
         lay.label(text = "Utilities")
         col = lay.column(align = True)
-        col.operator("milkshake.utilities_ot_toggle_wire", icon = "QUESTION")
         col.operator("milkshake.utilities_ot_unlock_transforms", icon = "UNLOCKED")
 
 
@@ -97,7 +93,10 @@ class PROPERTIES_PT_render(bpy.types.Panel):
         col = lay.column(align = True)
         sub = col.row(align = True)
         sub.scale_y = 1.5
-        sub.operator("milkshake.lighting_ot_render_setup", icon = "RENDERLAYERS")
+        sub.operator("milkshake.lighting_ot_render_defaults", icon = "QUESTION")
+        sub = col.row(align = True)
+        sub.scale_y = 1.5
+        sub.operator("milkshake.lighting_ot_layer_setup", icon = "RENDERLAYERS")
 
 
 class PROPERTIES_PT_sequencer(bpy.types.Panel):
@@ -144,24 +143,16 @@ classes = [
 
 
 def register():
-    cleanup.register()
-    lighting.register()
-    modeling.register()
-    sequencer.register()
-    setdress.register()
-    utilities.register()
+    for m in modules:
+        m.register()
     for i in classes:
         bpy.utils.register_class(i)
     bpy.types.Scene.milkshake_shots = bpy.props.CollectionProperty(type = MilkshakeSequencerShot)
 
 
 def unregister():
-    cleanup.unregister()
-    lighting.unregister()
-    modeling.unregister()
-    sequencer.unregister()
-    setdress.unregister()
-    utilities.unregister()
+    for m in modules:
+        m.unregister()
     for i in classes:
         bpy.utils.unregister_class(i)
     try:

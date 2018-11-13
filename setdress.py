@@ -15,7 +15,7 @@ reload(func)
 
 
 class SETDRESS_OT_generate_placeholders(bpy.types.Operator):
-    """Generates placeholders for the selected objects."""
+    """Generate placeholders for the selected objects"""
 
     bl_idname = "milkshake.setdress_ot_generate_placeholders"
     bl_label = "Generate Placeholders"

@@ -13,16 +13,17 @@ from . import core_functions as core
 
 
 def generate_placeholders(context:bpy.types.Context):
-    """"""
+    """Generate placeholders for the selected objects"""
+
+    main_collection = bpy.data.collections.new("Placeholders")
+    context.scene.collection.children.link(main_collection)
 
     for o in context.selected_objects:
-        if "{}.placeholders".format(o.name) in bpy.data.objects:
-            category_empty = bpy.data.objects["{}.placeholders".format(o.name)]
+        if f"{o.name}.placeholders" in main_collection.children:
+            category_collection = main_collection.children[f"{o.name}.placeholders"]
         else:
-            category_empty = bpy.data.objects.new("{}.placeholders".format(o.name), None)
-        context.scene.objects.link(category_empty)
+            category_collection = main_collection.children.new(f"{o.name}.placeholders")
         object_empty = bpy.data.objects.new("{}.placeholder".format(o.name), None)
-        context.scene.objects.link(object_empty)
-        object_empty.parent = category_empty
         object_empty.location = o.location
-        core.log(message = "Created placeholder {}".format(object_empty.name))
+        category_collection.objects.link(object_empty)
+        core.log(f"Created placeholder {object_empty.name}")

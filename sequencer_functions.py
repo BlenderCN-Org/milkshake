@@ -12,18 +12,38 @@ from . import core_functions as core
 ##############################################################################
 
 
-def new_shot(context:bpy.types.Context):
+def new_shot(context):
     """Creates a new shot and camera"""
 
     shot = context.scene.milkshake_shots.add()
-    # camera = bpy.data.cameras.new("Camera")
-    # camera_object = bpy.data.objects.new("Camera", camera)
-    # context.scene.objects.link(camera_object)
-    # shot.camera = camera
+    camera = bpy.data.cameras.new("Camera")
+    camera_object = bpy.data.objects.new("Camera", camera)
+
+    sc = context.scene.collection.children
+    collections = bpy.data.collections
+    if not "Cameras" in bpy.data.collections.keys():
+        camera_collection = collections.new("Cameras")
+    else:
+        camera_collection = bpy.data.collections["Cameras"]
+    try:
+        sc.link(camera_collection)
+    except:
+        pass
+    camera_collection.objects.link(camera_object)
+    shot.camera = camera
     core.log(message = "Created new shot and camera.")
 
 
-def sync_timeline(context:bpy.types.Context):
+def delete_shot(context, index):
+    """Deletes the selected shot and the associated camera."""
+
+    shot = context.scene.milkshake_shots[index]
+    camera = shot.camera
+    bpy.data.cameras.remove(camera) # crashes
+    context.scene.milkshake_shots.remove(index)
+
+
+def sync_timeline(context):
     """Syncs the list of shots to the Blender timeline, including markers"""
 
     context.scene.timeline_markers.clear()
@@ -36,11 +56,11 @@ def sync_timeline(context:bpy.types.Context):
                 core.log(message = "Synced shot {}".format(s.code))
                 break
         start_frame += s.duration
-    context.scene.frame_start = 0
+    context.scene.frame_start = 1001
     context.scene.frame_end = start_frame - 1
 
 
-def autorename_shots(context:bpy.types.Context):
+def autorename_shots(context):
     """Auto renames all shots and their associated cameras"""
 
     for index, shot in enumerate(context.scene.milkshake_shots):

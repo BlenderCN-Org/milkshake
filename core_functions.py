@@ -11,7 +11,7 @@ import bpy
 ##############################################################################
 
 
-def log(message:str = ""):
+def log(msg):
     """Output the given message to the console."""
 
-    print("[Milkshake] {msg}".format(msg = message))
+    print(f"[Milkshake] {msg}")
