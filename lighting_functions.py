@@ -130,13 +130,13 @@ def render_setup(context:bpy.types.Context):
         template = layer_templates[l]
         layer = layers.new(template["name"])
         if "indirect_only" in template:
-            # Adapt to 2.80
+            # Set per-layer collection override to Indirect only.
             pass
         if "exclude" in template:
-            # Adapt to 2.80
+            # Set per-layer collection override to Exclude.
             pass
         if "holdout" in template:
-            # Adapt to 2.80
+            # Set per-layer collection override to Holdout.
             pass
         if "filter" in template:
             filters = ["sky", "ao", "solid", "strand", "freestyle"]
