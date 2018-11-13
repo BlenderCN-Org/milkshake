@@ -52,7 +52,7 @@ class VIEW3D_PT_main(bpy.types.Panel):
 
     bl_context = "objectmode"
     bl_idname = "milkshake.view3d_pt_main"
-    bl_label = "Milkshake: Scene Tools"
+    bl_label = "Milkshake Scene Tools"
     bl_region_type = "TOOLS"
     bl_space_type = "VIEW_3D"
 
@@ -66,10 +66,6 @@ class VIEW3D_PT_main(bpy.types.Panel):
         sub.operator("milkshake.cleanup_ot_rename", text = "Objects").object_to_data = False
         sub.operator("milkshake.cleanup_ot_rename", text = "Data").object_to_data = True
         col.operator("milkshake.cleanup_ot_rename_images")
-
-        lay.label(text = "Lookdev")
-        col = lay.column(align = True)
-        col.operator("milkshake.lighting_ot_render_setup", icon = "RENDERLAYERS")
 
         lay.label(text = "Modeling")
         col = lay.column(align = True)
@@ -88,11 +84,27 @@ class VIEW3D_PT_main(bpy.types.Panel):
         col.operator("milkshake.utilities_ot_unlock_transforms", icon = "UNLOCKED")
 
 
+class PROPERTIES_PT_render(bpy.types.Panel):
+
+    bl_context = "render"
+    bl_idname = "milkshake.properties_pt_render"
+    bl_label = "Milkshake Render Tools"
+    bl_region_type = "WINDOW"
+    bl_space_type = "PROPERTIES"
+
+    def draw(self, context):
+        lay = self.layout
+        col = lay.column(align = True)
+        sub = col.row(align = True)
+        sub.scale_y = 1.5
+        sub.operator("milkshake.lighting_ot_render_setup", icon = "RENDERLAYERS")
+
+
 class PROPERTIES_PT_sequencer(bpy.types.Panel):
 
     bl_context = "scene"
     bl_idname = "milkshake.properties_pt_sequencer"
-    bl_label = "Milkshake: Sequencer"
+    bl_label = "Milkshake Sequencer"
     bl_region_type = "WINDOW"
     bl_space_type = "PROPERTIES"
 
@@ -126,6 +138,7 @@ class PROPERTIES_PT_sequencer(bpy.types.Panel):
 classes = [
     MilkshakeSequencerShot,
     PROPERTIES_PT_sequencer,
+    PROPERTIES_PT_render,
     VIEW3D_PT_main
 ]
 

@@ -16,10 +16,10 @@ def new_shot(context:bpy.types.Context):
     """Creates a new shot and camera"""
 
     shot = context.scene.milkshake_shots.add()
-    camera = bpy.data.cameras.new("Camera")
-    camera_object = bpy.data.objects.new("Camera", camera)
-    context.scene.objects.link(camera_object)
-    shot.camera = camera
+    # camera = bpy.data.cameras.new("Camera")
+    # camera_object = bpy.data.objects.new("Camera", camera)
+    # context.scene.objects.link(camera_object)
+    # shot.camera = camera
     core.log(message = "Created new shot and camera.")
 
 
