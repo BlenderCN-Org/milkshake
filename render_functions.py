@@ -12,7 +12,7 @@ from . import core_functions as core
 ##############################################################################
 
 
-def render_defaults(context:bpy.types.Context):
+def render_defaults(context):
     """Apply default render settings"""
 
     scene = context.scene
@@ -38,7 +38,6 @@ def render_defaults(context:bpy.types.Context):
     cycles.use_animated_seed                  = True
     cycles.volume_bounces                     = 0
 
-
     # Motion blur
     cycles.motion_blur_position               = "CENTER"
     cycles.rolling_shutter_type               = "NONE"
@@ -62,7 +61,7 @@ def render_defaults(context:bpy.types.Context):
     core.log("Applied render defaults.")
 
 
-def layer_setup(context:bpy.types.Context):
+def layer_setup(context):
     """Set up the view layers"""
 
     # Set up collections
@@ -71,16 +70,16 @@ def layer_setup(context:bpy.types.Context):
     for collection in collections:
         collections.remove(collection)
 
-    animprops               = collections.new("Animprops")
-    bg01_sets               = collections.new("BG01 Sets")
-    bg02_sets               = collections.new("BG02 Sets")
-    characters              = collections.new("Characters")
-    dust                    = collections.new("DUST")
-    lights                  = collections.new("BG + FG Lights")
-    bg_lights               = collections.new("BG Lights")
-    fg_lights               = collections.new("FG Lights")
-    vol_lights              = collections.new("VOL Lights")
-    hidden                  = collections.new("Hidden")
+    animprops                                 = collections.new("Animprops")
+    bg01_sets                                 = collections.new("BG01 Sets")
+    bg02_sets                                 = collections.new("BG02 Sets")
+    characters                                = collections.new("Characters")
+    dust                                      = collections.new("DUST")
+    lights                                    = collections.new("BG + FG Lights")
+    bg_lights                                 = collections.new("BG Lights")
+    fg_lights                                 = collections.new("FG Lights")
+    vol_lights                                = collections.new("VOL Lights")
+    hidden                                    = collections.new("Hidden")
 
     all_collections = [animprops, bg01_sets, bg02_sets, characters, dust, lights, bg_lights, fg_lights, vol_lights, hidden]
     for collection in all_collections:
