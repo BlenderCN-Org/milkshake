@@ -14,18 +14,15 @@ bl_info = {
 ##############################################################################
 
 
+import bpy
+from . import cleanup, core_functions, render, modeling, sequencer, utilities
+core_functions.log("Loaded package modules.")
+
 if "bpy" in locals():
     from importlib import reload
     for m in modules:
         reload(m)
-    print("[Milkshake] Reloaded package modules")
-
-else:
-    from . import cleanup, render, modeling, sequencer, utilities
-    modules = [ cleanup, render, modeling, sequencer, utilities ]
-    print("[Milkshake] Loaded package modules")
-
-import bpy
+    core_functions.log("Reloaded package modules.")
 
 
 ##############################################################################
