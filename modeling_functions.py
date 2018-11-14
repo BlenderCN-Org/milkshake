@@ -45,6 +45,8 @@ def generate_placeholders(context):
             main_collection.children.link(group)
         placeholder = bpy.data.objects.new(f"{keyword}.placeholder", None)
         placeholder.location = original.location
+        placeholder.rotation_euler = original.rotation_euler
+        placeholder.scale = original.scale
         group.objects.link(placeholder)
         core.log(f"Created placeholder {placeholder.name}")
 
