@@ -22,7 +22,7 @@ def autorename_shots(context):
             if obj.data == shot.camera:
                 obj.name = shot.camera.name
                 break
-        core.log(f"Renamed shot {shot.code} and camera {shot.camera.}.")
+        core.log(f"Renamed shot {shot.code} and camera {shot.camera}.")
 
 
 def camera_collection(context):

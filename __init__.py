@@ -16,6 +16,7 @@ bl_info = {
 
 import bpy
 from . import cleanup, core_functions, render, modeling, sequencer, utilities
+modules = [cleanup, render, modeling, sequencer, utilities]
 core_functions.log("Loaded package modules.")
 
 if "bpy" in locals():
@@ -57,7 +58,7 @@ class PROPERTIES_PT_main(bpy.types.Panel):
         col = lay.column(align = True)
         sub = col.row(align = True)
         sub.scale_y = 1.5
-        sub.operator("milkshake.cleanup_ot_rename", text = "Objects").rename_datablock = False
+        sub.operator("milkshake.cleanup_ot_rename", text = "Objects")
         sub.operator("milkshake.cleanup_ot_rename", text = "Data").rename_datablock = True
         sub.operator("milkshake.cleanup_ot_rename_images")
 

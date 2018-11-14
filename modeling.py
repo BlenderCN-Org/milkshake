@@ -19,7 +19,7 @@ class MODELING_OT_clear_sharp(bpy.types.Operator):
 
     bl_idname = "milkshake.modeling_ot_clear_sharp"
     bl_label = "Clear All Sharp Edges"
-    bl_options = {"REGISTER","UNDO"}
+    bl_options = {"REGISTER", "UNDO"}
 
     selection_only : bpy.props.BoolProperty(name = "Selection Only", default = False)
 
@@ -45,7 +45,7 @@ class MODELING_OT_reset_viewport_display(bpy.types.Operator):
 
     bl_idname = "milkshake.modeling_ot_reset_viewport_display"
     bl_label = "Remove Drawing Overrides"
-    bl_options = {"REGISTER","UNDO"}
+    bl_options = {"REGISTER", "UNDO"}
 
     selection_only : bpy.props.BoolProperty(name = "Selection Only", default = False)
 
@@ -59,7 +59,7 @@ class MODELING_OT_select_unsubdivided(bpy.types.Operator):
 
     bl_idname = "milkshake.modeling_ot_select_unsubdivided"
     bl_label = "Select Unsubdivided"
-    bl_options = {"REGISTER","UNDO"}
+    bl_options = {"REGISTER", "UNDO"}
 
     def execute(self, context):
         func.select_unsubdivided(context, selection_only = self.selection_only)
@@ -89,7 +89,7 @@ class MODELING_OT_set_subdivision_to_adaptive(bpy.types.Operator):
 
     bl_idname = "milkshake.modeling_ot_set_subdivision_to_adaptive"
     bl_label = "To Adaptive"
-    bl_options = {"REGISTER","UNDO"}
+    bl_options = {"REGISTER", "UNDO"}
 
     selection_only : bpy.props.BoolProperty(name = "Selection Only", default = False)
 
