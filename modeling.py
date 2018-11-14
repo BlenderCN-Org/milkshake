@@ -106,9 +106,9 @@ class MODELING_OT_set_subdivision_to_adaptive(bpy.types.Operator):
 classes = [
     MODELING_OT_clear_sharp,
     MODELING_OT_generate_placeholders,
+    MODELING_OT_select_unsubdivided,
     MODELING_OT_set_subdivision,
-    MODELING_OT_set_subdivision_to_adaptive,
-    MODELING_OT_select_unsubdivided
+    MODELING_OT_set_subdivision_to_adaptive
 ]
 
 register, unregister = bpy.utils.register_classes_factory(classes)

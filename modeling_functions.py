@@ -37,7 +37,6 @@ def generate_placeholders(context):
         context.scene.collection.children.link(main_collection)
 
     for original in context.selected_objects:
-        # Parse original name to not include .001 postfixes
         keyword = re.sub(r"[.\d]+$", "", original.name)
         if f"{keyword}.placeholders" in main_collection.children:
             group = main_collection.children[f"{keyword}.placeholders"]
