@@ -12,6 +12,6 @@ import bpy
 
 
 def log(msg):
-    """Output the given message to the console."""
+    """Output the given message to the console"""
 
     print(f"[Milkshake] {msg}")

@@ -15,14 +15,16 @@ reload(func)
 
 
 class UTILITIES_OT_unlock_transforms(bpy.types.Operator):
-    """Unlock all transforms of the selection"""
+    """Unlock all transforms.\nOn selection or everything"""
 
     bl_idname = "milkshake.utilities_ot_unlock_transforms"
     bl_label = "Unlock Transforms"
     bl_options = {"REGISTER", "UNDO"}
 
+    selection_only : bpy.props.BoolProperty(name = "Selection Only", default = False)
+
     def execute(self, context):
-        func.unlock_transforms(context)
+        func.unlock_transforms(context, selection_only = self.selection_only)
         return {"FINISHED"}
 
 
