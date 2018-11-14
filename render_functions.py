@@ -25,7 +25,7 @@ def render_defaults(context):
     cycles.caustics_refractive                = False
     cycles.diffuse_bounces                    = 3
     cycles.glossy_bounces                     = 3
-    cycles.max_bounces                        = 32
+    cycles.max_bounces                        = 3
     cycles.preview_samples                    = 0
     cycles.sample_all_lights_direct           = True
     cycles.sample_all_lights_indirect         = True
@@ -33,8 +33,7 @@ def render_defaults(context):
     cycles.sample_clamp_indirect              = 10
     cycles.samples                            = 250
     cycles.transmission_bounces               = 3
-    cycles.transparent_max_bounces            = 32
-    cycles.transparent_min_bounces            = 32
+    cycles.transparent_max_bounces            = 12
     cycles.use_animated_seed                  = True
     cycles.volume_bounces                     = 0
 
@@ -48,6 +47,8 @@ def render_defaults(context):
     cycles.film_transparent                   = True
     scene.display_settings.display_device     = "sRGB"
     scene.sequencer_colorspace_settings.name  = "Filmic Log"
+    scene.view_settings.exposure              = 0
+    scene.view_settings.gamma                 = 1
     scene.view_settings.look                  = "Filmic - Base Contrast"
     scene.view_settings.view_transform        = "Filmic"
 
