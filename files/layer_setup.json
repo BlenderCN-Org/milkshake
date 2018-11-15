@@ -1,0 +1,65 @@
+{
+    "all_collection_names": [
+        "animprops",
+        "sets.bg01",
+        "sets.bg02",
+        "characters",
+        "dust",
+        "lights",
+        "lights.bg",
+        "lights.fg",
+        "lights.vol",
+        "hidden"
+    ],
+    "layer_templates": [
+        {
+            "name": "BG01",
+            "indirect": ["animprops", "characters"],
+            "exclude": ["dust", "lights.fg", "hidden", "lights.vol"],
+            "holdout": ["sets.bg02"],
+            "filter": ["sky", "ao", "solid", "strand"],
+            "passes": ["combined", "z", "vector", "mist", "ambient_occlusion"],
+            "crypto": ["object", "material"],
+            "enabled": true,
+            "denoise": ["use", "store"]
+        },
+        {
+            "name": "BG02",
+            "indirect": ["animprops", "sets.bg01", "characters"],
+            "exclude": ["dust", "lights.fg", "hidden", "lights.vol"],
+            "holdout": [],
+            "filter": ["sky", "ao", "solid", "strand"],
+            "passes": ["combined", "z", "vector", "mist", "ambient_occlusion"],
+            "crypto": ["object", "material"],
+            "enabled": false,
+            "denoise": ["use", "store"]
+        },
+        {
+            "name": "FG",
+            "indirect": ["sets.bg01", "sets.bg02"],
+            "exclude": ["dust", "lights.bg", "lights.vol", "hidden"],
+            "holdout": ["sets.bg01", "sets.bg02"],
+            "filter": ["sky", "ao", "solid", "strand"],
+            "passes": ["combined", "z", "vector", "subsurface_direct", "mist", "ambient_occlusion"],
+            "crypto": ["object", "material"],
+            "enabled": true,
+            "denoise": ["use", "store"]
+        },
+        {
+            "name": "VOL",
+            "exclude": ["dust", "lights", "lights.bg", "lights.fg", "hidden"],
+            "filter": ["solid", "strand"],
+            "passes": ["combined"],
+            "enabled": true
+        },
+        {
+            "name": "DUST",
+            "indirect": ["animprops", "sets.bg01", "sets.bg02", "characters"],
+            "exclude": ["hidden", "lights.vol"],
+            "holdout": ["animprops", "sets.bg01", "sets.bg02", "characters"],
+            "filter": ["sky", "solid", "strand"],
+            "passes": ["combined", "z", "vector"],
+            "enabled": false
+        }
+    ]
+}

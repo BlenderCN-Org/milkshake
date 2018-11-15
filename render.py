@@ -14,15 +14,19 @@ reload(func)
 ##############################################################################
 
 
-class RENDER_OT_render_defaults(bpy.types.Operator):
-    """Apply default render settings"""
+class RENDER_OT_camera_bounds_to_render_border(bpy.types.Operator):
+    """Set the render border to the camera bounds"""
 
-    bl_idname = "milkshake.render_ot_render_defaults"
-    bl_label = "Set Render Defaults"
+    bl_idname = "milkshake.render_ot_camera_bounds_to_render_border"
+    bl_label = "Camera Bounds to Render Border"
     bl_options = {"REGISTER", "UNDO"}
 
+    @classmethod
+    def poll(cls, context):
+        return context.space_data.region_3d.view_perspective == "CAMERA"
+
     def execute(self, context):
-        func.render_defaults(context)
+        func.camera_bounds_to_render_border(context)
         return {"FINISHED"}
 
 
@@ -38,12 +42,25 @@ class RENDER_OT_layer_setup(bpy.types.Operator):
         return {"FINISHED"}
 
 
+class RENDER_OT_render_defaults(bpy.types.Operator):
+    """Apply default render settings"""
+
+    bl_idname = "milkshake.render_ot_render_defaults"
+    bl_label = "Set Render Defaults"
+    bl_options = {"REGISTER", "UNDO"}
+
+    def execute(self, context):
+        func.render_defaults(context)
+        return {"FINISHED"}
+
+
 ##############################################################################
 # Registration
 ##############################################################################
 
 
 classes = [
+    RENDER_OT_camera_bounds_to_render_border,
     RENDER_OT_render_defaults,
     RENDER_OT_layer_setup
 ]

@@ -109,3 +109,8 @@ def set_subdivision_to_adaptive(context, selection_only):
     for obj in objects:
         obj.cycles.use_adaptive_subdivision = True
         core.log(f"Enabled adaptive subdivision for {obj.name}")
+
+
+def transfer_transforms(context):
+    """Copy transformation values from a set of objects to another"""
+    pass

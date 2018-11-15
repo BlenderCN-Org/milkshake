@@ -75,6 +75,12 @@ class PROPERTIES_PT_main(bpy.types.Panel):
         sub.operator("milkshake.modeling_ot_set_subdivision", icon = "MOD_SUBSURF")
         sub.operator("milkshake.modeling_ot_set_subdivision_to_adaptive")
 
+        col = lay.column(align = True)
+        sub = col.row(align = True)
+        sub.template_list("tt_set_a")
+        sub.template_list("tt_set_b")
+        col.operator("milkshake.modeling_ot_transfer_transforms", icon = "ARROW_RIGHT")
+
         lay.label(text = "Rendering:")
         col = lay.column(align = True)
         sub = col.row(align = True)
@@ -142,6 +148,8 @@ def register():
     for i in classes:
         bpy.utils.register_class(i)
     bpy.types.Scene.milkshake_shots = bpy.props.CollectionProperty(type = MilkshakeSequencerShot)
+    bpy.types.Scene.milkshake_tt_set_a = bpy.props.CollectionProperty(type = bpy.types.Object)
+    bpy.types.Scene.milkshake_tt_set_b = bpy.props.CollectionProperty(type = bpy.types.Object)
 
 
 def unregister():
@@ -151,6 +159,8 @@ def unregister():
         bpy.utils.unregister_class(i)
     try:
         del bpy.types.Scene.milkshake_shots
+        del bpy.types.Scene.milkshake_tt_set_a
+        del bpy.types.Scene.milkshake_tt_set_b
     except:
         pass
 

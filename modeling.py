@@ -98,6 +98,18 @@ class MODELING_OT_set_subdivision_to_adaptive(bpy.types.Operator):
         return {"FINISHED"}
 
 
+class MODELING_OT_transfer_transforms(bpy.types.Operator):
+    """Copy transformation values from a set of objects to another"""
+
+    bl_idname = "milkshake.modeling_ot_transfer_transforms"
+    bl_label = "Transfer Transforms"
+    bl_options = {"REGISTER", "UNDO"}
+
+    def execute(self, context):
+        func.transfer_transforms(context)
+        return {"FINISHED"}
+
+
 ##############################################################################
 # Registration
 ##############################################################################
@@ -106,9 +118,11 @@ class MODELING_OT_set_subdivision_to_adaptive(bpy.types.Operator):
 classes = [
     MODELING_OT_clear_sharp,
     MODELING_OT_generate_placeholders,
+    MODELING_OT_reset_viewport_display,
     MODELING_OT_select_unsubdivided,
     MODELING_OT_set_subdivision,
-    MODELING_OT_set_subdivision_to_adaptive
+    MODELING_OT_set_subdivision_to_adaptive,
+    MODELING_OT_transfer_transforms
 ]
 
 register, unregister = bpy.utils.register_classes_factory(classes)
