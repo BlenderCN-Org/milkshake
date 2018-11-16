@@ -10,6 +10,32 @@ reload(func)
 
 
 ##############################################################################
+# PropertyGroups
+##############################################################################
+
+
+class MilkshakeSceneObject(bpy.types.PropertyGroup):
+
+    obj                             : bpy.props.PointerProperty(name = "Object", type = bpy.types.Object)
+
+
+##############################################################################
+# Lists
+##############################################################################
+
+
+class MODELING_UL_transfer_transforms(bpy.types.UIList):
+
+    bl_idname = "milkshake.modeling_ul_transfer_transforms"
+
+    def draw_item(self, context, layout, data, item, icon, active_data, active_propname):
+        if self.layout_type in {'DEFAULT', 'COMPACT'}:
+            pass
+        else:
+            pass
+
+
+##############################################################################
 # Operators
 ##############################################################################
 
@@ -111,18 +137,71 @@ class MODELING_OT_transfer_transforms(bpy.types.Operator):
 
 
 ##############################################################################
+# Panels
+##############################################################################
+
+
+class PROPERTIES_PT_modeling(bpy.types.Panel):
+
+    bl_idname = "milkshake.properties_pt_modeling"
+    bl_label = "Modeling and Setdress"
+    bl_parent_id = "milkshake.properties_pt_main"
+    bl_region_type = "WINDOW"
+    bl_space_type = "PROPERTIES"
+
+    def draw(self, context):
+        lay = self.layout
+
+        col = lay.column(align = True)
+        col.scale_y = 1.5
+        sub = col.row(align = True)
+        sub.operator("milkshake.modeling_ot_clear_sharp", icon = "EDGESEL")
+        sub = col.row(align = True)
+        sub.operator("milkshake.modeling_ot_generate_placeholders", icon = "OUTLINER_OB_EMPTY")
+        sub = col.split(align = True, factor = 0.6)
+        sub.operator("milkshake.modeling_ot_set_subdivision", icon = "MOD_SUBSURF")
+        sub.operator("milkshake.modeling_ot_set_subdivision_to_adaptive")
+
+        col = lay.column(align = True)
+        sub = col.row(align = True)
+        sub.template_list("milkshake.modeling_ul_transfer_transforms", "", obj, "material_slots", obj, "active_material_index")
+        sub.template_list("milkshake.modeling_ul_transfer_transforms")
+        sub = col.row(align = True)
+        sub.scale_y = 1.5
+        sub.operator("milkshake.modeling_ot_transfer_transforms", icon = "TRIA_RIGHT")
+
+
+##############################################################################
 # Registration
 ##############################################################################
 
 
 classes = [
+    MilkshakeSceneObject,
     MODELING_OT_clear_sharp,
     MODELING_OT_generate_placeholders,
     MODELING_OT_reset_viewport_display,
     MODELING_OT_select_unsubdivided,
     MODELING_OT_set_subdivision,
     MODELING_OT_set_subdivision_to_adaptive,
-    MODELING_OT_transfer_transforms
+    MODELING_OT_transfer_transforms,
+    MODELING_UL_transfer_transforms,
+    PROPERTIES_PT_modeling
 ]
 
-register, unregister = bpy.utils.register_classes_factory(classes)
+
+def register():
+    for class_to_register in classes:
+        bpy.utils.register_class(class_to_register)
+    bpy.types.Scene.milkshake_tt_set_a = bpy.props.CollectionProperty(type = MilkshakeSceneObject)
+    bpy.types.Scene.milkshake_tt_set_b = bpy.props.CollectionProperty(type = MilkshakeSceneObject)
+
+
+def unregister():
+    for class_to_register in classes:
+        bpy.utils.unregister_class(class_to_register)
+    try:
+        del bpy.types.Scene.milkshake_tt_set_a
+        del bpy.types.Scene.milkshake_tt_set_b
+    except:
+        pass

@@ -42,13 +42,38 @@ class CLEANUP_OT_rename_images(bpy.types.Operator):
 
 
 ##############################################################################
+# Panels
+##############################################################################
+
+
+class PROPERTIES_PT_cleanup(bpy.types.Panel):
+
+    bl_idname = "milkshake.properties_pt_cleanup"
+    bl_label = "Cleanup"
+    bl_parent_id = "milkshake.properties_pt_main"
+    bl_region_type = "WINDOW"
+    bl_space_type = "PROPERTIES"
+
+    def draw(self, context):
+        lay = self.layout
+        lay.label(text = "Auto-rename:")
+        col = lay.column(align = True)
+        col.scale_y = 1.5
+        sub = col.row(align = True)
+        sub.operator("milkshake.cleanup_ot_rename", text = "Objects")
+        sub.operator("milkshake.cleanup_ot_rename", text = "Data").rename_datablock = True
+        sub.operator("milkshake.cleanup_ot_rename_images")
+
+
+##############################################################################
 # Registration
 ##############################################################################
 
 
 classes = [
     CLEANUP_OT_rename,
-    CLEANUP_OT_rename_images
+    CLEANUP_OT_rename_images,
+    PROPERTIES_PT_cleanup
 ]
 
 register, unregister = bpy.utils.register_classes_factory(classes)

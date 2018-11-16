@@ -51,11 +51,35 @@ class RENDER_OT_render_defaults(bpy.types.Operator):
 
 
 ##############################################################################
+# Panels
+##############################################################################
+
+
+class PROPERTIES_PT_render(bpy.types.Panel):
+
+    bl_idname = "milkshake.properties_pt_render"
+    bl_label = "Rendering"
+    bl_parent_id = "milkshake.properties_pt_main"
+    bl_region_type = "WINDOW"
+    bl_space_type = "PROPERTIES"
+
+    def draw(self, context):
+        lay = self.layout
+        col = lay.column(align = True)
+        col.scale_y = 1.5
+        col.operator("milkshake.render_ot_camera_bounds_to_render_border", icon = "SHADING_BBOX")
+        col.operator("milkshake.render_ot_render_defaults", icon = "QUESTION")
+        col.operator("milkshake.render_ot_layer_setup", icon = "RENDERLAYERS")
+        col.prop(context.scene.cycles, "preview_pause", icon = "PAUSE", text = "Pause Viewport Renders")
+
+
+##############################################################################
 # Registration
 ##############################################################################
 
 
 classes = [
+    PROPERTIES_PT_render,
     RENDER_OT_camera_bounds_to_render_border,
     RENDER_OT_render_defaults,
     RENDER_OT_layer_setup

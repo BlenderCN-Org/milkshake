@@ -29,11 +29,33 @@ class UTILITIES_OT_unlock_transforms(bpy.types.Operator):
 
 
 ##############################################################################
+# Panels
+##############################################################################
+
+
+class PROPERTIES_PT_utilities(bpy.types.Panel):
+
+    bl_idname = "milkshake.properties_pt_utilities"
+    bl_label = "Utilities"
+    bl_parent_id = "milkshake.properties_pt_main"
+    bl_region_type = "WINDOW"
+    bl_space_type = "PROPERTIES"
+
+    def draw(self, context):
+        lay = self.layout
+        col = lay.column(align = True)
+        col.scale_y = 1.5
+        sub = col.row(align = True)
+        sub.operator("milkshake.utilities_ot_unlock_transforms", icon = "UNLOCKED")
+
+
+##############################################################################
 # Registration
 ##############################################################################
 
 
 classes = [
+    PROPERTIES_PT_utilities,
     UTILITIES_OT_unlock_transforms
 ]
 
