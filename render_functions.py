@@ -15,6 +15,10 @@ from . import core_functions as core
 def camera_bounds_to_render_border(context):
     """Copy the camera bounds to the render border"""
 
+    # Select the first viewport and enable camera view
+    viewport = [area for area in bpy.context.screen.areas if area.type == "VIEW_3D"][0]
+    viewport.spaces[0].region_3d.view_perspective = "CAMERA"
+
     render = context.scene.render
     render.use_border = True
     render.border_min_x = 0
@@ -27,59 +31,59 @@ def camera_bounds_to_render_border(context):
 def layer_setup(context):
     """Set up the view layers"""
 
-    config = json.load(os.path.join(os.path.dirname(os.path.abspath(__file__))), "files", "layer_templates.json")
+    with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "files", "layer_setup.json"), "r") as config_file:
+        config = json.load(config_file)
     layers = context.scene.view_layers
 
-    # Create collections that don't exist yet
-    existing_collection_names = set(bpy.data.collections.keys())
-    all_collection_names = set(config["all_collection_names"])
-    required_collection_names = all_collection_names - existing_collection_names
-    for collection_name in required_collection_names:
-        bpy.data.collections.new(collection_name)
-    for collection_name in all_collection_names:
-        context.scene.collection.children.link(bpy.data.collections[collection_name])
+    # Create missing collections
+    collection_names_existing = set(context.scene.collection.children.keys())
+    collection_names_all = set(config["collection_names_all"])
+    collection_names_required = collection_names_all - collection_names_existing
+    collection_names_excluded = collection_names_existing - collection_names_all
+    for collection_name in collection_names_required:
+        new_collection = bpy.data.collections.new(collection_name)
+        context.scene.collection.children.link(new_collection)
 
     # Remove existing view layers
     for layer in layers:
-        try:
+        if len(layers) > 1:
             layers.remove(layer)
-        except:
-            pass
     layers[0].name = "delete"
 
     # Create new ones
-    for template in config["layer_templates"]:
+    for layer_template in config["layer_templates"]:
 
         # Create layer and enable/disable it by default.
-        layer = layers.new(template["name"])
-        if "enabled" in template:
-            layer.use = template["enabled"]
+        layer = layers.new(layer_template["name"])
+        if "enabled" in layer_template:
+            layer.use = layer_template["enabled"]
         core.log(f"{layer.name} rendering is set to {layer.use}.")
 
-        # Set per-layer collection overrides.
-        indirect_collection_names = template.get("indirect", [])
-        exclude_collection_names = template.get("exclude", [])
-        holdout_collection_names = template.get("holdout", [])
-        for collection in all_collections:
-            # setattr(layer, "override_indirect_only", collection in indirect_collection_names)
-            # setattr(layer, "override_exclude", collection in exclude_collection_names)
-            # setattr(layer, "override_holdout", collection in holdout_collection_names)
-            pass
+        # Set per-layer collection influence.
+        indirect_collection_names = layer_template.get("indirect", [])
+        exclude_collection_names = layer_template.get("exclude", [])
+        holdout_collection_names = layer_template.get("holdout", [])
+        for collection_name in collection_names_all:
+            layer.layer_collection.children[collection_name].indirect_only = collection_name in indirect_collection_names
+            layer.layer_collection.children[collection_name].exclude = collection_name in exclude_collection_names
+            layer.layer_collection.children[collection_name].holdout = collection_name in holdout_collection_names
+        for collection_name in collection_names_excluded:
+            layer.layer_collection.children[collection_name].exclude = True
 
         # Set any configured filter, disable the rest.
-        filters = template.get("filters", [])
+        filters = layer_template.get("filter", [])
         all_filters = ["sky", "ao", "solid", "strand", "freestyle"]
         for filter_name in all_filters:
             setattr(layer, f"use_{filter_name}", filter_name in filters)
 
         # Set any configured pass, disable the rest.
-        passes = template.get("passes", [])
+        passes = layer_template.get("passes", [])
         all_passes = ["combined", "z", "mist", "normal", "vector", "uv", "object_index", "material_index", "diffuse_direct", "diffuse_indirect", "glossy_direct", "glossy_indirect", "transmission_direct", "transmission_indirect", "subsurface_direct", "subsurface_indirect", "emit", "environment", "shadow", "ambient_occlusion"]
         for pass_name in all_passes:
             setattr(layer, f"use_pass_{pass_name}", pass_name in passes)
 
         # Cryptomatte
-        crypto_modes = template.get("crypto", [])
+        crypto_modes = layer_template.get("crypto", [])
         all_crypto_modes = ["object", "material", "asset"]
         for crypto_mode in all_crypto_modes:
             setattr(layer.cycles, f"use_pass_crypto_{crypto_mode}", crypto_mode in crypto_modes)
@@ -87,21 +91,18 @@ def layer_setup(context):
         layer.cycles.pass_crypto_accurate = True
 
         # Denoising
-        denoise_options = template.get("denoise", [])
+        denoise_options = layer_template.get("denoise", [])
         all_denoise_options = ["use", "store"]
         for denoise_option in all_denoise_options:
-            layer.cycles.use_denoising = "store" in denoise_options
+            layer.cycles.use_denoising = "use" in denoise_options
+            layer.cycles.denoising_store_passes = "store" in denoise_options
 
         # Set alpha treshold to zero (prevents Z/index/vector/normal/uv pass glitches on transparent surfaces with variable roughness)
         layer.cycles.pass_alpha_treshold = 0
 
         core.log(f"{layer.name} layer is set up.")
 
-    # Remove the old remaining layer
-    layers.remove(layers[0])
-
-    # Set active layer to BG01
-    context.view_layer = context.scene.view_layers[layer_templates[0]["name"]]
+    layers.remove(layers["delete"])
 
 
 def render_defaults(context):
@@ -116,7 +117,7 @@ def render_defaults(context):
     cycles.caustics_refractive                = False
     cycles.diffuse_bounces                    = 3
     cycles.glossy_bounces                     = 3
-    cycles.max_bounces                        = 3
+    cycles.max_bounces                        = 12
     cycles.preview_samples                    = 0
     cycles.sample_all_lights_direct           = True
     cycles.sample_all_lights_indirect         = True
@@ -141,6 +142,7 @@ def render_defaults(context):
     scene.view_settings.look                  = "Filmic - Base Contrast"
     scene.view_settings.view_transform        = "Filmic"
     # Performance
+    render.display_mode                       = "AREA"
     render.engine                             = "CYCLES"
     render.tile_x                             = 32
     render.tile_y                             = 32

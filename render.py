@@ -18,12 +18,8 @@ class RENDER_OT_camera_bounds_to_render_border(bpy.types.Operator):
     """Set the render border to the camera bounds"""
 
     bl_idname = "milkshake.render_ot_camera_bounds_to_render_border"
-    bl_label = "Camera Bounds to Render Border"
+    bl_label = "Camera to Render Border"
     bl_options = {"REGISTER", "UNDO"}
-
-    @classmethod
-    def poll(cls, context):
-        return context.space_data.region_3d.view_perspective == "CAMERA"
 
     def execute(self, context):
         func.camera_bounds_to_render_border(context)

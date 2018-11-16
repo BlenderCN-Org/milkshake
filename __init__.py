@@ -14,7 +14,6 @@ bl_info = {
 ##############################################################################
 
 
-import bpy
 from . import cleanup, core_functions, render, modeling, sequencer, utilities
 modules = [cleanup, render, modeling, sequencer, utilities]
 core_functions.log("Loaded package modules.")
@@ -24,11 +23,17 @@ if "bpy" in locals():
     for m in modules:
         reload(m)
     core_functions.log("Reloaded package modules.")
-
+else:
+    import bpy
 
 ##############################################################################
 # Properties
 ##############################################################################
+
+
+class MilkshakeSceneObject(bpy.types.PropertyGroup):
+
+    obj                             : bpy.props.PointerProperty(name = "Object", type = bpy.types.Object)
 
 
 class MilkshakeSequencerShot(bpy.types.PropertyGroup):
@@ -52,51 +57,89 @@ class PROPERTIES_PT_main(bpy.types.Panel):
     bl_space_type = "PROPERTIES"
 
     def draw(self, context):
-        lay = self.layout
+        pass
 
+
+class PROPERTIES_PT_cleanup(bpy.types.Panel):
+
+    bl_idname = "milkshake.properties_pt_cleanup"
+    bl_label = "Cleanup"
+    bl_parent_id = "milkshake.properties_pt_main"
+    bl_region_type = "WINDOW"
+    bl_space_type = "PROPERTIES"
+
+    def draw(self, context):
+        lay = self.layout
         lay.label(text = "Auto-rename:")
         col = lay.column(align = True)
+        col.scale_y = 1.5
         sub = col.row(align = True)
-        sub.scale_y = 1.5
         sub.operator("milkshake.cleanup_ot_rename", text = "Objects")
         sub.operator("milkshake.cleanup_ot_rename", text = "Data").rename_datablock = True
         sub.operator("milkshake.cleanup_ot_rename_images")
 
-        lay.label(text = "Modeling and Setdress:")
+
+class PROPERTIES_PT_modeling(bpy.types.Panel):
+
+    bl_idname = "milkshake.properties_pt_modeling"
+    bl_label = "Modeling and Setdress"
+    bl_parent_id = "milkshake.properties_pt_main"
+    bl_region_type = "WINDOW"
+    bl_space_type = "PROPERTIES"
+
+    def draw(self, context):
+        lay = self.layout
+
         col = lay.column(align = True)
+        col.scale_y = 1.5
         sub = col.row(align = True)
-        sub.scale_y = 1.5
         sub.operator("milkshake.modeling_ot_clear_sharp", icon = "EDGESEL")
         sub = col.row(align = True)
-        sub.scale_y = 1.5
         sub.operator("milkshake.modeling_ot_generate_placeholders", icon = "OUTLINER_OB_EMPTY")
         sub = col.split(align = True, factor = 0.6)
-        sub.scale_y = 1.5
         sub.operator("milkshake.modeling_ot_set_subdivision", icon = "MOD_SUBSURF")
         sub.operator("milkshake.modeling_ot_set_subdivision_to_adaptive")
 
         col = lay.column(align = True)
         sub = col.row(align = True)
-        sub.template_list("tt_set_a")
-        sub.template_list("tt_set_b")
-        col.operator("milkshake.modeling_ot_transfer_transforms", icon = "ARROW_RIGHT")
+        # sub.template_list("tt_set_a")
+        # sub.template_list("tt_set_b")
+        sub = col.row(align = True)
+        sub.scale_y = 1.5
+        sub.operator("milkshake.modeling_ot_transfer_transforms", icon = "TRIA_RIGHT")
 
-        lay.label(text = "Rendering:")
-        col = lay.column(align = True)
-        sub = col.row(align = True)
-        sub.scale_y = 1.5
-        sub.operator("milkshake.render_ot_render_defaults", icon = "QUESTION")
-        sub = col.row(align = True)
-        sub.scale_y = 1.5
-        sub.operator("milkshake.render_ot_layer_setup", icon = "RENDERLAYERS")
-        sub = col.row(align = True)
-        sub.scale_y = 1.5
-        sub.prop(context.scene.cycles, "preview_pause", icon = "PAUSE", text = "Pause Viewport Renders")
 
-        lay.label(text = "Utilities:")
+class PROPERTIES_PT_render(bpy.types.Panel):
+
+    bl_idname = "milkshake.properties_pt_render"
+    bl_label = "Rendering"
+    bl_parent_id = "milkshake.properties_pt_main"
+    bl_region_type = "WINDOW"
+    bl_space_type = "PROPERTIES"
+
+    def draw(self, context):
+        lay = self.layout
         col = lay.column(align = True)
+        col.scale_y = 1.5
+        col.operator("milkshake.render_ot_camera_bounds_to_render_border", icon = "SHADING_BBOX")
+        col.operator("milkshake.render_ot_render_defaults", icon = "QUESTION")
+        col.operator("milkshake.render_ot_layer_setup", icon = "RENDERLAYERS")
+        col.prop(context.scene.cycles, "preview_pause", icon = "PAUSE", text = "Pause Viewport Renders")
+
+
+class PROPERTIES_PT_utilities(bpy.types.Panel):
+
+    bl_idname = "milkshake.properties_pt_utilities"
+    bl_label = "Utilities"
+    bl_parent_id = "milkshake.properties_pt_main"
+    bl_region_type = "WINDOW"
+    bl_space_type = "PROPERTIES"
+
+    def draw(self, context):
+        lay = self.layout
+        col = lay.column(align = True)
+        col.scale_y = 1.5
         sub = col.row(align = True)
-        sub.scale_y = 1.5
         sub.operator("milkshake.utilities_ot_unlock_transforms", icon = "UNLOCKED")
 
 
@@ -136,9 +179,14 @@ class PROPERTIES_PT_sequencer(bpy.types.Panel):
 
 
 classes = [
+    MilkshakeSceneObject,
     MilkshakeSequencerShot,
     PROPERTIES_PT_main,
-    PROPERTIES_PT_sequencer
+    PROPERTIES_PT_cleanup,
+    PROPERTIES_PT_modeling,
+    PROPERTIES_PT_render,
+    PROPERTIES_PT_sequencer,
+    PROPERTIES_PT_utilities
 ]
 
 
@@ -148,8 +196,8 @@ def register():
     for i in classes:
         bpy.utils.register_class(i)
     bpy.types.Scene.milkshake_shots = bpy.props.CollectionProperty(type = MilkshakeSequencerShot)
-    bpy.types.Scene.milkshake_tt_set_a = bpy.props.CollectionProperty(type = bpy.types.Object)
-    bpy.types.Scene.milkshake_tt_set_b = bpy.props.CollectionProperty(type = bpy.types.Object)
+    bpy.types.Scene.milkshake_tt_set_a = bpy.props.CollectionProperty(type = MilkshakeSceneObject)
+    bpy.types.Scene.milkshake_tt_set_b = bpy.props.CollectionProperty(type = MilkshakeSceneObject)
 
 
 def unregister():

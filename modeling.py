@@ -18,7 +18,7 @@ class MODELING_OT_clear_sharp(bpy.types.Operator):
     """Clear all sharp edges in meshes.\nOn selection or everything"""
 
     bl_idname = "milkshake.modeling_ot_clear_sharp"
-    bl_label = "Clear All Sharp Edges"
+    bl_label = "Remove Sharp Edges"
     bl_options = {"REGISTER", "UNDO"}
 
     selection_only : bpy.props.BoolProperty(name = "Selection Only", default = False)
