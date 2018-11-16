@@ -12,6 +12,17 @@ from . import core_functions as core
 ##############################################################################
 
 
+def add_selection_to_tt_set(context, tt_set):
+    """Add selection of objects to the transfer transforms lists"""
+
+    for obj in context.selected_objects:
+        if tt_set == "a":
+            item = context.scene.milkshake_tt_set_a.add()
+        elif tt_set == "b":
+            item = context.scene.milkshake_tt_set_b.add()
+        item.obj = obj
+
+
 def clear_sharp(context, selection_only):
     """Clear all sharp edges in meshes.\nOn selection or everything"""
 
@@ -113,4 +124,10 @@ def set_subdivision_to_adaptive(context, selection_only):
 
 def transfer_transforms(context):
     """Copy transformation values from a set of objects to another"""
-    pass
+
+    if len(context.scene.milkshake_tt_set_a) == len(context.scene.milkshake_tt_set_b):
+        context.scene.milkshake_tt_set_a.clear()
+        context.scene.milkshake_tt_set_b.clear()
+        return True
+    else:
+        return False

@@ -29,15 +29,31 @@ class MODELING_UL_transfer_transforms(bpy.types.UIList):
     bl_idname = "milkshake.modeling_ul_transfer_transforms"
 
     def draw_item(self, context, layout, data, item, icon, active_data, active_propname):
-        if self.layout_type in {'DEFAULT', 'COMPACT'}:
-            pass
-        else:
-            pass
+        if self.layout_type in {"DEFAULT", "COMPACT"}:
+            # We use icon_value of label, as our given icon is an integer value, not an enum ID.
+            layout.label(text = item.obj.name, icon_value = icon)
+        elif self.layout_type in {"GRID"}:
+            layout.alignment = "CENTER"
+            layout.label(text = "", icon_value = icon)
 
 
 ##############################################################################
 # Operators
 ##############################################################################
+
+
+class MODELING_OT_add_selection_to_tt_set(bpy.types.Operator):
+    """Add selection of objects to the transfer transforms lists"""
+
+    bl_idname = "milkshake.modeling_ot_add_selection_to_tt_set"
+    bl_label = "Add Selection"
+    bl_options = {"REGISTER", "UNDO"}
+
+    tt_set : bpy.props.EnumProperty(items = [("a", "A", "List A"), ("b", "B", "List B")])
+
+    def execute(self, context):
+        func.add_selection_to_tt_set(context, tt_set = self.tt_set)
+        return {"FINISHED"}
 
 
 class MODELING_OT_clear_sharp(bpy.types.Operator):
@@ -132,7 +148,9 @@ class MODELING_OT_transfer_transforms(bpy.types.Operator):
     bl_options = {"REGISTER", "UNDO"}
 
     def execute(self, context):
-        func.transfer_transforms(context)
+        if not func.transfer_transforms(context):
+            self.report(type = "ERROR", message = "Both sets of objects must have equal length.")
+            return {"CANCELLED"}
         return {"FINISHED"}
 
 
@@ -164,11 +182,15 @@ class PROPERTIES_PT_modeling(bpy.types.Panel):
 
         col = lay.column(align = True)
         sub = col.row(align = True)
-        sub.template_list("milkshake.modeling_ul_transfer_transforms", "", obj, "material_slots", obj, "active_material_index")
-        sub.template_list("milkshake.modeling_ul_transfer_transforms")
-        sub = col.row(align = True)
-        sub.scale_y = 1.5
-        sub.operator("milkshake.modeling_ot_transfer_transforms", icon = "TRIA_RIGHT")
+        col_a = sub.column(align = True)
+        col_a.operator("milkshake.modeling_ot_add_selection_to_tt_set").tt_set = "a"
+        col_a.template_list("UI_UL_list", "milkshake_tt_set_b", context.scene, "milkshake_tt_set_b", context.scene, "milkshake_tt_set_a_index")
+        col_b = sub.column(align = True)
+        col_b.operator("milkshake.modeling_ot_add_selection_to_tt_set").tt_set = "b"
+        col_b.template_list("UI_UL_list", "milkshake_tt_set_a", context.scene, "milkshake_tt_set_b", context.scene, "milkshake_tt_set_b_index")
+        row_button = col.row(align = True)
+        row_button.scale_y = 1.5
+        row_button.operator("milkshake.modeling_ot_transfer_transforms", icon = "TRIA_RIGHT")
 
 
 ##############################################################################
@@ -178,6 +200,7 @@ class PROPERTIES_PT_modeling(bpy.types.Panel):
 
 classes = [
     MilkshakeSceneObject,
+    MODELING_OT_add_selection_to_tt_set,
     MODELING_OT_clear_sharp,
     MODELING_OT_generate_placeholders,
     MODELING_OT_reset_viewport_display,
@@ -194,7 +217,9 @@ def register():
     for class_to_register in classes:
         bpy.utils.register_class(class_to_register)
     bpy.types.Scene.milkshake_tt_set_a = bpy.props.CollectionProperty(type = MilkshakeSceneObject)
+    bpy.types.Scene.milkshake_tt_set_a_index = bpy.props.IntProperty(default = 0)
     bpy.types.Scene.milkshake_tt_set_b = bpy.props.CollectionProperty(type = MilkshakeSceneObject)
+    bpy.types.Scene.milkshake_tt_set_b_index = bpy.props.IntProperty(default = 0)
 
 
 def unregister():
