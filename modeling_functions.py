@@ -37,7 +37,7 @@ def generate_placeholders(context):
         context.scene.collection.children.link(main_collection)
 
     for original in context.selected_objects:
-        keyword = re.sub(r"[.\d]+$", "", original.name)
+        keyword = re.sub(r"\.[\d]+$", "", original.name)
         if f"{keyword}.placeholders" in main_collection.children:
             group = main_collection.children[f"{keyword}.placeholders"]
         else:
