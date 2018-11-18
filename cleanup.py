@@ -60,7 +60,7 @@ class PROPERTIES_PT_cleanup(bpy.types.Panel):
         col = lay.column(align = True)
         col.scale_y = 1.5
         sub = col.row(align = True)
-        sub.operator("milkshake.cleanup_ot_rename", text = "Objects")
+        sub.operator("milkshake.cleanup_ot_rename", text = "Objects").rename_datablock = False
         sub.operator("milkshake.cleanup_ot_rename", text = "Data").rename_datablock = True
         sub.operator("milkshake.cleanup_ot_rename_images")
 
