@@ -18,9 +18,10 @@ def add_selection_to_tt_set(context, tt_set):
     for obj in context.selected_objects:
         if tt_set == "a":
             item = context.scene.milkshake_tt_set_a.add()
+            item.obj_name = obj.name
         elif tt_set == "b":
             item = context.scene.milkshake_tt_set_b.add()
-        item.obj = obj
+            item.obj_name = obj.name
 
 
 def clear_sharp(context, selection_only):

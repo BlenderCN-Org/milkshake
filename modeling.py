@@ -16,7 +16,7 @@ reload(func)
 
 class MilkshakeSceneObject(bpy.types.PropertyGroup):
 
-    obj                             : bpy.props.PointerProperty(name = "Object", type = bpy.types.Object)
+    obj_name                        : bpy.props.StringProperty(name = "Object Name")
 
 
 ##############################################################################
@@ -28,11 +28,12 @@ class MODELING_UL_transfer_transforms(bpy.types.UIList):
 
     bl_idname = "milkshake.modeling_ul_transfer_transforms"
 
-    def draw_item(self, context, layout, data, item, icon, active_data, active_propname):
-        if self.layout_type in {"DEFAULT", "COMPACT"}:
+    def draw_item(context, layout, data, item, icon, active_data, active_property):
+        print(item)
+        if layout.type in {"DEFAULT", "COMPACT"}:
             # We use icon_value of label, as our given icon is an integer value, not an enum ID.
-            layout.label(text = item.obj.name, icon_value = icon)
-        elif self.layout_type in {"GRID"}:
+            layout.label(text = item.obj_name, icon_value = icon)
+        elif layout.type in {"GRID"}:
             layout.alignment = "CENTER"
             layout.label(text = "", icon_value = icon)
 
@@ -184,10 +185,10 @@ class PROPERTIES_PT_modeling(bpy.types.Panel):
         sub = col.row(align = True)
         col_a = sub.column(align = True)
         col_a.operator("milkshake.modeling_ot_add_selection_to_tt_set").tt_set = "a"
-        col_a.template_list("UI_UL_list", "milkshake_tt_set_b", context.scene, "milkshake_tt_set_b", context.scene, "milkshake_tt_set_a_index")
+        col_a.template_list("UI_UL_list", "milkshake_tt_set_a", context.scene, "milkshake_tt_set_a", context.scene, "milkshake_tt_set_a_index")
         col_b = sub.column(align = True)
         col_b.operator("milkshake.modeling_ot_add_selection_to_tt_set").tt_set = "b"
-        col_b.template_list("UI_UL_list", "milkshake_tt_set_a", context.scene, "milkshake_tt_set_b", context.scene, "milkshake_tt_set_b_index")
+        col_b.template_list("UI_UL_list", "milkshake_tt_set_b", context.scene, "milkshake_tt_set_b", context.scene, "milkshake_tt_set_b_index")
         row_button = col.row(align = True)
         row_button.scale_y = 1.5
         row_button.operator("milkshake.modeling_ot_transfer_transforms", icon = "TRIA_RIGHT")
