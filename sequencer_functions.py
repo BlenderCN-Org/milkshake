@@ -22,7 +22,7 @@ def autorename_shots(context):
             if obj.data == shot.camera:
                 obj.name = shot.camera.name
                 break
-        core.log(f"Renamed shot {shot.code} and camera {shot.camera}.")
+        core.log(f"Renamed shot {shot.code} and camera {shot.camera.name}.")
 
 
 def camera_collection(context):
@@ -44,7 +44,8 @@ def delete_shot(context, index):
 
     shot = context.scene.milkshake_shots[index]
     camera = shot.camera
-    bpy.data.cameras.remove(camera) # crashes on Linux
+    if camera:
+        bpy.data.cameras.remove(camera) # crashes on Linux
     context.scene.milkshake_shots.remove(index)
 
 
@@ -57,8 +58,8 @@ def new_shot(context):
     camera.passepartout_alpha = 1
     camera_object = bpy.data.objects.new("Camera", camera)
 
-    camera_collection = camera_collection(context)
-    camera_collection.objects.link(camera_object)
+    cam_collection = camera_collection(context)
+    cam_collection.objects.link(camera_object)
     shot.camera = camera
     core.log("Created new shot and camera.")
 

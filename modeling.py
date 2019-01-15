@@ -150,7 +150,7 @@ class MODELING_OT_transfer_transforms(bpy.types.Operator):
 
     def execute(self, context):
         if not func.transfer_transforms(context):
-            self.report(type = "ERROR", message = "Both sets of objects must have equal length.")
+            self.report(type = {"ERROR"}, message = "Both sets of objects must have equal length.")
             return {"CANCELLED"}
         return {"FINISHED"}
 

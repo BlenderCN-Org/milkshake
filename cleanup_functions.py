@@ -23,10 +23,17 @@ def rename(context, rename_datablock, selection_only):
     for obj in objects:
         if obj.data:
             if rename_datablock:
-                obj.data.name = obj.name
+                if obj.data.is_library_indirect:
+                    core.log(f"Datablock {obj.data.name} is linked from a library.")
+                else:
+                    obj.data.name = obj.name
+                    core.log(f"Renamed datablock {obj.data.name}")
             else:
-                obj.name = obj.data.name
-            core.log(f"Renamed {obj.name}")
+                if obj.is_library_indirect:
+                    core.log(f"Object {obj.name} is linked from a library.")
+                else:
+                    obj.name = obj.data.name
+                    core.log(f"Renamed object {obj.name}")
 
 
 def rename_images(context):
