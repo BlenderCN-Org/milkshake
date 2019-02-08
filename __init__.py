@@ -14,8 +14,8 @@ bl_info = {
 ##############################################################################
 
 
-from . import cleanup, core_functions, render, modeling, sequencer, utilities
-modules = [cleanup, render, modeling, sequencer, utilities]
+from . import cleanup, comp, core_functions, render, modeling, sequencer, utilities
+modules = [cleanup, comp, render, modeling, sequencer, utilities]
 core_functions.log("Loaded package modules.")
 
 if "bpy" in locals():
@@ -44,6 +44,18 @@ class PROPERTIES_PT_main(bpy.types.Panel):
         pass
 
 
+class PROPERTIES_PT_compositor(bpy.types.Panel):
+
+    bl_context = ""
+    bl_idname = "milkshake.properties_pt_compositor"
+    bl_label = "Milkshake"
+    bl_region_type = "WINDOW"
+    bl_space_type = "NODE_EDITOR"
+
+    def draw(self, context):
+        pass
+
+
 ##############################################################################
 # Registration
 ##############################################################################
@@ -51,12 +63,14 @@ class PROPERTIES_PT_main(bpy.types.Panel):
 
 def register():
     bpy.utils.register_class(PROPERTIES_PT_main)
+    bpy.utils.register_class(PROPERTIES_PT_compositor)
     for module in modules:
         module.register()
 
 
 def unregister():
     bpy.utils.unregister_class(PROPERTIES_PT_main)
+    bpy.utils.unregister_class(PROPERTIES_PT_compositor)
     for module in modules:
         module.unregister()
 
