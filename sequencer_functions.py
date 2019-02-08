@@ -3,7 +3,7 @@
 ##############################################################################
 
 
-import bpy
+import bpy, math
 from . import core_functions as core
 
 
@@ -54,8 +54,15 @@ def new_shot(context):
 
     shot = context.scene.milkshake_shots.add()
     camera = bpy.data.cameras.new("Camera")
-    camera.show_passepartout = True
-    camera.passepartout_alpha = 1
+    camera.cycles.aperture_blades = 5
+    camera.cycles.aperture_fstop = 4
+    camera.cycles.aperture_rotation = math.radians(10)
+    camera.display_size = 0.1
+    camera.dof_distance = 1
+    camera.lens = 35
+    camera.sensor_fit = 'HORIZONTAL'
+    camera.sensor_height = 13.365
+    camera.sensor_width = 23.76
     camera_object = bpy.data.objects.new("Camera", camera)
 
     cam_collection = camera_collection(context)
