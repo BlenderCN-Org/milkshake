@@ -112,40 +112,53 @@ def render_defaults(context):
     render = scene.render
     cycles = scene.cycles
     # Noise reduction
-    cycles.blur_glossy                        = 2
-    cycles.caustics_reflective                = False
-    cycles.caustics_refractive                = False
-    cycles.diffuse_bounces                    = 3
-    cycles.glossy_bounces                     = 3
-    cycles.max_bounces                        = 12
-    cycles.preview_samples                    = 0
-    cycles.sample_all_lights_direct           = True
-    cycles.sample_all_lights_indirect         = True
-    cycles.sample_clamp_direct                = 0.0
-    cycles.sample_clamp_indirect              = 10
-    cycles.samples                            = 250
-    cycles.transmission_bounces               = 3
-    cycles.transparent_max_bounces            = 12
-    cycles.use_animated_seed                  = True
-    cycles.volume_bounces                     = 0
+    cycles.blur_glossy                          = 2
+    cycles.caustics_reflective                  = False
+    cycles.caustics_refractive                  = False
+    cycles.diffuse_bounces                      = 3
+    cycles.glossy_bounces                       = 3
+    cycles.max_bounces                          = 12
+    cycles.preview_samples                      = 0
+    cycles.sample_all_lights_direct             = True
+    cycles.sample_all_lights_indirect           = True
+    cycles.sample_clamp_direct                  = 0.0
+    cycles.sample_clamp_indirect                = 10
+    cycles.samples                              = 250
+    cycles.transmission_bounces                 = 3
+    cycles.transparent_max_bounces              = 12
+    cycles.use_animated_seed                    = True
+    cycles.volume_bounces                       = 0
     # Motion blur
-    cycles.motion_blur_position               = "CENTER"
-    cycles.rolling_shutter_type               = "NONE"
-    cycles.use_motion_blur                    = True
-    render.motion_blur_shutter                = 0.3
+    cycles.motion_blur_position                 = 'CENTER'
+    cycles.rolling_shutter_type                 = 'NONE'
+    cycles.use_motion_blur                      = True
+    render.motion_blur_shutter                  = 0.3
     # Colour management
-    cycles.film_transparent                   = True
-    scene.display_settings.display_device     = "sRGB"
-    scene.sequencer_colorspace_settings.name  = "Filmic Log"
-    scene.view_settings.exposure              = 0
-    scene.view_settings.gamma                 = 1
-    scene.view_settings.look                  = "Filmic - Base Contrast"
-    scene.view_settings.view_transform        = "Filmic"
+    cycles.film_transparent                     = True
+    scene.display_settings.display_device       = 'sRGB'
+    scene.sequencer_colorspace_settings.name    = 'Filmic Log Encoding'
+    scene.view_settings.exposure                = 0
+    scene.view_settings.gamma                   = 1
+    scene.view_settings.look                    = 'Base Contrast'
+    scene.view_settings.view_transform          = 'Filmic Log Encoding Base'
     # Performance
-    render.display_mode                       = "AREA"
-    render.engine                             = "CYCLES"
-    render.tile_x                             = 32
-    render.tile_y                             = 32
-    cycles.tile_order                         = "CENTER"
+    render.display_mode                         = 'AREA'
+    render.engine                               = 'CYCLES'
+    render.tile_x                               = 32
+    render.tile_y                               = 32
+    cycles.tile_order                           = 'CENTER'
+    # Output
+    render.resolution_x                         = 2048
+    render.resolution_y                         = 858
+    scene.frame_start                           = 1001
+    scene.frame_end                             = 1250
+    scene.frame_step                            = 1
+    render.use_compositing                      = False
+    render.use_sequencer                        = False
+    render.image_settings.file_format           = 'PNG'
+    render.image_settings.color_mode            = 'RGB'
+    render.image_settings.color_depth           = '8'
+    render.image_settings.compression           = 100
+
     # TODO: Add a light falloff node to every light that doesn't already have one
     core.log("Applied render defaults.")
