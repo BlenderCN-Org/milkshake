@@ -127,6 +127,10 @@ def transfer_transforms(context):
     """Copy transformation values from a set of objects to another"""
 
     if len(context.scene.milkshake_tt_set_a) == len(context.scene.milkshake_tt_set_b):
+        for index, obj in enumerate(context.scene.milkshake_tt_set_b):
+            context.scene.objects[obj.obj_name].location = context.scene.objects[context.scene.milkshake_tt_set_a[index].obj_name].location
+            context.scene.objects[obj.obj_name].rotation_euler = context.scene.objects[context.scene.milkshake_tt_set_a[index].obj_name].rotation_euler
+            context.scene.objects[obj.obj_name].scale = context.scene.objects[context.scene.milkshake_tt_set_a[index].obj_name].scale
         context.scene.milkshake_tt_set_a.clear()
         context.scene.milkshake_tt_set_b.clear()
         return True
