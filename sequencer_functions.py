@@ -56,10 +56,15 @@ def new_shot(context):
     camera = bpy.data.cameras.new("Camera")
     camera.cycles.aperture_blades = 5
     camera.cycles.aperture_fstop = 4
+    camera.cycles.aperture_ratio = 2
     camera.cycles.aperture_rotation = math.radians(10)
+    camera.cycles.aperture_type = 'FSTOP'
     camera.display_size = 0.1
     camera.dof_distance = 1
+    camera.gpu_dof.blades = 5
+    camera.gpu_dof.fstop = 4
     camera.lens = 35
+    camera.passepartout_alpha = 0.85
     camera.sensor_fit = 'HORIZONTAL'
     camera.sensor_height = 13.365
     camera.sensor_width = 23.76
