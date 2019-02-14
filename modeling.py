@@ -10,31 +10,13 @@ reload(func)
 
 
 ##############################################################################
-# PropertyGroups
+# Properties
 ##############################################################################
 
 
 class MilkshakeSceneObject(bpy.types.PropertyGroup):
 
     obj_name                        : bpy.props.StringProperty(name = "Object Name")
-
-
-##############################################################################
-# Lists
-##############################################################################
-
-
-class MODELING_UL_transfer_transforms(bpy.types.UIList):
-
-    bl_idname = "milkshake.modeling_ul_transfer_transforms"
-
-    def draw_item(context, layout, data, item, icon, active_data, active_property):
-        if layout.type in {'DEFAULT', 'COMPACT'}:
-            # We use icon_value of label, as our given icon is an integer value, not an enum ID.
-            layout.label(text = item.obj_name, icon_value = icon)
-        elif layout.type in {'GRID'}:
-            layout.alignment = 'CENTER'
-            layout.label(text = "", icon_value = icon)
 
 
 ##############################################################################
@@ -52,9 +34,13 @@ class MODELING_OT_add_selection_to_tt_set(bpy.types.Operator):
     tt_set: bpy.props.EnumProperty(items = [('a', 'A', 'List A'), ('b', 'B', 'List B')])
 
     def execute(self, context):
-        func.clear_tt_set(context = context, tt_set = self.tt_set)
-        func.add_selection_to_tt_set(context = context, tt_set = self.tt_set)
-        return {'FINISHED'}
+        try:
+            func.clear_tt_set(context = context, tt_set = self.tt_set)
+            func.add_selection_to_tt_set(context = context, tt_set = self.tt_set)
+            return {'FINISHED'}
+        except Exception as e:
+            self.report(type = {'ERROR'}, message = str(e))
+            return {'CANCELLED'}
 
 
 class MODELING_OT_clear_sharp(bpy.types.Operator):
@@ -65,8 +51,12 @@ class MODELING_OT_clear_sharp(bpy.types.Operator):
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
-        func.clear_sharp(context = context)
-        return {'FINISHED'}
+        try:
+            func.clear_sharp(context = context)
+            return {'FINISHED'}
+        except Exception as e:
+            self.report(type = {'ERROR'}, message = str(e))
+            return {'CANCELLED'}
 
 
 class MODELING_OT_clear_tt_set(bpy.types.Operator):
@@ -79,8 +69,12 @@ class MODELING_OT_clear_tt_set(bpy.types.Operator):
     tt_set: bpy.props.EnumProperty(items = [('a', 'A', 'List A'), ('b', 'B', 'List B')])
 
     def execute(self, context):
-        func.clear_tt_set(context = context, tt_set = self.tt_set)
-        return {'FINISHED'}
+        try:
+            func.clear_tt_set(context = context, tt_set = self.tt_set)
+            return {'FINISHED'}
+        except Exception as e:
+            self.report(type = {'ERROR'}, message = str(e))
+            return {'CANCELLED'}
 
 
 class MODELING_OT_generate_placeholders(bpy.types.Operator):
@@ -91,8 +85,12 @@ class MODELING_OT_generate_placeholders(bpy.types.Operator):
     bl_options = {'REGISTER'}
 
     def execute(self, context):
-        func.generate_placeholders(context = context)
-        return {'FINISHED'}
+        try:
+            func.generate_placeholders(context = context)
+            return {'FINISHED'}
+        except Exception as e:
+            self.report(type = {'ERROR'}, message = str(e))
+            return {'CANCELLED'}
 
 
 class MODELING_OT_select_unsubdivided(bpy.types.Operator):
@@ -103,15 +101,19 @@ class MODELING_OT_select_unsubdivided(bpy.types.Operator):
     bl_options = {'REGISTER'}
 
     def execute(self, context):
-        func.select_unsubdivided(context = context)
-        return {'FINISHED'}
+        try:
+            func.select_unsubdivided(context = context)
+            return {'FINISHED'}
+        except Exception as e:
+            self.report(type = {'ERROR'}, message = str(e))
+            return {'CANCELLED'}
 
 
 class MODELING_OT_set_subdivision(bpy.types.Operator):
     """Add or set subdivision iterations for meshes.\nOn selection or everything"""
 
     bl_idname = "milkshake.modeling_ot_set_subdivision"
-    bl_label = "Set Subdivisions"
+    bl_label = "Set Subdivisions..."
     bl_options = {'REGISTER', 'UNDO'}
 
     iterations: bpy.props.IntProperty(name = "Iterations", default = 1, min = 0, max = 11)
@@ -120,8 +122,12 @@ class MODELING_OT_set_subdivision(bpy.types.Operator):
         return context.window_manager.invoke_props_dialog(self)
 
     def execute(self, context):
-        func.set_subdivision(context = context, iterations = self.iterations)
-        return {'FINISHED'}
+        try:
+            func.set_subdivision(context = context, iterations = self.iterations)
+            return {'FINISHED'}
+        except Exception as e:
+            self.report(type = {'ERROR'}, message = str(e))
+            return {'CANCELLED'}
 
 
 class MODELING_OT_set_subdivision_to_adaptive(bpy.types.Operator):
@@ -166,8 +172,9 @@ class PROPERTIES_PT_modeling(bpy.types.Panel):
     bl_idname = "milkshake.properties_pt_modeling"
     bl_label = "Modeling and Setdress"
     bl_parent_id = "milkshake.properties_pt_main"
-    bl_region_type = "WINDOW"
-    bl_space_type = "PROPERTIES"
+    bl_region_type = 'WINDOW'
+    bl_space_type = 'PROPERTIES'
+    bl_options = {'DEFAULT_CLOSED'}
 
     def draw(self, context):
         lay = self.layout
@@ -175,33 +182,32 @@ class PROPERTIES_PT_modeling(bpy.types.Panel):
         col = lay.column(align = True)
         col.scale_y = 1.5
         sub = col.row(align = True)
-        sub.operator("milkshake.modeling_ot_clear_sharp", icon = "EDGESEL")
+        sub.operator("milkshake.modeling_ot_clear_sharp", icon = 'EDGESEL')
         sub = col.row(align = True)
-        sub.operator("milkshake.modeling_ot_generate_placeholders", icon = "OUTLINER_OB_EMPTY")
+        sub.operator("milkshake.modeling_ot_generate_placeholders", icon = 'OUTLINER_OB_EMPTY')
         sub = col.split(align = True, factor = 0.6)
-        sub.operator("milkshake.modeling_ot_set_subdivision", icon = "MOD_SUBSURF")
+        sub.operator("milkshake.modeling_ot_set_subdivision", icon = 'MOD_SUBSURF')
         sub.operator("milkshake.modeling_ot_set_subdivision_to_adaptive")
 
         # Transfer Transforms
         lay.label(text = "Transfer Transforms:")
-        row = lay.row()
+        box = lay.box()
+        row = box.row()
 
-        box_a = row.box()
-        sub = box_a.row(align = True)
-        sub.label(text = f"From: ({len(context.scene.milkshake_tt_set_a)})")
-        sub.operator("milkshake.modeling_ot_clear_tt_set", icon = "X", text = "").tt_set = 'a'
-        box_a.operator("milkshake.modeling_ot_add_selection_to_tt_set", text = f"Selection", icon = "SORT_DESC").tt_set = 'a'
+        col_settings = row.column()
 
-        column_button = row.column()
-        column_button.scale_x = 1.25
-        column_button.scale_y = 2.85
-        column_button.operator("milkshake.modeling_ot_transfer_transforms", icon = "TRIA_RIGHT", text = "")
+        row_a = col_settings.row(align = True)
+        row_a.operator("milkshake.modeling_ot_add_selection_to_tt_set", text = f"From Selection ({len(context.scene.milkshake_tt_set_a)})", icon = 'BACK').tt_set = 'a'
+        row_a.operator("milkshake.modeling_ot_clear_tt_set", icon = 'X', text = "").tt_set = 'a'
 
-        box_b = row.box()
-        sub = box_b.row(align = True)
-        sub.label(text = f"To: ({len(context.scene.milkshake_tt_set_b)})")
-        sub.operator("milkshake.modeling_ot_clear_tt_set", icon = "X", text = "").tt_set = 'b'
-        box_b.operator("milkshake.modeling_ot_add_selection_to_tt_set", text = f"Selection", icon = "SORT_DESC").tt_set = 'b'
+        row_b = col_settings.row(align = True)
+        row_b.operator("milkshake.modeling_ot_add_selection_to_tt_set", text = f"To Selection ({len(context.scene.milkshake_tt_set_b)})", icon = 'FORWARD').tt_set = 'b'
+        row_b.operator("milkshake.modeling_ot_clear_tt_set", icon = 'X', text = "").tt_set = 'b'
+
+        col_button = row.column()
+        col_button.scale_x = 1.5
+        col_button.scale_y = 2.1
+        col_button.operator("milkshake.modeling_ot_transfer_transforms", icon = 'TRIA_RIGHT', text = "")
 
 
 ##############################################################################
@@ -219,7 +225,6 @@ classes = [
     MODELING_OT_set_subdivision,
     MODELING_OT_set_subdivision_to_adaptive,
     MODELING_OT_transfer_transforms,
-    MODELING_UL_transfer_transforms,
     PROPERTIES_PT_modeling
 ]
 
