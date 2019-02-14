@@ -31,4 +31,3 @@ def unlock_transforms(context = None):
         obj.lock_location = (False, False, False)
         obj.lock_rotation = (False, False, False)
         obj.lock_scale = (False, False, False)
-        core.log(f"Unlocked transforms for {obj.name}")

@@ -21,13 +21,15 @@ class COMP_OT_generate_contact_sheet(bpy.types.Operator):
     bl_label = "Generate Contact Sheet"
     bl_options = {'REGISTER', 'UNDO'}
 
-    directory : bpy.props.StringProperty(default = "")
+    directory: bpy.props.StringProperty(default = "")
 
     def execute(self, context):
-        if func.generate_contact_sheet(context, directory = self.directory):
+        try:
+            func.generate_contact_sheet(context, directory = self.directory)
             return {'FINISHED'}
-        else:
-            return {'CANCELED'}
+        except Exception as e:
+            self.report(type = {'ERROR'}, message = str(e))
+            return {'CANCELLED'}
 
 
 ##############################################################################

@@ -12,12 +12,12 @@ from . import core_functions as core
 ##############################################################################
 
 
-def camera_bounds_to_render_border(context):
+def camera_bounds_to_render_border(context = None):
     """Copy the camera bounds to the render border"""
 
     # Select the first viewport and enable camera view
-    viewport = [area for area in bpy.context.screen.areas if area.type == "VIEW_3D"][0]
-    viewport.spaces[0].region_3d.view_perspective = "CAMERA"
+    viewport = [area for area in bpy.context.screen.areas if area.type == 'VIEW_3D'][0]
+    viewport.spaces[0].region_3d.view_perspective = 'CAMERA'
 
     render = context.scene.render
     render.use_border = True
@@ -28,16 +28,16 @@ def camera_bounds_to_render_border(context):
     core.log("Render border set to camera bounds")
 
 
-def layer_setup(context):
+def layer_setup(context = None):
     """Set up the view layers"""
 
-    with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "files", "layer_setup.json"), "r") as config_file:
+    with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "files", "layer_setup.json"), 'r') as config_file:
         config = json.load(config_file)
     layers = context.scene.view_layers
 
     # Create missing collections
     collection_names_existing = set(context.scene.collection.children.keys())
-    collection_names_all = set(config["collection_names_all"])
+    collection_names_all = set(config['collection_names_all'])
     collection_names_required = collection_names_all - collection_names_existing
     collection_names_excluded = collection_names_existing - collection_names_all
     for collection_name in collection_names_required:
@@ -51,18 +51,18 @@ def layer_setup(context):
     layers[0].name = "delete"
 
     # Create new ones
-    for layer_template in config["layer_templates"]:
+    for layer_template in config['layer_templates']:
 
         # Create layer and enable/disable it by default.
-        layer = layers.new(layer_template["name"])
-        if "enabled" in layer_template:
-            layer.use = layer_template["enabled"]
+        layer = layers.new(layer_template['name'])
+        if 'enabled' in layer_template:
+            layer.use = layer_template['enabled']
         core.log(f"{layer.name} rendering is set to {layer.use}.")
 
         # Set per-layer collection influence.
-        indirect_collection_names = layer_template.get("indirect", [])
-        exclude_collection_names = layer_template.get("exclude", [])
-        holdout_collection_names = layer_template.get("holdout", [])
+        indirect_collection_names = layer_template.get('indirect', [])
+        exclude_collection_names = layer_template.get('exclude', [])
+        holdout_collection_names = layer_template.get('holdout', [])
         for collection_name in collection_names_all:
             layer.layer_collection.children[collection_name].indirect_only = collection_name in indirect_collection_names
             layer.layer_collection.children[collection_name].exclude = collection_name in exclude_collection_names
@@ -71,38 +71,40 @@ def layer_setup(context):
             layer.layer_collection.children[collection_name].exclude = True
 
         # Set any configured filter, disable the rest.
-        filters = layer_template.get("filter", [])
-        all_filters = ["sky", "ao", "solid", "strand", "freestyle"]
+        filters = layer_template.get('filter', [])
+        all_filters = ['sky', 'ao', 'solid', 'strand', 'freestyle']
         for filter_name in all_filters:
             setattr(layer, f"use_{filter_name}", filter_name in filters)
 
         # Set any configured pass, disable the rest.
-        passes = layer_template.get("passes", [])
-        all_passes = ["combined", "z", "mist", "normal", "vector", "uv", "object_index", "material_index", "diffuse_direct", "diffuse_indirect", "glossy_direct", "glossy_indirect", "transmission_direct", "transmission_indirect", "subsurface_direct", "subsurface_indirect", "emit", "environment", "shadow", "ambient_occlusion"]
+        passes = layer_template.get('passes', [])
+        all_passes = ['combined', 'z', 'mist', 'normal', 'vector', 'uv', 'object_index', 'material_index', 'diffuse_direct', 'diffuse_indirect', 'glossy_direct', 'glossy_indirect', 'transmission_direct', 'transmission_indirect', 'subsurface_direct', 'subsurface_indirect', 'emit', 'environment', 'shadow', 'ambient_occlusion']
         for pass_name in all_passes:
             setattr(layer, f"use_pass_{pass_name}", pass_name in passes)
 
         # Cryptomatte
-        crypto_modes = layer_template.get("crypto", [])
-        all_crypto_modes = ["object", "material", "asset"]
+        crypto_modes = layer_template.get('crypto', [])
+        all_crypto_modes = ['object', 'material', 'asset']
         for crypto_mode in all_crypto_modes:
             setattr(layer.cycles, f"use_pass_crypto_{crypto_mode}", crypto_mode in crypto_modes)
         layer.cycles.pass_crypto_depth = 6
         layer.cycles.pass_crypto_accurate = True
 
         # Denoising
-        denoise_options = layer_template.get("denoise", [])
-        all_denoise_options = ["use", "store"]
+        denoise_options = layer_template.get('denoise', [])
+        all_denoise_options = ['use', 'store']
         for denoise_option in all_denoise_options:
-            layer.cycles.use_denoising = "use" in denoise_options
-            layer.cycles.denoising_store_passes = "store" in denoise_options
+            layer.cycles.use_denoising = 'use' in denoise_options
+            layer.cycles.denoising_store_passes = 'store' in denoise_options
 
-        # Set alpha treshold to zero (prevents Z/index/vector/normal/uv pass glitches on transparent surfaces with variable roughness)
+        # Set alpha treshold to zero. This prevents
+        # Z/index/vector/normal/uv pass glitches on
+        # transparent surfaces with variable roughness.
         layer.cycles.pass_alpha_treshold = 0
 
         core.log(f"{layer.name} layer is set up.")
 
-    layers.remove(layers["delete"])
+    layers.remove(layers['delete'])
 
 
 def render_defaults(context):
@@ -160,5 +162,4 @@ def render_defaults(context):
     render.image_settings.color_depth           = '8'
     render.image_settings.compression           = 100
 
-    # TODO: Add a light falloff node to every light that doesn't already have one
     core.log("Applied render defaults.")

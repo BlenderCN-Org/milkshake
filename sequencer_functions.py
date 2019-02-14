@@ -12,7 +12,7 @@ from . import core_functions as core
 ##############################################################################
 
 
-def autorename_shots(context):
+def autorename_shots(context = None):
     """Auto-rename all shots and their associated cameras"""
 
     for index, shot in enumerate(context.scene.milkshake_shots):
@@ -25,31 +25,36 @@ def autorename_shots(context):
         core.log(f"Renamed shot {shot.code} and camera {shot.camera.name}.")
 
 
-def camera_collection(context):
+def camera_collection(context = None):
     """Return the scene's camera collection"""
 
     if not "Cameras" in bpy.data.collections.keys():
         camera_collection = bpy.data.collections.new("Cameras")
     else:
-        camera_collection = bpy.data.collections["Cameras"]
-    try:
+        camera_collection = bpy.data.collections['Cameras']
+    if not "Cameras" in context.scene.collection.children:
         context.scene.collection.children.link(camera_collection)
-    except:
-        pass
     return camera_collection
 
 
-def delete_shot(context, index):
+def delete_shot(context = None, index = None):
     """Delete the selected shot and the associated camera"""
 
     shot = context.scene.milkshake_shots[index]
-    camera = shot.camera
-    if camera:
-        bpy.data.cameras.remove(camera) # crashes on Linux
+    if shot.camera:
+        bpy.data.cameras.remove(shot.camera)
     context.scene.milkshake_shots.remove(index)
 
 
-def new_shot(context):
+def clear_shots(context = None):
+    """Clear the shot list and delete the associated cameras"""
+
+    for shot in context.scene.milkshake_shots:
+        bpy.data.cameras.remove(shot.camera)
+    context.scene.milkshake_shots.clear()
+
+
+def new_shot(context = None):
     """Create a new shot and camera"""
 
     shot = context.scene.milkshake_shots.add()
@@ -76,7 +81,7 @@ def new_shot(context):
     core.log("Created new shot and camera.")
 
 
-def sync_timeline(context):
+def sync_timeline(context = None):
     """Sync Blender's timeline and markers with the shot list"""
 
     context.scene.timeline_markers.clear()
@@ -86,7 +91,7 @@ def sync_timeline(context):
         for obj in context.scene.objects:
             if obj.data == shot.camera:
                 marker.camera = obj
-                core.log("Synced shot {}".format(shot.code))
+                core.log(f"Synced shot {shot.code}")
                 break
         new_start_frame += shot.duration
     context.scene.frame_start = 1001

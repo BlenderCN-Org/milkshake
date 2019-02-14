@@ -36,7 +36,7 @@ def clear_sharp(context = None):
     else:
         objects = bpy.data.objects
 
-    meshes = [obj for obj in objects if obj.type == "MESH"]
+    meshes = [obj for obj in objects if obj.type == 'MESH']
     for mesh in meshes:
         for edge in mesh.data.edges:
             edge.use_edge_sharp = False
@@ -55,15 +55,15 @@ def generate_placeholders(context = None):
     """Generate empty placeholders for the selected objects"""
 
     if "Placeholders" in context.scene.collection.children.keys():
-        main_collection = bpy.data.collections["Placeholders"]
+        main_collection = bpy.data.collections['Placeholders']
     else:
         main_collection = bpy.data.collections.new("Placeholders")
         context.scene.collection.children.link(main_collection)
 
     for original in context.selected_objects:
         keyword = re.sub(r"\.[\d]+$", "", original.name)
-        if f'{keyword}.placeholders' in main_collection.children:
-            group = main_collection.children[f'{keyword}.placeholders']
+        if f"{keyword}.placeholders" in main_collection.children:
+            group = main_collection.children[f"{keyword}.placeholders"]
         else:
             group = bpy.data.collections.new(f"{keyword}.placeholders")
             main_collection.children.link(group)
@@ -107,7 +107,7 @@ def set_subdivision(context = None, iterations = None):
             subsurf.levels = 1
             subsurf.render_levels = iterations
             subsurf.uv_smooth = 'PRESERVE_CORNERS'
-            # context.scene.objects.active = mesh <--- doesn't work in 2.8
+            context.view_layer.objects.active = mesh
             bpy.ops.object.shade_smooth()
         core.log(f"Set subdivision for {mesh.name} to {iterations}")
 
@@ -119,6 +119,8 @@ def set_subdivision_to_adaptive(context = None):
         objects = context.selected_objects
     else:
         objects = bpy.data.objects
+
+    context.scene.cycles.feature_set = 'EXPERIMENTAL'
 
     for obj in objects:
         obj.cycles.use_adaptive_subdivision = True

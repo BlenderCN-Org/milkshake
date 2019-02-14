@@ -19,14 +19,18 @@ class CLEANUP_OT_rename(bpy.types.Operator):
 
     bl_idname = "milkshake.cleanup_ot_rename"
     bl_label = "Rename Objects or Datablocks"
-    bl_options = {"REGISTER","UNDO"}
+    bl_options = {'REGISTER', 'UNDO'}
 
-    selection_only : bpy.props.BoolProperty(name = "Selection Only", default = False)
     rename_datablock : bpy.props.BoolProperty(name = "Data from Object", default = False)
 
     def execute(self, context):
-        func.rename(context, rename_datablock = self.rename_datablock, selection_only = self.selection_only)
-        return {"FINISHED"}
+        try:
+            func.rename(context, rename_datablock = self.rename_datablock)
+            return {'FINISHED'}
+        except Exception as e:
+            self.report(type = {'ERROR'}, message = str(e))
+            return {'CANCELLED'}
+
 
 
 class CLEANUP_OT_rename_images(bpy.types.Operator):
@@ -34,11 +38,15 @@ class CLEANUP_OT_rename_images(bpy.types.Operator):
 
     bl_idname = "milkshake.cleanup_ot_rename_images"
     bl_label = "Images"
-    bl_options = {"REGISTER","UNDO"}
+    bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
-        func.rename_images(context)
-        return {"FINISHED"}
+        try:
+            func.rename_images(context)
+            return {'FINISHED'}
+        except Exception as e:
+            self.report(type = {'ERROR'}, message = str(e))
+            return {'CANCELLED'}
 
 
 ##############################################################################
@@ -51,8 +59,9 @@ class PROPERTIES_PT_cleanup(bpy.types.Panel):
     bl_idname = "milkshake.properties_pt_cleanup"
     bl_label = "Cleanup"
     bl_parent_id = "milkshake.properties_pt_main"
-    bl_region_type = "WINDOW"
-    bl_space_type = "PROPERTIES"
+    bl_region_type = 'WINDOW'
+    bl_space_type = 'PROPERTIES'
+    bl_options = {'DEFAULT_CLOSED'}
 
     def draw(self, context):
         lay = self.layout

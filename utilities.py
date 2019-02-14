@@ -22,8 +22,12 @@ class UTILITIES_OT_show_all_edges(bpy.types.Operator):
     bl_options = {'REGISTER'}
 
     def execute(self, context):
-        func.show_all_edges()
-        return {'FINISHED'}
+        try:
+            func.show_all_edges()
+            return {'FINISHED'}
+        except Exception as e:
+            self.report(type = {'ERROR'}, message = str(e))
+            return {'CANCELLED'}
 
 
 class UTILITIES_OT_unlock_transforms(bpy.types.Operator):
@@ -34,8 +38,12 @@ class UTILITIES_OT_unlock_transforms(bpy.types.Operator):
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
-        func.unlock_transforms(context = context)
-        return {'FINISHED'}
+        try:
+            func.unlock_transforms(context = context)
+            return {'FINISHED'}
+        except Exception as e:
+            self.report(type = {'ERROR'}, message = str(e))
+            return {'CANCELLED'}
 
 
 ##############################################################################
@@ -48,16 +56,17 @@ class PROPERTIES_PT_utilities(bpy.types.Panel):
     bl_idname = "milkshake.properties_pt_utilities"
     bl_label = "Utilities"
     bl_parent_id = "milkshake.properties_pt_main"
-    bl_region_type = "WINDOW"
-    bl_space_type = "PROPERTIES"
+    bl_region_type = 'WINDOW'
+    bl_space_type = 'PROPERTIES'
+    bl_options = {'DEFAULT_CLOSED'}
 
     def draw(self, context):
         lay = self.layout
         col = lay.column(align = True)
         col.scale_y = 1.5
         sub = col.row(align = True)
-        sub.operator("milkshake.utilities_ot_show_all_edges", icon = "EDGESEL")
-        sub.operator("milkshake.utilities_ot_unlock_transforms", icon = "UNLOCKED")
+        sub.operator("milkshake.utilities_ot_show_all_edges", icon = 'EDGESEL')
+        sub.operator("milkshake.utilities_ot_unlock_transforms", icon = 'UNLOCKED')
 
 
 ##############################################################################
