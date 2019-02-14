@@ -50,7 +50,7 @@ class SEQUENCER_OT_clear_shots(bpy.types.Operator):
     bl_label = "Clear"
     bl_options = {'REGISTER', 'UNDO'}
 
-    index : bpy.props.IntProperty()
+    index: bpy.props.IntProperty()
 
     def execute(self, context):
         try:
@@ -69,11 +69,11 @@ class SEQUENCER_OT_delete_shot(bpy.types.Operator):
     bl_label = "Delete"
     bl_options = {'REGISTER', 'UNDO'}
 
-    index : bpy.props.IntProperty()
+    index: bpy.props.IntProperty()
 
     def execute(self, context):
         try:
-            func.delete_shot(context = context, self.index)
+            func.delete_shot(context = context, index = self.index)
             func.autorename_shots(context = context)
             func.sync_timeline(context = context)
             return {'FINISHED'}
