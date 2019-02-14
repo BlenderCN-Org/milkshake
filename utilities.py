@@ -14,18 +14,28 @@ reload(func)
 ##############################################################################
 
 
+class UTILITIES_OT_show_all_edges(bpy.types.Operator):
+    """Show all edges for all objects"""
+
+    bl_idname = "milkshake.utilities_ot_show_all_edges"
+    bl_label = "Enable All Edges"
+    bl_options = {'REGISTER'}
+
+    def execute(self, context):
+        func.show_all_edges()
+        return {'FINISHED'}
+
+
 class UTILITIES_OT_unlock_transforms(bpy.types.Operator):
     """Unlock all transforms.\nOn selection or everything"""
 
     bl_idname = "milkshake.utilities_ot_unlock_transforms"
     bl_label = "Unlock Transforms"
-    bl_options = {"REGISTER", "UNDO"}
-
-    selection_only : bpy.props.BoolProperty(name = "Selection Only", default = False)
+    bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
-        func.unlock_transforms(context, selection_only = self.selection_only)
-        return {"FINISHED"}
+        func.unlock_transforms(context = context)
+        return {'FINISHED'}
 
 
 ##############################################################################
@@ -46,6 +56,7 @@ class PROPERTIES_PT_utilities(bpy.types.Panel):
         col = lay.column(align = True)
         col.scale_y = 1.5
         sub = col.row(align = True)
+        sub.operator("milkshake.utilities_ot_show_all_edges", icon = "EDGESEL")
         sub.operator("milkshake.utilities_ot_unlock_transforms", icon = "UNLOCKED")
 
 
@@ -56,6 +67,7 @@ class PROPERTIES_PT_utilities(bpy.types.Panel):
 
 classes = [
     PROPERTIES_PT_utilities,
+    UTILITIES_OT_show_all_edges,
     UTILITIES_OT_unlock_transforms
 ]
 
