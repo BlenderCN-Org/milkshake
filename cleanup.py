@@ -56,9 +56,9 @@ class CLEANUP_OT_rename_images(bpy.types.Operator):
 
 class PROPERTIES_PT_cleanup(bpy.types.Panel):
 
-    bl_idname = "milkshake.properties_pt_cleanup"
+    bl_idname = "PROPERTIES_PT_cleanup"
     bl_label = "Cleanup"
-    bl_parent_id = "milkshake.properties_pt_main"
+    bl_parent_id = "PROPERTIES_PT_main"
     bl_region_type = 'WINDOW'
     bl_space_type = 'PROPERTIES'
     bl_options = {'DEFAULT_CLOSED'}

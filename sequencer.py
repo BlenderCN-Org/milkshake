@@ -124,7 +124,7 @@ class SEQUENCER_OT_sync_timeline(bpy.types.Operator):
 class PROPERTIES_PT_sequencer(bpy.types.Panel):
 
     bl_context = "scene"
-    bl_idname = "milkshake.properties_pt_sequencer"
+    bl_idname = "PROPERTIES_PT_sequencer"
     bl_label = "Milkshake Sequencer"
     bl_region_type = 'WINDOW'
     bl_space_type = 'PROPERTIES'

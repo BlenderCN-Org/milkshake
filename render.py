@@ -69,9 +69,9 @@ class RENDER_OT_render_defaults(bpy.types.Operator):
 
 class PROPERTIES_PT_render(bpy.types.Panel):
 
-    bl_idname = "milkshake.properties_pt_render"
+    bl_idname = "PROPERTIES_PT_render"
     bl_label = "Rendering"
-    bl_parent_id = "milkshake.properties_pt_main"
+    bl_parent_id = "PROPERTIES_PT_main"
     bl_region_type = 'WINDOW'
     bl_space_type = 'PROPERTIES'
     bl_options = {'DEFAULT_CLOSED'}

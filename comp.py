@@ -39,9 +39,9 @@ class COMP_OT_generate_contact_sheet(bpy.types.Operator):
 
 class COMPOSITOR_PT_contactsheets(bpy.types.Panel):
 
-    bl_idname = "milkshake.properties_pt_contactsheets"
+    bl_idname = "PROPERTIES_PT_contactsheets"
     bl_label = "Contact Sheets"
-    bl_parent_id = "milkshake.properties_pt_compositor"
+    bl_parent_id = "PROPERTIES_PT_compositor"
     bl_region_type = 'WINDOW'
     bl_space_type = 'NODE_EDITOR'
 

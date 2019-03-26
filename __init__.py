@@ -35,7 +35,7 @@ else:
 class PROPERTIES_PT_main(bpy.types.Panel):
 
     bl_context = ".objectmode"
-    bl_idname = "milkshake.properties_pt_main"
+    bl_idname = "PROPERTIES_PT_main"
     bl_label = "Milkshake"
     bl_region_type = "WINDOW"
     bl_space_type = "PROPERTIES"
@@ -47,7 +47,7 @@ class PROPERTIES_PT_main(bpy.types.Panel):
 class PROPERTIES_PT_compositor(bpy.types.Panel):
 
     bl_context = ""
-    bl_idname = "milkshake.properties_pt_compositor"
+    bl_idname = "PROPERTIES_PT_compositor"
     bl_label = "Milkshake"
     bl_region_type = "WINDOW"
     bl_space_type = "NODE_EDITOR"
