@@ -12,6 +12,40 @@ from . import core_functions as core
 ##############################################################################
 
 
+def update_render_border_left(self, context):
+    """Updates Blender's render border while tweaking the Milkshake property"""
+    render = context.scene.render
+    milkshake = context.scene.milkshake_render_border
+    render.border_min_x = milkshake.left / render.resolution_x
+    render.border_max_x = (milkshake.left + milkshake.width) / render.resolution_x
+    return None
+
+
+def update_render_border_top(self, context):
+    """Updates Blender's render border while tweaking the Milkshake property"""
+    render = context.scene.render
+    milkshake = context.scene.milkshake_render_border
+    render.border_min_y = 1 - (milkshake.top + milkshake.height) / render.resolution_y
+    render.border_max_y = 1 - milkshake.top / render.resolution_y
+    return None
+
+
+def update_render_border_width(self, context):
+    """Updates Blender's render border while tweaking the Milkshake property"""
+    render = context.scene.render
+    milkshake = context.scene.milkshake_render_border
+    render.border_max_x = (milkshake.left + milkshake.width) / render.resolution_x
+    return None
+
+
+def update_render_border_height(self, context):
+    """Updates Blender's render border while tweaking the Milkshake property"""
+    render = context.scene.render
+    milkshake = context.scene.milkshake_render_border
+    render.border_min_y = 1 - (milkshake.top + milkshake.height) / render.resolution_y
+    return None
+
+
 def camera_bounds_to_render_border(context = None):
     """Copy the camera bounds to the render border"""
 
@@ -21,11 +55,12 @@ def camera_bounds_to_render_border(context = None):
 
     render = context.scene.render
     render.use_border = True
-    render.border_min_x = 0
-    render.border_min_y = 0
-    render.border_max_x = 1
-    render.border_max_y = 1
-    core.log("Render border set to camera bounds")
+
+    milkshake = context.scene.milkshake_render_border
+    milkshake.height = render.resolution_y
+    milkshake.left = 0
+    milkshake.top = 0
+    milkshake.width = render.resolution_x
 
 
 def layer_setup(context = None):
