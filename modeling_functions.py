@@ -51,29 +51,6 @@ def clear_tt_set(context = None, tt_set = None):
         return False
 
 
-def generate_placeholders(context = None):
-    """Generate empty placeholders for the selected objects"""
-
-    if "Placeholders" in context.scene.collection.children.keys():
-        main_collection = bpy.data.collections['Placeholders']
-    else:
-        main_collection = bpy.data.collections.new("Placeholders")
-        context.scene.collection.children.link(main_collection)
-
-    for original in context.selected_objects:
-        keyword = re.sub(r"\.[\d]+$", "", original.name)
-        if f"{keyword}.placeholders" in main_collection.children:
-            group = main_collection.children[f"{keyword}.placeholders"]
-        else:
-            group = bpy.data.collections.new(f"{keyword}.placeholders")
-            main_collection.children.link(group)
-        placeholder = bpy.data.objects.new(f"{keyword}.placeholder", None)
-        placeholder.location = original.location
-        placeholder.rotation_euler = original.rotation_euler
-        placeholder.scale = original.scale
-        group.objects.link(placeholder)
-
-
 def select_unsubdivided(context = None):
     """Select all objects with a mesh data block and no subdivisions"""
 

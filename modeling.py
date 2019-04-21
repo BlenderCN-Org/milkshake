@@ -77,22 +77,6 @@ class MODELING_OT_clear_tt_set(bpy.types.Operator):
             return {'CANCELLED'}
 
 
-class MODELING_OT_generate_placeholders(bpy.types.Operator):
-    """Generate empty placeholders for the selected objects"""
-
-    bl_idname = "milkshake.modeling_ot_generate_placeholders"
-    bl_label = "Generate Placeholders"
-    bl_options = {'REGISTER'}
-
-    def execute(self, context):
-        try:
-            func.generate_placeholders(context = context)
-            return {'FINISHED'}
-        except Exception as e:
-            self.report(type = {'ERROR'}, message = str(e))
-            return {'CANCELLED'}
-
-
 class MODELING_OT_select_unsubdivided(bpy.types.Operator):
     """Select all objects with a mesh data block and no subdivisions"""
 
@@ -183,8 +167,6 @@ class PROPERTIES_PT_modeling(bpy.types.Panel):
         col.scale_y = 1.5
         sub = col.row(align = True)
         sub.operator("milkshake.modeling_ot_clear_sharp", icon = 'EDGESEL')
-        sub = col.row(align = True)
-        sub.operator("milkshake.modeling_ot_generate_placeholders", icon = 'OUTLINER_OB_EMPTY')
         sub = col.split(align = True, factor = 0.6)
         sub.operator("milkshake.modeling_ot_set_subdivision", icon = 'MOD_SUBSURF')
         sub.operator("milkshake.modeling_ot_set_subdivision_to_adaptive")
@@ -220,7 +202,6 @@ classes = [
     MODELING_OT_add_selection_to_tt_set,
     MODELING_OT_clear_sharp,
     MODELING_OT_clear_tt_set,
-    MODELING_OT_generate_placeholders,
     MODELING_OT_select_unsubdivided,
     MODELING_OT_set_subdivision,
     MODELING_OT_set_subdivision_to_adaptive,
