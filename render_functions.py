@@ -12,10 +12,27 @@ from . import core_functions as core
 ##############################################################################
 
 
+def get_render_border(context = None):
+    """Convert Blender's current render border to Milkshake's parameters"""
+    render = context.scene.render
+    milkshake = context.scene.milkshake_render_border
+
+    border_min_x = render.border_min_x
+    border_min_y = render.border_min_y
+    border_max_x = render.border_max_x
+    border_max_y = render.border_max_y
+
+    milkshake.left = border_min_x * render.resolution_x
+    milkshake.top = render.resolution_y - border_max_y * render.resolution_y
+    milkshake.width = (border_max_x - border_min_x) * render.resolution_x
+    milkshake.height = (border_max_y - border_min_y) * render.resolution_y
+
+
 def update_render_border_left(self, context):
     """Updates Blender's render border while tweaking the Milkshake property"""
     render = context.scene.render
     milkshake = context.scene.milkshake_render_border
+    render.use_border = True
     render.border_min_x = milkshake.left / render.resolution_x
     render.border_max_x = (milkshake.left + milkshake.width) / render.resolution_x
     return None
@@ -25,6 +42,7 @@ def update_render_border_top(self, context):
     """Updates Blender's render border while tweaking the Milkshake property"""
     render = context.scene.render
     milkshake = context.scene.milkshake_render_border
+    render.use_border = True
     render.border_min_y = 1 - (milkshake.top + milkshake.height) / render.resolution_y
     render.border_max_y = 1 - milkshake.top / render.resolution_y
     return None
@@ -34,6 +52,7 @@ def update_render_border_width(self, context):
     """Updates Blender's render border while tweaking the Milkshake property"""
     render = context.scene.render
     milkshake = context.scene.milkshake_render_border
+    render.use_border = True
     render.border_max_x = (milkshake.left + milkshake.width) / render.resolution_x
     return None
 
@@ -42,6 +61,7 @@ def update_render_border_height(self, context):
     """Updates Blender's render border while tweaking the Milkshake property"""
     render = context.scene.render
     milkshake = context.scene.milkshake_render_border
+    render.use_border = True
     render.border_min_y = 1 - (milkshake.top + milkshake.height) / render.resolution_y
     return None
 

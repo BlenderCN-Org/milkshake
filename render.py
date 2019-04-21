@@ -16,15 +16,31 @@ reload(func)
 
 class MilkshakeRenderBorder(bpy.types.PropertyGroup):
 
-    left                            : bpy.props.IntProperty(name = "Left", subtype = 'PIXEL', min = 0, max = bpy.context.scene.render.resolution_x, update = func.update_render_border_left)
-    top                             : bpy.props.IntProperty(name = "Top", subtype = 'PIXEL', min = 0, max = bpy.context.scene.render.resolution_y, update = func.update_render_border_top)
-    width                           : bpy.props.IntProperty(name = "Width", subtype = 'PIXEL', min = 0, max = bpy.context.scene.render.resolution_x, update = func.update_render_border_width)
-    height                          : bpy.props.IntProperty(name = "Height", subtype = 'PIXEL', min = 0, max = bpy.context.scene.render.resolution_y, update = func.update_render_border_height)
+    left                            : bpy.props.IntProperty(name = "Left", subtype = 'PIXEL', min = 0, update = func.update_render_border_left)
+    top                             : bpy.props.IntProperty(name = "Top", subtype = 'PIXEL', min = 0, update = func.update_render_border_top)
+    width                           : bpy.props.IntProperty(name = "Width", subtype = 'PIXEL', min = 0, update = func.update_render_border_width)
+    height                          : bpy.props.IntProperty(name = "Height", subtype = 'PIXEL', min = 0, update = func.update_render_border_height)
 
 
 ##############################################################################
 # Operators
 ##############################################################################
+
+
+class RENDER_OT_get_render_border(bpy.types.Operator):
+    """Set the render border to the camera bounds"""
+
+    bl_idname = "milkshake.get_render_border"
+    bl_label = "Get Render Border"
+    bl_options = {'REGISTER'}
+
+    def execute(self, context):
+        try:
+            func.get_render_border(context = context)
+            return {'FINISHED'}
+        except Exception as e:
+            self.report(type = {'ERROR'}, message = str(e))
+            return {'CANCELLED'}
 
 
 class RENDER_OT_camera_bounds_to_render_border(bpy.types.Operator):
@@ -104,6 +120,9 @@ class PROPERTIES_PT_render(bpy.types.Panel):
         lay.label(text = "Set Render Border:")
         col = lay.column(align = True)
         row = col.row(align = True)
+        row.scale_y = 1.5
+        row.operator("milkshake.get_render_border", icon = 'SHADING_BBOX')
+        row = col.row(align = True)
         sub = row.column(align = True)
         sub.prop(context.scene.milkshake_render_border, "top")
         sub.prop(context.scene.milkshake_render_border, "left")
@@ -124,6 +143,7 @@ classes = [
     MilkshakeRenderBorder,
     PROPERTIES_PT_render,
     RENDER_OT_camera_bounds_to_render_border,
+    RENDER_OT_get_render_border,
     RENDER_OT_render_defaults,
     RENDER_OT_layer_setup
 ]
