@@ -45,3 +45,21 @@ def rename_images(context):
             if filename != "":
                 image.name = filename
                 core.log(f"Renamed {image.name}")
+
+
+def rename_selection(self, context):
+    """Rename the selected objects using the given keyword"""
+    keyword = context.scene.milkshake_renamer_keyword
+    selection = context.selected_objects
+    if keyword != "":
+        if len(selection) > 0:
+            for obj in selection:
+                if not obj.library:
+                    obj.name = keyword
+                    if obj.data:
+                        obj.data.name = keyword
+        else:
+            raise IndexError("No objects selected.")
+    else:
+        raise ValueError("You have to provide a name.")
+    return None

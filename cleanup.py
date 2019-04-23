@@ -18,7 +18,7 @@ class CLEANUP_OT_rename(bpy.types.Operator):
     """Auto-rename the selected objects to their data, or vice-versa.\nOn selection or everything"""
 
     bl_idname = "milkshake.cleanup_ot_rename"
-    bl_label = "Rename Objects or Datablocks"
+    bl_label = "Rename"
     bl_options = {'REGISTER', 'UNDO'}
 
     rename_datablock : bpy.props.BoolProperty(name = "Data from Object", default = False)
@@ -37,7 +37,7 @@ class CLEANUP_OT_rename_images(bpy.types.Operator):
     """Auto-rename all images to their respective filename"""
 
     bl_idname = "milkshake.cleanup_ot_rename_images"
-    bl_label = "Images"
+    bl_label = "Rename Images"
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
@@ -56,22 +56,28 @@ class CLEANUP_OT_rename_images(bpy.types.Operator):
 
 class PROPERTIES_PT_cleanup(bpy.types.Panel):
 
+    bl_context = "scene"
     bl_idname = "PROPERTIES_PT_cleanup"
-    bl_label = "Cleanup"
-    bl_parent_id = "PROPERTIES_PT_main"
+    bl_label = "Milkshake Scene Tools"
     bl_region_type = 'WINDOW'
     bl_space_type = 'PROPERTIES'
-    bl_options = {'DEFAULT_CLOSED'}
 
     def draw(self, context):
         lay = self.layout
-        lay.label(text = "Auto-rename:")
+        lay.use_property_split = True
+        lay.prop(context.scene, "milkshake_renamer_keyword")
+        lay.separator()
+        lay.label(text = "Auto-rename all:")
         col = lay.column(align = True)
-        col.scale_y = 1.5
         sub = col.row(align = True)
         sub.operator("milkshake.cleanup_ot_rename", text = "Objects").rename_datablock = False
-        sub.operator("milkshake.cleanup_ot_rename", text = "Data").rename_datablock = True
-        sub.operator("milkshake.cleanup_ot_rename_images")
+        sub.label(text = "to their data")
+        sub = col.row(align = True)
+        sub.operator("milkshake.cleanup_ot_rename", text = "Datablocks").rename_datablock = True
+        sub.label(text = "to their object")
+        sub = col.row(align = True)
+        sub.operator("milkshake.cleanup_ot_rename_images", text = "Images")
+        sub.label(text = "to their filename")
 
 
 ##############################################################################
@@ -85,4 +91,17 @@ classes = [
     PROPERTIES_PT_cleanup
 ]
 
-register, unregister = bpy.utils.register_classes_factory(classes)
+
+def register():
+    for class_to_register in classes:
+        bpy.utils.register_class(class_to_register)
+    bpy.types.Scene.milkshake_renamer_keyword = bpy.props.StringProperty(name = "Rename Selection", update = func.rename_selection)
+
+
+def unregister():
+    for class_to_register in classes:
+        bpy.utils.unregister_class(class_to_register)
+    try:
+        del bpy.types.Scene.milkshake_renamer_keyword
+    except:
+        pass
