@@ -12,7 +12,7 @@ from . import core_functions as core
 ##############################################################################
 
 
-def autorename_shots(context = None):
+def autorename_shots(context):
     """Auto-rename all shots and their associated cameras"""
 
     for index, shot in enumerate(context.scene.milkshake_shots):
@@ -25,7 +25,7 @@ def autorename_shots(context = None):
         core.log(f"Renamed shot {shot.code} and camera {shot.camera.name}.")
 
 
-def camera_collection(context = None):
+def camera_collection(context):
     """Return the scene's camera collection"""
 
     if not "Cameras" in bpy.data.collections.keys():
@@ -37,7 +37,7 @@ def camera_collection(context = None):
     return camera_collection
 
 
-def delete_shot(context = None, index = None):
+def delete_shot(context, index):
     """Delete the selected shot and the associated camera"""
 
     shot = context.scene.milkshake_shots[index]
@@ -46,7 +46,7 @@ def delete_shot(context = None, index = None):
     context.scene.milkshake_shots.remove(index)
 
 
-def clear_shots(context = None):
+def clear_shots(context):
     """Clear the shot list and delete the associated cameras"""
 
     for shot in context.scene.milkshake_shots:
@@ -54,14 +54,14 @@ def clear_shots(context = None):
     context.scene.milkshake_shots.clear()
 
 
-def new_shot(context = None):
+def new_shot(context):
     """Create a new shot and camera"""
 
     shot = context.scene.milkshake_shots.add()
     camera = bpy.data.cameras.new("Camera")
     camera.cycles.aperture_blades = 5
     camera.cycles.aperture_fstop = 4
-    camera.cycles.aperture_ratio = 2
+    camera.cycles.aperture_ratio = 1
     camera.cycles.aperture_rotation = math.radians(10)
     camera.cycles.aperture_type = 'FSTOP'
     camera.display_size = 0.1
@@ -81,7 +81,7 @@ def new_shot(context = None):
     core.log("Created new shot and camera.")
 
 
-def sync_timeline(context = None):
+def sync_timeline(self, context):
     """Sync Blender's timeline and markers with the shot list"""
 
     context.scene.timeline_markers.clear()
@@ -96,3 +96,4 @@ def sync_timeline(context = None):
         new_start_frame += shot.duration
     context.scene.frame_start = 1001
     context.scene.frame_end = new_start_frame - 1
+    return None

@@ -17,30 +17,13 @@ reload(func)
 class MilkshakeSequencerShot(bpy.types.PropertyGroup):
 
     code                            : bpy.props.StringProperty(name = "Shot Code", default = "Shot")
-    duration                        : bpy.props.IntProperty(name = "Frames", default = 24, min = 1)
-    camera                          : bpy.props.PointerProperty(name = "Camera", type = bpy.types.Camera)
+    duration                        : bpy.props.IntProperty(name = "Frames", default = 24, min = 1, update = func.sync_timeline)
+    camera                          : bpy.props.PointerProperty(name = "Camera", type = bpy.types.Camera, update = func.sync_timeline)
 
 
 ##############################################################################
 # Operators
 ##############################################################################
-
-
-class SEQUENCER_OT_autorename_shots(bpy.types.Operator):
-    """Auto-rename all shots and their associated cameras"""
-
-    bl_idname = "milkshake.sequencer_ot_autorename_shots"
-    bl_label = "Rename All"
-    bl_options = {'REGISTER', 'UNDO'}
-
-    def execute(self, context):
-        try:
-            func.autorename_shots(context = context)
-            func.sync_timeline(context = context)
-            return {'FINISHED'}
-        except Exception as e:
-            self.report(type = {'ERROR'}, message = str(e))
-            return {'CANCELLED'}
 
 
 class SEQUENCER_OT_clear_shots(bpy.types.Operator):
@@ -54,8 +37,8 @@ class SEQUENCER_OT_clear_shots(bpy.types.Operator):
 
     def execute(self, context):
         try:
-            func.clear_shots(context = context)
-            func.sync_timeline(context = context)
+            func.clear_shots(context)
+            func.sync_timeline(self, context)
             return {'FINISHED'}
         except Exception as e:
             self.report(type = {'ERROR'}, message = str(e))
@@ -73,9 +56,9 @@ class SEQUENCER_OT_delete_shot(bpy.types.Operator):
 
     def execute(self, context):
         try:
-            func.delete_shot(context = context, index = self.index)
-            func.autorename_shots(context = context)
-            func.sync_timeline(context = context)
+            func.delete_shot(context, self.index)
+            func.autorename_shots(context)
+            func.sync_timeline(self, context)
             return {'FINISHED'}
         except Exception as e:
             self.report(type = {'ERROR'}, message = str(e))
@@ -91,25 +74,8 @@ class SEQUENCER_OT_new_shot(bpy.types.Operator):
 
     def execute(self, context):
         try:
-            func.new_shot(context = context)
-            func.autorename_shots(context = context)
-            func.sync_timeline(context = context)
-            return {'FINISHED'}
-        except Exception as e:
-            self.report(type = {'ERROR'}, message = str(e))
-            return {'CANCELLED'}
-
-
-class SEQUENCER_OT_sync_timeline(bpy.types.Operator):
-    """Sync Blender's timeline and markers with the shot list"""
-
-    bl_idname = "milkshake.sequencer_ot_sync_timeline"
-    bl_label = "Sync Timeline"
-    bl_options = {'REGISTER', 'UNDO'}
-
-    def execute(self, context):
-        try:
-            func.sync_timeline(context = context)
+            func.new_shot(context)
+            func.autorename_shots(context)
             return {'FINISHED'}
         except Exception as e:
             self.report(type = {'ERROR'}, message = str(e))
@@ -135,20 +101,18 @@ class PROPERTIES_PT_sequencer(bpy.types.Panel):
         col = lay.column(align = True)
         sub = col.row(align = True)
         sub.operator("milkshake.sequencer_ot_new_shot", icon = 'ADD', text = "")
-        sub.operator("milkshake.sequencer_ot_sync_timeline", icon = 'FILE_REFRESH', text = "")
-        sub.operator("milkshake.sequencer_ot_autorename_shots", icon = 'COLOR_RED', text = "")
         sub.operator("milkshake.sequencer_ot_clear_shots", icon = 'X', text = "")
         box_shots = col.box()
         if len(context.scene.milkshake_shots) == 0:
             box_shots.label(text = "No shots yet.")
         for index, shot in enumerate(context.scene.milkshake_shots):
-            col_shot = box_shots.column(align = True)
-            sub = col_shot.row(align = True)
-            sub.prop(shot, "code", text = "")
-            sub.operator("milkshake.sequencer_ot_delete_shot", icon = 'REMOVE', text = "").index = index
-            sub = col_shot.split(align = True, factor = 0.6)
+            row_shot = box_shots.row(align = True)
+            sub = row_shot.split(align = True, factor = 0.25)
+            sub.label(text = shot.code)
             sub.prop(data = shot, property = "camera", text = "")
-            sub.prop(data = shot, property = "duration", text = "Frames")
+            sub = row_shot.row(align = True)
+            sub.prop(data = shot, property = "duration", text = "")
+            sub.operator("milkshake.sequencer_ot_delete_shot", icon = 'REMOVE', text = "").index = index
 
 
 ##############################################################################
@@ -159,11 +123,9 @@ class PROPERTIES_PT_sequencer(bpy.types.Panel):
 classes = [
     MilkshakeSequencerShot,
     PROPERTIES_PT_sequencer,
-    SEQUENCER_OT_autorename_shots,
     SEQUENCER_OT_clear_shots,
     SEQUENCER_OT_delete_shot,
-    SEQUENCER_OT_new_shot,
-    SEQUENCER_OT_sync_timeline
+    SEQUENCER_OT_new_shot
 ]
 
 
