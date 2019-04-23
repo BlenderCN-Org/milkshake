@@ -36,7 +36,7 @@ class RENDER_OT_get_render_border(bpy.types.Operator):
 
     def execute(self, context):
         try:
-            func.get_render_border(context = context)
+            func.get_render_border(context)
             return {'FINISHED'}
         except Exception as e:
             self.report(type = {'ERROR'}, message = str(e))
@@ -52,7 +52,7 @@ class RENDER_OT_camera_bounds_to_render_border(bpy.types.Operator):
 
     def execute(self, context):
         try:
-            func.camera_bounds_to_render_border(context = context)
+            func.camera_bounds_to_render_border(context)
             return {'FINISHED'}
         except Exception as e:
             self.report(type = {'ERROR'}, message = str(e))
@@ -68,7 +68,7 @@ class RENDER_OT_layer_setup(bpy.types.Operator):
 
     def execute(self, context):
         try:
-            func.layer_setup(context = context)
+            func.layer_setup(context)
             return {'FINISHED'}
         except Exception as e:
             self.report(type = {'ERROR'}, message = str(e))
@@ -79,12 +79,12 @@ class RENDER_OT_render_defaults(bpy.types.Operator):
     """Apply default render settings"""
 
     bl_idname = "milkshake.render_defaults"
-    bl_label = "Set Render Defaults"
+    bl_label = "Set Defaults"
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
         try:
-            func.render_defaults(context = context)
+            func.render_defaults(context)
             return {'FINISHED'}
         except Exception as e:
             self.report(type = {'ERROR'}, message = str(e))
@@ -99,7 +99,7 @@ class RENDER_OT_render_defaults(bpy.types.Operator):
 class PROPERTIES_PT_render(bpy.types.Panel):
 
     bl_idname = "PROPERTIES_PT_render"
-    bl_label = "Milkshake"
+    bl_label = "Milkshake Rendering Tools"
     bl_region_type = 'WINDOW'
     bl_space_type = 'PROPERTIES'
     bl_context = 'render'
@@ -129,9 +129,7 @@ class PROPERTIES_PT_render(bpy.types.Panel):
         sub = row.column(align = True)
         sub.prop(context.scene.milkshake_render_border, "width")
         sub.prop(context.scene.milkshake_render_border, "height")
-        row = col.row(align = True)
-        row.scale_y = 1.5
-        row.operator("milkshake.camera_bounds_to_render_border", icon = 'CAMERA_DATA', text = "Set to Camera Bounds")
+        lay.operator("milkshake.camera_bounds_to_render_border", icon = 'CAMERA_DATA', text = "Set to Camera Bounds")
 
 
 ##############################################################################

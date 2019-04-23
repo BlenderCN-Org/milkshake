@@ -12,7 +12,7 @@ from . import core_functions as core
 ##############################################################################
 
 
-def get_render_border(context = None):
+def get_render_border(context):
     """Convert Blender's current render border to Milkshake's parameters"""
     render = context.scene.render
     milkshake = context.scene.milkshake_render_border
@@ -66,7 +66,7 @@ def update_render_border_height(self, context):
     return None
 
 
-def camera_bounds_to_render_border(context = None):
+def camera_bounds_to_render_border(context):
     """Copy the camera bounds to the render border"""
 
     # Select the first viewport and enable camera view
@@ -83,7 +83,7 @@ def camera_bounds_to_render_border(context = None):
     milkshake.width = render.resolution_x
 
 
-def layer_setup(context = None):
+def layer_setup(context):
     """Set up the view layers"""
 
     with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "files", "layer_setup.json"), 'r') as config_file:

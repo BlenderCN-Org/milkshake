@@ -35,8 +35,8 @@ class MODELING_OT_add_selection_to_tt_set(bpy.types.Operator):
 
     def execute(self, context):
         try:
-            func.clear_tt_set(context = context, tt_set = self.tt_set)
-            func.add_selection_to_tt_set(context = context, tt_set = self.tt_set)
+            func.clear_tt_set(context, self.tt_set)
+            func.add_selection_to_tt_set(context, self.tt_set)
             return {'FINISHED'}
         except Exception as e:
             self.report(type = {'ERROR'}, message = str(e))
@@ -52,7 +52,7 @@ class MODELING_OT_clear_sharp(bpy.types.Operator):
 
     def execute(self, context):
         try:
-            func.clear_sharp(context = context)
+            func.clear_sharp(context)
             return {'FINISHED'}
         except Exception as e:
             self.report(type = {'ERROR'}, message = str(e))
@@ -70,7 +70,7 @@ class MODELING_OT_clear_tt_set(bpy.types.Operator):
 
     def execute(self, context):
         try:
-            func.clear_tt_set(context = context, tt_set = self.tt_set)
+            func.clear_tt_set(context, self.tt_set)
             return {'FINISHED'}
         except Exception as e:
             self.report(type = {'ERROR'}, message = str(e))
@@ -86,7 +86,7 @@ class MODELING_OT_select_unsubdivided(bpy.types.Operator):
 
     def execute(self, context):
         try:
-            func.select_unsubdivided(context = context)
+            func.select_unsubdivided(context)
             return {'FINISHED'}
         except Exception as e:
             self.report(type = {'ERROR'}, message = str(e))
@@ -107,7 +107,7 @@ class MODELING_OT_set_subdivision(bpy.types.Operator):
 
     def execute(self, context):
         try:
-            func.set_subdivision(context = context, iterations = self.iterations)
+            func.set_subdivision(context, self.iterations)
             return {'FINISHED'}
         except Exception as e:
             self.report(type = {'ERROR'}, message = str(e))
@@ -123,7 +123,7 @@ class MODELING_OT_set_subdivision_to_adaptive(bpy.types.Operator):
 
     def execute(self, context):
         try:
-            func.set_subdivision_to_adaptive(context = context)
+            func.set_subdivision_to_adaptive(context)
             return {'FINISHED'}
         except Exception as e:
             self.report(type = {'ERROR'}, message = str(e))
@@ -139,7 +139,7 @@ class MODELING_OT_transfer_transforms(bpy.types.Operator):
 
     def execute(self, context):
         try:
-            func.transfer_transforms(context = context)
+            func.transfer_transforms(context)
             return {'FINISHED'}
         except Exception as e:
             self.report(type = {'ERROR'}, message = str(e))

@@ -12,7 +12,7 @@ from . import core_functions as core
 ##############################################################################
 
 
-def add_selection_to_tt_set(context = None, tt_set = None):
+def add_selection_to_tt_set(context, tt_set):
     """Add selection of objects to the transfer transforms lists"""
 
     if tt_set == 'a':
@@ -28,7 +28,7 @@ def add_selection_to_tt_set(context = None, tt_set = None):
     return True
 
 
-def clear_sharp(context = None):
+def clear_sharp(context):
     """Clear all sharp edges in meshes.\nOn selection or everything"""
 
     if len(context.selected_objects) > 0:
@@ -42,7 +42,7 @@ def clear_sharp(context = None):
             edge.use_edge_sharp = False
 
 
-def clear_tt_set(context = None, tt_set = None):
+def clear_tt_set(context, tt_set):
     if tt_set == 'a':
         context.scene.milkshake_tt_set_a.clear()
     elif tt_set == 'b':
@@ -51,7 +51,7 @@ def clear_tt_set(context = None, tt_set = None):
         return False
 
 
-def select_unsubdivided(context = None):
+def select_unsubdivided(context):
     """Select all objects with a mesh data block and no subdivisions"""
 
     bpy.ops.object.select_all(action = 'DESELECT')
@@ -65,7 +65,7 @@ def select_unsubdivided(context = None):
         mesh.select = not has_enabled_subsurf_modifiers
 
 
-def set_subdivision(context = None, iterations = None):
+def set_subdivision(context, iterations):
     """Add or set subdivision iterations for meshes.\nOn selection or everything"""
 
     if len(context.selected_objects) > 0:
@@ -89,7 +89,7 @@ def set_subdivision(context = None, iterations = None):
         core.log(f"Set subdivision for {mesh.name} to {iterations}")
 
 
-def set_subdivision_to_adaptive(context = None):
+def set_subdivision_to_adaptive(context):
     """Set subdivision to adaptive for meshes.\nOn selection or everything"""
 
     if len(context.selected_objects) > 0:
@@ -104,7 +104,7 @@ def set_subdivision_to_adaptive(context = None):
         core.log(f"Enabled adaptive subdivision for {obj.name}")
 
 
-def transfer_transforms(context = None):
+def transfer_transforms(context):
     """Copy transformation values from a set of objects to another"""
 
     set_a = context.scene.milkshake_tt_set_a

@@ -39,7 +39,7 @@ class UTILITIES_OT_unlock_transforms(bpy.types.Operator):
 
     def execute(self, context):
         try:
-            func.unlock_transforms(context = context)
+            func.unlock_transforms(context)
             return {'FINISHED'}
         except Exception as e:
             self.report(type = {'ERROR'}, message = str(e))

@@ -19,7 +19,7 @@ def show_all_edges():
         ob.show_all_edges = True
 
 
-def unlock_transforms(context = None):
+def unlock_transforms(context):
     """Unlock all transforms.\nOn selection or everything"""
 
     if len(context.selected_objects) > 0:
