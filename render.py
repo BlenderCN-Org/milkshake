@@ -104,11 +104,6 @@ class PROPERTIES_PT_render(bpy.types.Panel):
     bl_space_type = 'PROPERTIES'
     bl_context = 'render'
 
-    @classmethod
-    def poll(cls, context):
-        func.update_render_border(context = context)
-        return True
-
     def draw(self, context):
         lay = self.layout
         col = lay.column(align = True)
