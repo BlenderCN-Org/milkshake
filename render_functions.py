@@ -190,14 +190,11 @@ def render_defaults(context):
     cycles.rolling_shutter_type                 = 'NONE'
     cycles.use_motion_blur                      = True
     render.motion_blur_shutter                  = 0.3
-    # Colour management
+    # Film transparency
     cycles.film_transparent                     = True
-    scene.display_settings.display_device       = 'sRGB'
-    scene.sequencer_colorspace_settings.name    = 'Filmic Log Encoding'
+    # Colour management
     scene.view_settings.exposure                = 0
     scene.view_settings.gamma                   = 1
-    scene.view_settings.look                    = 'Base Contrast'
-    scene.view_settings.view_transform          = 'Filmic Log Encoding Base'
     # Performance
     render.display_mode                         = 'AREA'
     render.engine                               = 'CYCLES'
