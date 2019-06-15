@@ -59,15 +59,13 @@ def new_shot(context):
 
     shot = context.scene.milkshake_shots.add()
     camera = bpy.data.cameras.new("Camera")
-    camera.cycles.aperture_blades = 5
-    camera.cycles.aperture_fstop = 4
-    camera.cycles.aperture_ratio = 1
-    camera.cycles.aperture_rotation = math.radians(10)
-    camera.cycles.aperture_type = 'FSTOP'
-    camera.display_size = 0.1
-    camera.dof_distance = 1
-    camera.gpu_dof.blades = 5
-    camera.gpu_dof.fstop = 4
+    camera.display_size = 1
+    camera.dof.aperture_blades = 5
+    camera.dof.aperture_fstop = 4
+    camera.dof.aperture_ratio = 1
+    camera.dof.aperture_rotation = math.radians(10)
+    camera.dof.focus_distance = 1
+    camera.dof.use_dof = True
     camera.lens = 35
     camera.passepartout_alpha = 0.85
     camera.sensor_fit = 'HORIZONTAL'
