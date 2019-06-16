@@ -44,18 +44,6 @@ class PROPERTIES_PT_main(bpy.types.Panel):
         pass
 
 
-class PROPERTIES_PT_compositor(bpy.types.Panel):
-
-    bl_context = ""
-    bl_idname = "PROPERTIES_PT_compositor"
-    bl_label = "Milkshake"
-    bl_region_type = "WINDOW"
-    bl_space_type = "NODE_EDITOR"
-
-    def draw(self, context):
-        pass
-
-
 ##############################################################################
 # Registration
 ##############################################################################
@@ -63,14 +51,12 @@ class PROPERTIES_PT_compositor(bpy.types.Panel):
 
 def register():
     bpy.utils.register_class(PROPERTIES_PT_main)
-    bpy.utils.register_class(PROPERTIES_PT_compositor)
     for module in modules:
         module.register()
 
 
 def unregister():
     bpy.utils.unregister_class(PROPERTIES_PT_main)
-    bpy.utils.unregister_class(PROPERTIES_PT_compositor)
     for module in modules:
         module.unregister()
 
