@@ -21,15 +21,37 @@ class COMP_OT_generate_contact_sheet(bpy.types.Operator):
     bl_label = "Generate Contact Sheet"
     bl_options = {'REGISTER', 'UNDO'}
 
-    directory: bpy.props.StringProperty(default = "")
+    directory: bpy.props.StringProperty(name = "Image Directory", default = "", subtype = 'DIR_PATH')
+    columns: bpy.props.IntProperty(name = "Columns", default = 4, min = 1)
+    frame_width: bpy.props.IntProperty(name = "Frame Width", default = 2048, min = 1)
+    frame_height: bpy.props.IntProperty(name = "Frame Height", default = 858, min = 1)
+
+    def invoke(self, context, event):
+        return context.window_manager.invoke_props_dialog(self)
 
     def execute(self, context):
-        try:
-            func.generate_contact_sheet(context, directory = self.directory)
-            return {'FINISHED'}
-        except Exception as e:
-            self.report(type = {'ERROR'}, message = str(e))
-            return {'CANCELLED'}
+        func.generate_contact_sheet(context, directory = self.directory, columns = self.columns, frame_width = self.frame_width, frame_height = self.frame_height)
+        return {'FINISHED'}
+
+
+class COMP_OT_generate_credits_roll(bpy.types.Operator):
+    """Sets up the scene for rendering a clean, jitter-free credit roll based on a single image"""
+
+    bl_idname = "milkshake.comp_ot_generate_credits_roll"
+    bl_label = "Generate Credits Roll"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    image_filepath: bpy.props.StringProperty(name = "Image", default = "", subtype = 'FILE_PATH')
+    speed: bpy.props.IntProperty(name = "Pixels per Frame", default = 5, min = 1, max = 7)
+    width: bpy.props.IntProperty(name = "Frame Width", default = 4096, min = 1)
+    height: bpy.props.IntProperty(name = "Frame Height", default = 1716, min = 1)
+
+    def invoke(self, context, event):
+        return context.window_manager.invoke_props_dialog(self)
+
+    def execute(self, context):
+        func.generate_credits_roll(context, image_filepath = self.image_filepath, speed = self.speed, frame_width = self.width, frame_height = self.height)
+        return {'FINISHED'}
 
 
 ##############################################################################
@@ -37,17 +59,18 @@ class COMP_OT_generate_contact_sheet(bpy.types.Operator):
 ##############################################################################
 
 
-class COMPOSITOR_PT_contactsheets(bpy.types.Panel):
+class COMPOSITOR_PT_generators(bpy.types.Panel):
 
-    bl_idname = "PROPERTIES_PT_contactsheets"
-    bl_label = "Contact Sheets"
-    bl_parent_id = "PROPERTIES_PT_compositor"
-    bl_region_type = 'WINDOW'
+    bl_idname = "COMPOSITOR_PT_generators"
+    bl_label = "Generators"
+    bl_region_type = 'UI'
     bl_space_type = 'NODE_EDITOR'
+    bl_category = "Milkshake"
 
     def draw(self, context):
         lay = self.layout
         lay.operator("milkshake.comp_ot_generate_contact_sheet")
+        lay.operator("milkshake.comp_ot_generate_credits_roll")
 
 
 ##############################################################################
@@ -57,7 +80,8 @@ class COMPOSITOR_PT_contactsheets(bpy.types.Panel):
 
 classes = [
     COMP_OT_generate_contact_sheet,
-    COMPOSITOR_PT_contactsheets
+    COMP_OT_generate_credits_roll,
+    COMPOSITOR_PT_generators
 ]
 
 
