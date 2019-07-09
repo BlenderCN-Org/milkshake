@@ -1,48 +1,53 @@
 {
     "collection_names_all": [
-        "ANIMPROPS",
         "SETS",
         "CHARACTERS",
-        "DUST",
+        "ANIMPROPS",
+        "FX",
         "LIGHTS",
         "LIGHTS.VOL",
+        "CAMERAS"
         "HIDDEN"
     ],
     "layer_templates": [
         {
-            "name": "BG01",
-            "indirect": ["ANIMPROPS", "CHARACTERS"],
-            "exclude": ["DUST", "HIDDEN", "LIGHTS.VOL"],
+            "name": "SET",
+            "indirect": ["ANIMPROPS", "CHARACTERS", "FX"],
+            "exclude": ["HIDDEN", "LIGHTS.VOL"],
             "filter": ["sky", "ao", "solid", "strand"],
-            "passes": ["combined", "z", "vector", "mist", "ambient_occlusion"],
+            "passes": ["combined", "mist", "ambient_occlusion"],
             "crypto": ["object", "material"],
             "enabled": true,
             "denoise": ["use", "store"]
         },
         {
-            "name": "FG01",
-            "exclude": ["DUST", "LIGHTS.VOL", "HIDDEN"],
+            "name": "CHARS",
+            "exclude": ["HIDDEN", "LIGHTS.VOL"],
             "holdout": ["SETS"],
+            "indirect": ["FX"],
             "filter": ["sky", "ao", "solid", "strand"],
-            "passes": ["combined", "z", "vector", "subsurface_direct", "mist", "ambient_occlusion"],
+            "passes": ["combined", "subsurface_direct", "mist", "ambient_occlusion"],
             "crypto": ["object", "material"],
             "enabled": true,
+            "denoise": ["use", "store"]
+        },
+        {
+            "name": "FX",
+            "exclude": ["HIDDEN", "LIGHTS.VOL"],
+            "holdout": ["SETS", "CHARACTERS", "ANIMPROPS"],
+            "filter": ["sky", "ao", "solid", "strand"],
+            "passes": ["combined", "subsurface_direct", "mist", "ambient_occlusion"],
+            "crypto": ["object", "material"],
+            "enabled": false,
             "denoise": ["use", "store"]
         },
         {
             "name": "VOL",
-            "exclude": ["DUST", "LIGHTS", "HIDDEN"],
+            "exclude": ["LIGHTS", "HIDDEN"],
+            "holdout": ["SETS", "CHARACTERS", "ANIMPROPS"],
             "filter": ["solid", "strand"],
             "passes": ["combined"],
             "enabled": true
-        },
-        {
-            "name": "DUST",
-            "exclude": ["HIDDEN", "LIGHTS.VOL"],
-            "holdout": ["ANIMPROPS", "SETS", "CHARACTERS"],
-            "filter": ["sky", "solid", "strand"],
-            "passes": ["combined", "z", "vector"],
-            "enabled": false
         }
     ]
 }
