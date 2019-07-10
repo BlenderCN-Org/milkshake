@@ -155,7 +155,7 @@ class PROPERTIES_PT_modeling(bpy.types.Panel):
 
     bl_idname = "PROPERTIES_PT_modeling"
     bl_label = "Modeling and Setdress"
-    bl_parent_id = "PROPERTIES_PT_main"
+    bl_parent_id = "PROPERTIES_PT_scene_tools"
     bl_region_type = 'WINDOW'
     bl_space_type = 'PROPERTIES'
     bl_options = {'DEFAULT_CLOSED'}

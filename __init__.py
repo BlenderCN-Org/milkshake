@@ -14,8 +14,8 @@ bl_info = {
 ##############################################################################
 
 
-from . import cleanup, comp, core_functions, render, modeling, sequencer, utilities
-modules = [cleanup, comp, render, modeling, sequencer, utilities]
+from . import cleanup, comp, core_functions, render, modeling, sequencer
+modules = [cleanup, comp, render, modeling, sequencer]
 core_functions.log("Loaded package modules.")
 
 if "bpy" in locals():
@@ -32,11 +32,11 @@ else:
 ##############################################################################
 
 
-class PROPERTIES_PT_main(bpy.types.Panel):
+class PROPERTIES_PT_scene_tools(bpy.types.Panel):
 
-    bl_context = ".objectmode"
-    bl_idname = "PROPERTIES_PT_main"
-    bl_label = "Milkshake"
+    bl_context = "scene"
+    bl_idname = "PROPERTIES_PT_scene_tools"
+    bl_label = "Milkshake Scene Tools"
     bl_region_type = "WINDOW"
     bl_space_type = "PROPERTIES"
 
@@ -50,13 +50,13 @@ class PROPERTIES_PT_main(bpy.types.Panel):
 
 
 def register():
-    bpy.utils.register_class(PROPERTIES_PT_main)
+    bpy.utils.register_class(PROPERTIES_PT_scene_tools)
     for module in modules:
         module.register()
 
 
 def unregister():
-    bpy.utils.unregister_class(PROPERTIES_PT_main)
+    bpy.utils.unregister_class(PROPERTIES_PT_scene_tools)
     for module in modules:
         module.unregister()
 

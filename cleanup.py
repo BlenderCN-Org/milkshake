@@ -58,9 +58,11 @@ class PROPERTIES_PT_cleanup(bpy.types.Panel):
 
     bl_context = "scene"
     bl_idname = "PROPERTIES_PT_cleanup"
-    bl_label = "Milkshake Scene Tools"
+    bl_label = "Cleanup"
     bl_region_type = 'WINDOW'
     bl_space_type = 'PROPERTIES'
+    bl_parent_id = "PROPERTIES_PT_scene_tools"
+    bl_options = {'DEFAULT_CLOSED'}
 
     def draw(self, context):
         lay = self.layout
