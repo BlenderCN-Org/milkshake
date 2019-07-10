@@ -39,7 +39,9 @@ def clear_sharp(context):
     meshes = [obj for obj in objects if obj.type == 'MESH']
     for mesh in meshes:
         for edge in mesh.data.edges:
-            edge.use_edge_sharp = False
+            if edge.use_edge_sharp:
+                core.log(f"Cleared sharp on edge {edge}")
+                edge.use_edge_sharp = False
 
 
 def clear_tt_set(context, tt_set):
