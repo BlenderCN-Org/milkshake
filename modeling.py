@@ -34,13 +34,9 @@ class MODELING_OT_add_selection_to_tt_set(bpy.types.Operator):
     tt_set: bpy.props.EnumProperty(items = [('a', 'A', 'List A'), ('b', 'B', 'List B')])
 
     def execute(self, context):
-        try:
-            func.clear_tt_set(context, self.tt_set)
-            func.add_selection_to_tt_set(context, self.tt_set)
-            return {'FINISHED'}
-        except Exception as e:
-            self.report(type = {'ERROR'}, message = str(e))
-            return {'CANCELLED'}
+        func.clear_tt_set(context, self.tt_set)
+        func.add_selection_to_tt_set(context, self.tt_set)
+        return {'FINISHED'}
 
 
 class MODELING_OT_clear_sharp(bpy.types.Operator):
@@ -51,12 +47,8 @@ class MODELING_OT_clear_sharp(bpy.types.Operator):
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
-        try:
-            func.clear_sharp(context)
-            return {'FINISHED'}
-        except Exception as e:
-            self.report(type = {'ERROR'}, message = str(e))
-            return {'CANCELLED'}
+        func.clear_sharp(context)
+        return {'FINISHED'}
 
 
 class MODELING_OT_clear_tt_set(bpy.types.Operator):
@@ -69,12 +61,8 @@ class MODELING_OT_clear_tt_set(bpy.types.Operator):
     tt_set: bpy.props.EnumProperty(items = [('a', 'A', 'List A'), ('b', 'B', 'List B')])
 
     def execute(self, context):
-        try:
-            func.clear_tt_set(context, self.tt_set)
-            return {'FINISHED'}
-        except Exception as e:
-            self.report(type = {'ERROR'}, message = str(e))
-            return {'CANCELLED'}
+        func.clear_tt_set(context, self.tt_set)
+        return {'FINISHED'}
 
 
 class MODELING_OT_select_unsubdivided(bpy.types.Operator):
@@ -85,12 +73,8 @@ class MODELING_OT_select_unsubdivided(bpy.types.Operator):
     bl_options = {'REGISTER'}
 
     def execute(self, context):
-        try:
-            func.select_unsubdivided(context)
-            return {'FINISHED'}
-        except Exception as e:
-            self.report(type = {'ERROR'}, message = str(e))
-            return {'CANCELLED'}
+        func.select_unsubdivided(context)
+        return {'FINISHED'}
 
 
 class MODELING_OT_set_subdivision(bpy.types.Operator):
@@ -106,12 +90,8 @@ class MODELING_OT_set_subdivision(bpy.types.Operator):
         return context.window_manager.invoke_props_dialog(self)
 
     def execute(self, context):
-        try:
-            func.set_subdivision(context, self.iterations)
-            return {'FINISHED'}
-        except Exception as e:
-            self.report(type = {'ERROR'}, message = str(e))
-            return {'CANCELLED'}
+        func.set_subdivision(context, self.iterations)
+        return {'FINISHED'}
 
 
 class MODELING_OT_set_subdivision_to_adaptive(bpy.types.Operator):
@@ -122,12 +102,8 @@ class MODELING_OT_set_subdivision_to_adaptive(bpy.types.Operator):
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
-        try:
-            func.set_subdivision_to_adaptive(context)
-            return {'FINISHED'}
-        except Exception as e:
-            self.report(type = {'ERROR'}, message = str(e))
-            return {'CANCELLED'}
+        func.set_subdivision_to_adaptive(context)
+        return {'FINISHED'}
 
 
 class MODELING_OT_transfer_transforms(bpy.types.Operator):
@@ -138,12 +114,8 @@ class MODELING_OT_transfer_transforms(bpy.types.Operator):
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
-        try:
-            func.transfer_transforms(context)
-            return {'FINISHED'}
-        except Exception as e:
-            self.report(type = {'ERROR'}, message = str(e))
-            return {'CANCELLED'}
+        func.transfer_transforms(context)
+        return {'FINISHED'}
 
 
 ##############################################################################

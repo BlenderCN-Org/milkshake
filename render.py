@@ -35,12 +35,8 @@ class RENDER_OT_get_render_border(bpy.types.Operator):
     bl_options = {'REGISTER'}
 
     def execute(self, context):
-        try:
-            func.get_render_border(context)
-            return {'FINISHED'}
-        except Exception as e:
-            self.report(type = {'ERROR'}, message = str(e))
-            return {'CANCELLED'}
+        func.get_render_border(context)
+        return {'FINISHED'}
 
 
 class RENDER_OT_camera_bounds_to_render_border(bpy.types.Operator):
@@ -51,12 +47,8 @@ class RENDER_OT_camera_bounds_to_render_border(bpy.types.Operator):
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
-        try:
-            func.camera_bounds_to_render_border(context)
-            return {'FINISHED'}
-        except Exception as e:
-            self.report(type = {'ERROR'}, message = str(e))
-            return {'CANCELLED'}
+        func.camera_bounds_to_render_border(context)
+        return {'FINISHED'}
 
 
 class RENDER_OT_layer_setup(bpy.types.Operator):
@@ -67,12 +59,8 @@ class RENDER_OT_layer_setup(bpy.types.Operator):
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
-        try:
-            func.layer_setup(context)
-            return {'FINISHED'}
-        except Exception as e:
-            self.report(type = {'ERROR'}, message = str(e))
-            return {'CANCELLED'}
+        func.layer_setup(context)
+        return {'FINISHED'}
 
 
 class RENDER_OT_render_defaults(bpy.types.Operator):
@@ -83,12 +71,8 @@ class RENDER_OT_render_defaults(bpy.types.Operator):
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
-        try:
-            func.render_defaults(context)
-            return {'FINISHED'}
-        except Exception as e:
-            self.report(type = {'ERROR'}, message = str(e))
-            return {'CANCELLED'}
+        func.render_defaults(context)
+        return {'FINISHED'}
 
 
 ##############################################################################

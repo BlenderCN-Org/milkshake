@@ -36,13 +36,9 @@ class SEQUENCER_OT_clear_shots(bpy.types.Operator):
     index: bpy.props.IntProperty()
 
     def execute(self, context):
-        try:
-            func.clear_shots(context)
-            func.sync_timeline(self, context)
-            return {'FINISHED'}
-        except Exception as e:
-            self.report(type = {'ERROR'}, message = str(e))
-            return {'CANCELLED'}
+        func.clear_shots(context)
+        func.sync_timeline(self, context)
+        return {'FINISHED'}
 
 
 class SEQUENCER_OT_delete_shot(bpy.types.Operator):
@@ -55,14 +51,10 @@ class SEQUENCER_OT_delete_shot(bpy.types.Operator):
     index: bpy.props.IntProperty()
 
     def execute(self, context):
-        try:
-            func.delete_shot(context, self.index)
-            func.autorename_shots(context)
-            func.sync_timeline(self, context)
-            return {'FINISHED'}
-        except Exception as e:
-            self.report(type = {'ERROR'}, message = str(e))
-            return {'CANCELLED'}
+        func.delete_shot(context, self.index)
+        func.autorename_shots(context)
+        func.sync_timeline(self, context)
+        return {'FINISHED'}
 
 
 class SEQUENCER_OT_new_shot(bpy.types.Operator):
@@ -73,13 +65,9 @@ class SEQUENCER_OT_new_shot(bpy.types.Operator):
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
-        try:
-            func.new_shot(context)
-            func.autorename_shots(context)
-            return {'FINISHED'}
-        except Exception as e:
-            self.report(type = {'ERROR'}, message = str(e))
-            return {'CANCELLED'}
+        func.new_shot(context)
+        func.autorename_shots(context)
+        return {'FINISHED'}
 
 
 ##############################################################################

@@ -24,12 +24,8 @@ class CLEANUP_OT_rename(bpy.types.Operator):
     rename_datablock : bpy.props.BoolProperty(name = "Data from Object", default = False)
 
     def execute(self, context):
-        try:
-            func.rename(context, rename_datablock = self.rename_datablock)
-            return {'FINISHED'}
-        except Exception as e:
-            self.report(type = {'ERROR'}, message = str(e))
-            return {'CANCELLED'}
+        func.rename(context, rename_datablock = self.rename_datablock)
+        return {'FINISHED'}
 
 
 
@@ -41,12 +37,8 @@ class CLEANUP_OT_rename_images(bpy.types.Operator):
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
-        try:
-            func.rename_images(context)
-            return {'FINISHED'}
-        except Exception as e:
-            self.report(type = {'ERROR'}, message = str(e))
-            return {'CANCELLED'}
+        func.rename_images(context)
+        return {'FINISHED'}
 
 
 ##############################################################################
