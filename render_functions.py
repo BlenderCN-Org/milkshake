@@ -162,6 +162,14 @@ def layer_setup(context):
     layers.remove(layers['delete'])
 
 
+def remove_view_layer(context, layer_name):
+    """Delete the selected layer"""
+
+    layer = context.scene.view_layers[layer_name]
+    context.scene.view_layers.remove(layer)
+
+
+
 def render_defaults(context):
     """Apply default render settings"""
 

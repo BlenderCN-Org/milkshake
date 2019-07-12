@@ -63,6 +63,20 @@ class RENDER_OT_layer_setup(bpy.types.Operator):
         return {'FINISHED'}
 
 
+class RENDER_OT_remove_view_layer(bpy.types.Operator):
+    """Delete the selected layer"""
+
+    bl_idname = "milkshake.remove_view_layer"
+    bl_label = "Remove View Layer"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    layer_name = bpy.props.StringProperty()
+
+    def execute(self, context):
+        func.remove_view_layer(context, layer_name = self.layer_name)
+        return {'FINISHED'}
+
+
 class RENDER_OT_render_defaults(bpy.types.Operator):
     """Apply default render settings"""
 
@@ -111,6 +125,27 @@ class PROPERTIES_PT_render(bpy.types.Panel):
         lay.operator("milkshake.camera_bounds_to_render_border", icon = 'CAMERA_DATA', text = "Set to Camera Bounds")
 
 
+class PROPERTIES_PT_layer_manager(bpy.types.Panel):
+
+    bl_idname = "PROPERTIES_PT_layer_manager"
+    bl_label = "Milkshake: Layer Manager"
+    bl_region_type = 'WINDOW'
+    bl_space_type = 'PROPERTIES'
+    bl_context = 'render'
+
+    def draw(self, context):
+        lay = self.layout
+        box = lay.box()
+        box.prop(context.scene.render, "use_single_layer")
+        lay.label(text = "Layers in this scene:")
+        col = lay.column(align = True)
+        for layer in context.scene.view_layers:
+            row = col.row(align = True)
+            row.prop(layer, "use", text = "")
+            row.label(text = layer.name)
+            row.operator("milkshake.remove_view_layer", icon = 'PANEL_CLOSE', text = "").layer_name = layer.name
+
+
 ##############################################################################
 # Registration
 ##############################################################################
@@ -119,8 +154,10 @@ class PROPERTIES_PT_render(bpy.types.Panel):
 classes = [
     MilkshakeRenderBorder,
     PROPERTIES_PT_render,
+    PROPERTIES_PT_layer_manager,
     RENDER_OT_camera_bounds_to_render_border,
     RENDER_OT_get_render_border,
+    RENDER_OT_remove_view_layer,
     RENDER_OT_render_defaults,
     RENDER_OT_layer_setup
 ]
