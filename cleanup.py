@@ -48,12 +48,11 @@ class CLEANUP_OT_rename_images(bpy.types.Operator):
 
 class PROPERTIES_PT_cleanup(bpy.types.Panel):
 
-    bl_context = "scene"
     bl_idname = "PROPERTIES_PT_cleanup"
-    bl_label = "Cleanup"
+    bl_label = "Milkshake: Scene Cleanup"
     bl_region_type = 'WINDOW'
     bl_space_type = 'PROPERTIES'
-    bl_parent_id = "PROPERTIES_PT_scene_tools"
+    bl_context = "scene"
     bl_options = {'DEFAULT_CLOSED'}
 
     def draw(self, context):

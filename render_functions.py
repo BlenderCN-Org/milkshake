@@ -15,55 +15,55 @@ from . import core_functions as core
 def get_render_border(context):
     """Convert Blender's current render border to Milkshake's parameters"""
     render = context.scene.render
-    milkshake = context.scene.milkshake_render_border
+    milkshake_rb = context.scene.milkshake_render_border
 
     border_min_x = render.border_min_x
     border_min_y = render.border_min_y
     border_max_x = render.border_max_x
     border_max_y = render.border_max_y
 
-    milkshake.left = border_min_x * render.resolution_x
-    milkshake.top = render.resolution_y - border_max_y * render.resolution_y
-    milkshake.width = (border_max_x - border_min_x) * render.resolution_x
-    milkshake.height = (border_max_y - border_min_y) * render.resolution_y
+    milkshake_rb.left = border_min_x * render.resolution_x
+    milkshake_rb.top = render.resolution_y - border_max_y * render.resolution_y
+    milkshake_rb.width = (border_max_x - border_min_x) * render.resolution_x
+    milkshake_rb.height = (border_max_y - border_min_y) * render.resolution_y
 
 
 def update_render_border_left(self, context):
     """Updates Blender's render border while tweaking the Milkshake property"""
     render = context.scene.render
-    milkshake = context.scene.milkshake_render_border
+    milkshake_rb = context.scene.milkshake_render_border
     render.use_border = True
-    render.border_min_x = milkshake.left / render.resolution_x
-    render.border_max_x = (milkshake.left + milkshake.width) / render.resolution_x
-    return None
+    render.border_min_x = milkshake_rb.left / render.resolution_x
+    render.border_max_x = (milkshake_rb.left + milkshake_rb.width) / render.resolution_x
+    return None # Required by bpy
 
 
 def update_render_border_top(self, context):
     """Updates Blender's render border while tweaking the Milkshake property"""
     render = context.scene.render
-    milkshake = context.scene.milkshake_render_border
+    milkshake_rb = context.scene.milkshake_render_border
     render.use_border = True
-    render.border_min_y = 1 - (milkshake.top + milkshake.height) / render.resolution_y
-    render.border_max_y = 1 - milkshake.top / render.resolution_y
-    return None
+    render.border_min_y = 1 - (milkshake_rb.top + milkshake_rb.height) / render.resolution_y
+    render.border_max_y = 1 - milkshake_rb.top / render.resolution_y
+    return None # Required by bpy
 
 
 def update_render_border_width(self, context):
     """Updates Blender's render border while tweaking the Milkshake property"""
     render = context.scene.render
-    milkshake = context.scene.milkshake_render_border
+    milkshake_rb = context.scene.milkshake_render_border
     render.use_border = True
-    render.border_max_x = (milkshake.left + milkshake.width) / render.resolution_x
-    return None
+    render.border_max_x = (milkshake_rb.left + milkshake_rb.width) / render.resolution_x
+    return None # Required by bpy
 
 
 def update_render_border_height(self, context):
     """Updates Blender's render border while tweaking the Milkshake property"""
     render = context.scene.render
-    milkshake = context.scene.milkshake_render_border
+    milkshake_rb = context.scene.milkshake_render_border
     render.use_border = True
-    render.border_min_y = 1 - (milkshake.top + milkshake.height) / render.resolution_y
-    return None
+    render.border_min_y = 1 - (milkshake_rb.top + milkshake_rb.height) / render.resolution_y
+    return None # Required by bpy
 
 
 def camera_bounds_to_render_border(context):
@@ -76,11 +76,11 @@ def camera_bounds_to_render_border(context):
     render = context.scene.render
     render.use_border = True
 
-    milkshake = context.scene.milkshake_render_border
-    milkshake.height = render.resolution_y
-    milkshake.left = 0
-    milkshake.top = 0
-    milkshake.width = render.resolution_x
+    milkshake_rb = context.scene.milkshake_render_border
+    milkshake_rb.height = render.resolution_y
+    milkshake_rb.left = 0
+    milkshake_rb.top = 0
+    milkshake_rb.width = render.resolution_x
 
 
 def layer_setup(context):

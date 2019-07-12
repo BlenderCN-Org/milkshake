@@ -19,7 +19,7 @@ def generate_contact_sheet(context, directory, columns, frame_width, frame_heigh
     image_count = len(images)
 
     if image_count < 2:
-        return False
+        raise MilkshakeError(f"{directory} contains less than two images.")
 
     else:
         rows = math.ceil(image_count / columns)
@@ -102,8 +102,6 @@ def generate_contact_sheet(context, directory, columns, frame_width, frame_heigh
             else:
                 column = 0
                 row += 1
-
-        return True
 
 
 def generate_credits_roll(context, image_filepath, speed, frame_width, frame_height):

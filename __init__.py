@@ -26,22 +26,15 @@ if "bpy" in locals():
 else:
     import bpy
 
-
 ##############################################################################
-# Panels
+# Milkshake Error
 ##############################################################################
 
 
-class PROPERTIES_PT_scene_tools(bpy.types.Panel):
+class MilkshakeError(Exception):
 
-    bl_context = "scene"
-    bl_idname = "PROPERTIES_PT_scene_tools"
-    bl_label = "Milkshake Scene Tools"
-    bl_region_type = "WINDOW"
-    bl_space_type = "PROPERTIES"
-
-    def draw(self, context):
-        pass
+    def __init__(self, message):
+        self.message = message
 
 
 ##############################################################################
@@ -50,13 +43,11 @@ class PROPERTIES_PT_scene_tools(bpy.types.Panel):
 
 
 def register():
-    bpy.utils.register_class(PROPERTIES_PT_scene_tools)
     for module in modules:
         module.register()
 
 
 def unregister():
-    bpy.utils.unregister_class(PROPERTIES_PT_scene_tools)
     for module in modules:
         module.unregister()
 

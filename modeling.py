@@ -126,8 +126,8 @@ class MODELING_OT_transfer_transforms(bpy.types.Operator):
 class PROPERTIES_PT_modeling(bpy.types.Panel):
 
     bl_idname = "PROPERTIES_PT_modeling"
-    bl_label = "Modeling and Setdress"
-    bl_parent_id = "PROPERTIES_PT_scene_tools"
+    bl_label = "Milkshake: Modeling"
+    bl_context = "scene"
     bl_region_type = 'WINDOW'
     bl_space_type = 'PROPERTIES'
     bl_options = {'DEFAULT_CLOSED'}

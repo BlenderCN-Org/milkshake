@@ -94,4 +94,4 @@ def sync_timeline(self, context):
         new_start_frame += shot.duration
     context.scene.frame_start = 1001
     context.scene.frame_end = new_start_frame - 1
-    return None
+    return None # Required by bpy

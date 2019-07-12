@@ -50,6 +50,8 @@ class COMP_OT_generate_credits_roll(bpy.types.Operator):
         return context.window_manager.invoke_props_dialog(self)
 
     def execute(self, context):
+        func.generate_credits_roll(context, image_filepath = self.image_filepath, speed = self.speed, frame_width = self.frame_width, frame_height = self.frame_height)
+        return {'FINISHED'}
 
 
 

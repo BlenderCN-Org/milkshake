@@ -83,7 +83,7 @@ class RENDER_OT_render_defaults(bpy.types.Operator):
 class PROPERTIES_PT_render(bpy.types.Panel):
 
     bl_idname = "PROPERTIES_PT_render"
-    bl_label = "Milkshake Rendering Tools"
+    bl_label = "Milkshake: Rendering Tools"
     bl_region_type = 'WINDOW'
     bl_space_type = 'PROPERTIES'
     bl_context = 'render'

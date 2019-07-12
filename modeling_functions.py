@@ -24,8 +24,7 @@ def add_selection_to_tt_set(context, tt_set):
             item = context.scene.milkshake_tt_set_b.add()
             item.obj_name = obj.name
     else:
-        return False
-    return True
+        raise MilkshakeError("There's no active selection set.")
 
 
 def clear_sharp(context):
@@ -50,7 +49,7 @@ def clear_tt_set(context, tt_set):
     elif tt_set == 'b':
         context.scene.milkshake_tt_set_b.clear()
     else:
-        return False
+        raise MilkshakeError("There's no active selection set.")
 
 
 def select_unsubdivided(context):
@@ -113,16 +112,16 @@ def transfer_transforms(context):
     set_b = context.scene.milkshake_tt_set_b
 
     if len(set_a) != len(set_b):
-        raise ValueError("Both sets of objects must have equal length.")
+        raise MilkshakeError("Both sets of objects must have equal length.")
 
     else:
 
         for ob in set_a:
             if ob.obj_name not in context.scene.objects.keys():
-                raise ReferenceError(f"Object '{ob.obj_name}' doesn't exist anymore.")
+                raise MilkshakeError(f"Object '{ob.obj_name}' doesn't exist anymore.")
         for ob in set_b:
             if ob.obj_name not in context.scene.objects.keys():
-                raise ReferenceError(f"Object '{ob.obj_name}' doesn't exist anymore.")
+                raise MilkshakeError(f"Object '{ob.obj_name}' doesn't exist anymore.")
 
         for index, ob in enumerate(set_b):
             object_a = context.scene.objects[set_a[index].obj_name]

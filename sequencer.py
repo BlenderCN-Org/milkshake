@@ -79,7 +79,7 @@ class PROPERTIES_PT_sequencer(bpy.types.Panel):
 
     bl_context = "scene"
     bl_idname = "PROPERTIES_PT_sequencer"
-    bl_label = "Milkshake Sequencer"
+    bl_label = "Milkshake: Sequencer"
     bl_region_type = 'WINDOW'
     bl_space_type = 'PROPERTIES'
     bl_options = {'DEFAULT_CLOSED'}

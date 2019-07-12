@@ -62,4 +62,3 @@ def rename_selection(self, context):
             raise IndexError("No objects selected.")
     else:
         raise ValueError("You have to provide a name.")
-    return None
