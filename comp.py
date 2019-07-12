@@ -51,7 +51,6 @@ class COMP_OT_generate_credits_roll(bpy.types.Operator):
 
     def execute(self, context):
         func.generate_credits_roll(context, image_filepath = self.image_filepath, speed = self.speed, frame_width = self.width, frame_height = self.height)
-        func.generate_contact_sheet(context, directory = self.directory)
         return {'FINISHED'}
 
 
