@@ -139,7 +139,8 @@ class PROPERTIES_PT_modeling(bpy.types.Panel):
         col.scale_y = 1.5
         sub = col.row(align = True)
         sub.operator("milkshake.modeling_ot_clear_sharp", icon = 'EDGESEL')
-        sub = col.split(align = True, factor = 0.6)
+        sub = col.row(align = True)
+        sub.operator("milkshake.modeling_ot_select_unsubdivided", icon = 'MOD_SUBSURF')
         sub.operator("milkshake.modeling_ot_set_subdivision", icon = 'MOD_SUBSURF')
         sub.operator("milkshake.modeling_ot_set_subdivision_to_adaptive")
 

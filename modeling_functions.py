@@ -63,7 +63,8 @@ def select_unsubdivided(context):
             if mod.type == 'SUBSURF':
                 has_enabled_subsurf_modifiers = mod.show_render and (mod.render_levels > 0 or mesh.cycles.use_adaptive_subdivision)
                 break
-        mesh.select = not has_enabled_subsurf_modifiers
+        if mesh.name in context.view_layer.objects:
+            mesh.select_set(not has_enabled_subsurf_modifiers)
 
 
 def set_subdivision(context, iterations):
