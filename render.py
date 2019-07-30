@@ -70,7 +70,7 @@ class RENDER_OT_remove_view_layer(bpy.types.Operator):
     bl_label = "Remove View Layer"
     bl_options = {'REGISTER', 'UNDO'}
 
-    layer_name = bpy.props.StringProperty()
+    layer_name: bpy.props.StringProperty()
 
     def execute(self, context):
         func.remove_view_layer(context, layer_name = self.layer_name)
@@ -94,9 +94,9 @@ class RENDER_OT_render_defaults(bpy.types.Operator):
 ##############################################################################
 
 
-class PROPERTIES_PT_render(bpy.types.Panel):
+class PROPERTIES_PT_milkshake_render(bpy.types.Panel):
 
-    bl_idname = "PROPERTIES_PT_render"
+    bl_idname = "PROPERTIES_PT_milkshake_render"
     bl_label = "Milkshake: Rendering Tools"
     bl_region_type = 'WINDOW'
     bl_space_type = 'PROPERTIES'
@@ -153,7 +153,7 @@ class PROPERTIES_PT_layer_manager(bpy.types.Panel):
 
 classes = [
     MilkshakeRenderBorder,
-    PROPERTIES_PT_render,
+    PROPERTIES_PT_milkshake_render,
     PROPERTIES_PT_layer_manager,
     RENDER_OT_camera_bounds_to_render_border,
     RENDER_OT_get_render_border,

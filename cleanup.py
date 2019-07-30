@@ -46,9 +46,9 @@ class CLEANUP_OT_rename_images(bpy.types.Operator):
 ##############################################################################
 
 
-class PROPERTIES_PT_cleanup(bpy.types.Panel):
+class PROPERTIES_PT_milkshake_cleanup(bpy.types.Panel):
 
-    bl_idname = "PROPERTIES_PT_cleanup"
+    bl_idname = "PROPERTIES_PT_milkshake_cleanup"
     bl_label = "Milkshake: Scene Cleanup"
     bl_region_type = 'WINDOW'
     bl_space_type = 'PROPERTIES'
@@ -81,7 +81,7 @@ class PROPERTIES_PT_cleanup(bpy.types.Panel):
 classes = [
     CLEANUP_OT_rename,
     CLEANUP_OT_rename_images,
-    PROPERTIES_PT_cleanup
+    PROPERTIES_PT_milkshake_cleanup
 ]
 
 

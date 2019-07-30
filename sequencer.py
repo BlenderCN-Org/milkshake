@@ -75,10 +75,10 @@ class SEQUENCER_OT_new_shot(bpy.types.Operator):
 ##############################################################################
 
 
-class PROPERTIES_PT_sequencer(bpy.types.Panel):
+class PROPERTIES_PT_milkshake_sequencer(bpy.types.Panel):
 
     bl_context = "scene"
-    bl_idname = "PROPERTIES_PT_sequencer"
+    bl_idname = "PROPERTIES_PT_milkshake_sequencer"
     bl_label = "Milkshake: Sequencer"
     bl_region_type = 'WINDOW'
     bl_space_type = 'PROPERTIES'
@@ -110,7 +110,7 @@ class PROPERTIES_PT_sequencer(bpy.types.Panel):
 
 classes = [
     MilkshakeSequencerShot,
-    PROPERTIES_PT_sequencer,
+    PROPERTIES_PT_milkshake_sequencer,
     SEQUENCER_OT_clear_shots,
     SEQUENCER_OT_delete_shot,
     SEQUENCER_OT_new_shot

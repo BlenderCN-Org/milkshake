@@ -60,9 +60,9 @@ class COMP_OT_generate_credits_roll(bpy.types.Operator):
 ##############################################################################
 
 
-class COMPOSITOR_PT_generators(bpy.types.Panel):
+class COMPOSITOR_PT_milkshake_generators(bpy.types.Panel):
 
-    bl_idname = "COMPOSITOR_PT_generators"
+    bl_idname = "COMPOSITOR_PT_milkshake_generators"
     bl_label = "Generators"
     bl_region_type = 'UI'
     bl_space_type = 'NODE_EDITOR'
@@ -82,7 +82,7 @@ class COMPOSITOR_PT_generators(bpy.types.Panel):
 classes = [
     COMP_OT_generate_contact_sheet,
     COMP_OT_generate_credits_roll,
-    COMPOSITOR_PT_generators
+    COMPOSITOR_PT_milkshake_generators
 ]
 
 

@@ -123,9 +123,9 @@ class MODELING_OT_transfer_transforms(bpy.types.Operator):
 ##############################################################################
 
 
-class PROPERTIES_PT_modeling(bpy.types.Panel):
+class PROPERTIES_PT_milkshake_modeling(bpy.types.Panel):
 
-    bl_idname = "PROPERTIES_PT_modeling"
+    bl_idname = "PROPERTIES_PT_milkshake_modeling"
     bl_label = "Milkshake: Modeling"
     bl_context = "scene"
     bl_region_type = 'WINDOW'
@@ -179,7 +179,7 @@ classes = [
     MODELING_OT_set_subdivision,
     MODELING_OT_set_subdivision_to_adaptive,
     MODELING_OT_transfer_transforms,
-    PROPERTIES_PT_modeling
+    PROPERTIES_PT_milkshake_modeling
 ]
 
 
