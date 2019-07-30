@@ -71,20 +71,20 @@ class PROPERTIES_PT_milkshake_cleanup(bpy.types.Panel):
         lay.use_property_split = True
         lay.prop(context.scene, "milkshake_renamer_keyword")
         lay.separator()
-        lay.label(text = "Auto-rename all:")
-        col = lay.column(align = True)
-        sub = col.row(align = True)
-        sub.operator("milkshake.cleanup_ot_rename", text = "Objects").rename_datablock = False
-        sub.label(text = "to their data")
-        sub = col.row(align = True)
-        sub.operator("milkshake.cleanup_ot_rename", text = "Datablocks").rename_datablock = True
-        sub.label(text = "to their object")
-        sub = col.row(align = True)
-        sub.operator("milkshake.cleanup_ot_rename_images", text = "Images")
-        sub.label(text = "to their filename")
-        sub = col.row(align = True)
-        sub.operator("milkshake.cleanup_ot_rename_materials_to_texture")
-        sub.label(text = "to their first Image Texture")
+        lay.label(text = "Auto-rename:")
+        split = lay.split(align = True, factor = 0.3)
+
+        buttons = split.column(align = True)
+        buttons.operator("milkshake.cleanup_ot_rename", text = "Objects", icon = 'OBJECT_DATA').rename_datablock = False
+        buttons.operator("milkshake.cleanup_ot_rename", text = "Datablocks", icon = 'MESH_DATA').rename_datablock = True
+        buttons.operator("milkshake.cleanup_ot_rename_images", text = "Images", icon = 'OUTLINER_OB_IMAGE')
+        buttons.operator("milkshake.cleanup_ot_rename_materials_to_texture", icon = 'MATERIAL')
+
+        text = split.column(align = True)
+        text.label(text = "to their data")
+        text.label(text = "to their object")
+        text.label(text = "to their filename")
+        text.label(text = "to their first Image Texture")
 
 
 ##############################################################################
