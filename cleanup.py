@@ -28,6 +28,17 @@ class CLEANUP_OT_rename(bpy.types.Operator):
         return {'FINISHED'}
 
 
+class CLEANUP_OT_rename_materials_to_texture(bpy.types.Operator):
+    """Auto-rename all materials to the name of their first Image Texture node's datablock"""
+
+    bl_idname = "milkshake.cleanup_ot_rename_materials_to_texture"
+    bl_label = "Materials"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+        func.rename_materials_to_texture(context)
+        return {'FINISHED'}
+
 
 class CLEANUP_OT_rename_images(bpy.types.Operator):
     """Auto-rename all images to their respective filename"""
@@ -71,6 +82,9 @@ class PROPERTIES_PT_milkshake_cleanup(bpy.types.Panel):
         sub = col.row(align = True)
         sub.operator("milkshake.cleanup_ot_rename_images", text = "Images")
         sub.label(text = "to their filename")
+        sub = col.row(align = True)
+        sub.operator("milkshake.cleanup_ot_rename_materials_to_texture")
+        sub.label(text = "to their first Image Texture")
 
 
 ##############################################################################
@@ -81,6 +95,7 @@ class PROPERTIES_PT_milkshake_cleanup(bpy.types.Panel):
 classes = [
     CLEANUP_OT_rename,
     CLEANUP_OT_rename_images,
+    CLEANUP_OT_rename_materials_to_texture,
     PROPERTIES_PT_milkshake_cleanup
 ]
 

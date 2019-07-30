@@ -47,6 +47,21 @@ def rename_images(context):
                 core.log(f"Renamed {image.name}")
 
 
+def rename_materials_to_texture(context):
+    """Auto-rename all materials to the name of their first Image Texture node's datablock"""
+
+    for mat in bpy.data.materials:
+        first_image_texture = None
+        for node in mat.node_tree.nodes:
+            if node.type == 'TEX_IMAGE':
+                if node.image:
+                    first_image_texture = node
+                    break
+        if first_image_texture:
+            mat.name = first_image_texture.image.name
+            core.log(f"Renamed material {mat.name}")
+
+
 def rename_selection(self, context):
     """Rename the selected objects using the given keyword"""
     keyword = context.scene.milkshake_renamer_keyword
