@@ -12,6 +12,20 @@ from . import core_functions as core
 ##############################################################################
 
 
+def remove_unused_materials(context):
+    """Remove unused material slots from meshes and curves.\nOn selection or everything"""
+
+    if len(context.selected_objects) > 0:
+        objects = context.selected_objects
+    else:
+        objects = context.scene.objects
+
+    for obj in objects:
+        if obj.type == 'MESH' or obj.type == 'CURVE':
+            context.view_layer.objects.active = obj
+            bpy.ops.object.material_slot_remove_unused()
+
+
 def rename(context, rename_datablock):
     """Auto-rename the selected objects to their data, or vice-versa.\nOn selection or everything"""
 
@@ -64,6 +78,7 @@ def rename_materials_to_texture(context):
 
 def rename_selection(self, context):
     """Rename the selected objects using the given keyword"""
+
     keyword = context.scene.milkshake_renamer_keyword
     selection = context.selected_objects
     if keyword != "":

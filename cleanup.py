@@ -14,6 +14,18 @@ reload(func)
 ##############################################################################
 
 
+class CLEANUP_OT_remove_unused_materials(bpy.types.Operator):
+    """Remove unused material slots from meshes and curves.\nOn selection or everything"""
+
+    bl_idname = "milkshake.remove_unused_materials"
+    bl_label = "Unused materials"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+        func.remove_unused_materials(context)
+        return {'FINISHED'}
+
+
 class CLEANUP_OT_rename(bpy.types.Operator):
     """Auto-rename the selected objects to their data, or vice-versa.\nOn selection or everything"""
 
@@ -86,6 +98,9 @@ class PROPERTIES_PT_milkshake_cleanup(bpy.types.Panel):
         text.label(text = "to their filename")
         text.label(text = "to their first Image Texture")
 
+        lay.label(text = "Auto-remove:")
+        lay.operator("milkshake.remove_unused_materials", icon = 'MATERIAL')
+
 
 ##############################################################################
 # Registration
@@ -93,6 +108,7 @@ class PROPERTIES_PT_milkshake_cleanup(bpy.types.Panel):
 
 
 classes = [
+    CLEANUP_OT_remove_unused_materials,
     CLEANUP_OT_rename,
     CLEANUP_OT_rename_images,
     CLEANUP_OT_rename_materials_to_texture,
