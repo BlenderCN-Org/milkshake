@@ -71,12 +71,11 @@ def set_subdivision(context, iterations):
     """Add or set subdivision iterations for meshes.\nOn selection or everything"""
 
     if len(context.selected_objects) > 0:
-        objects = context.selected_objects
+        objects = [ob for ob in context.selected_objects if ob.type == 'MESH']
     else:
-        objects = bpy.data.objects
+        objects = [ob for ob in bpy.data.objects if ob.type == 'MESH']
 
-    meshes = [obj for obj in objects if obj.type == 'MESH']
-    for mesh in meshes:
+    for mesh in objects:
         for mod in mesh.modifiers:
             if mod.type == 'SUBSURF':
                 mesh.modifiers.remove(mod)
