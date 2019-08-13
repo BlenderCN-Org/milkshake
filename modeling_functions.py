@@ -52,6 +52,18 @@ def clear_tt_set(context, tt_set):
         raise MilkshakeError("There's no active selection set.")
 
 
+def clear_vertex_groups(context):
+    """Delete all vertex groups.\nOn selection or everything"""
+
+    if len(context.selected_objects) > 0:
+        objects = [ob for ob in context.selected_objects]
+    else:
+        objects = [ob for ob in bpy.data.objects]
+
+    for mesh in objects:
+        mesh.vertex_groups.clear()
+
+
 def select_unsubdivided(context):
     """Select all objects with a mesh data block and no subdivisions"""
 

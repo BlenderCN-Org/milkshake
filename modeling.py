@@ -65,6 +65,18 @@ class MODELING_OT_clear_tt_set(bpy.types.Operator):
         return {'FINISHED'}
 
 
+class MODELING_OT_clear_vertex_groups(bpy.types.Operator):
+    """Delete all vertex groups.\nOn selection or everything"""
+
+    bl_idname = "milkshake.modeling_ot_clear_vertex_groups"
+    bl_label = "Clear Vertex Groups"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+        func.clear_vertex_groups(context)
+        return {'FINISHED'}
+
+
 class MODELING_OT_select_unsubdivided(bpy.types.Operator):
     """Select all objects with a mesh data block and no subdivisions"""
 
@@ -139,6 +151,7 @@ class PROPERTIES_PT_milkshake_modeling(bpy.types.Panel):
         col.scale_y = 1.5
         sub = col.row(align = True)
         sub.operator("milkshake.modeling_ot_clear_sharp", icon = 'EDGESEL')
+        sub.operator("milkshake.modeling_ot_clear_vertex_groups", icon = 'GROUP_VERTEX')
         sub = col.row(align = True)
         sub.operator("milkshake.modeling_ot_select_unsubdivided", icon = 'MOD_SUBSURF')
         sub.operator("milkshake.modeling_ot_set_subdivision", icon = 'MOD_SUBSURF')
@@ -175,6 +188,7 @@ classes = [
     MODELING_OT_add_selection_to_tt_set,
     MODELING_OT_clear_sharp,
     MODELING_OT_clear_tt_set,
+    MODELING_OT_clear_vertex_groups,
     MODELING_OT_select_unsubdivided,
     MODELING_OT_set_subdivision,
     MODELING_OT_set_subdivision_to_adaptive,
