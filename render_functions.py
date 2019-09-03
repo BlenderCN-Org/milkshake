@@ -210,16 +210,7 @@ def render_defaults(context):
     render.tile_y                               = 32
     cycles.tile_order                           = 'CENTER'
     # Output
-    render.resolution_x                         = 2048
-    render.resolution_y                         = 858
-    scene.frame_start                           = 1001
-    scene.frame_end                             = 1250
-    scene.frame_step                            = 1
     render.use_compositing                      = False
     render.use_sequencer                        = False
-    render.image_settings.file_format           = 'PNG'
-    render.image_settings.color_mode            = 'RGB'
-    render.image_settings.color_depth           = '8'
-    render.image_settings.compression           = 100
 
     core.log("Applied render defaults.")
