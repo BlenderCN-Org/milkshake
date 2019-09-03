@@ -118,6 +118,18 @@ class MODELING_OT_set_subdivision_to_adaptive(bpy.types.Operator):
         return {'FINISHED'}
 
 
+class MODELING_OT_snap_rotation(bpy.types.Operator):
+    """Snap rotation to 90-degree steps.\nOn selection or everything"""
+
+    bl_idname = "milkshake.modeling_ot_snap_rotation"
+    bl_label = "Snap Rotation"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+        func.snap_rotation(context)
+        return {'FINISHED'}
+
+
 class MODELING_OT_transfer_transforms(bpy.types.Operator):
     """Copy transformation values from a set of objects to another"""
 
@@ -154,8 +166,11 @@ class PROPERTIES_PT_milkshake_modeling(bpy.types.Panel):
         sub.operator("milkshake.modeling_ot_clear_vertex_groups", icon = 'GROUP_VERTEX')
         sub = col.row(align = True)
         sub.operator("milkshake.modeling_ot_select_unsubdivided", icon = 'MOD_SUBSURF')
+        sub = col.row(align = True)
         sub.operator("milkshake.modeling_ot_set_subdivision", icon = 'MOD_SUBSURF')
         sub.operator("milkshake.modeling_ot_set_subdivision_to_adaptive")
+        sub = col.row(align = True)
+        sub.operator("milkshake.modeling_ot_snap_rotation", icon = 'CON_ROTLIMIT')
 
         # Transfer Transforms
         lay.label(text = "Transfer Transforms:")
@@ -192,6 +207,7 @@ classes = [
     MODELING_OT_select_unsubdivided,
     MODELING_OT_set_subdivision,
     MODELING_OT_set_subdivision_to_adaptive,
+    MODELING_OT_snap_rotation,
     MODELING_OT_transfer_transforms,
     PROPERTIES_PT_milkshake_modeling
 ]

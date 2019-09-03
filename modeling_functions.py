@@ -3,7 +3,7 @@
 ##############################################################################
 
 
-import bpy, re
+import bpy, re, math
 from . import core_functions as core
 
 
@@ -115,6 +115,33 @@ def set_subdivision_to_adaptive(context):
     for obj in objects:
         obj.cycles.use_adaptive_subdivision = True
         core.log(f"Enabled adaptive subdivision for {obj.name}")
+
+
+def snap_rotation(context):
+    """Snap rotation to 90-degree steps"""
+
+    if len(context.selected_objects) > 0:
+        objects = context.selected_objects
+    else:
+        objects = bpy.data.objects
+
+    for ob in objects:
+        for i in range(3):
+            original_in_degrees = math.degrees(ob.rotation_euler[i]) % 360
+            if 45 < original_in_degrees < 90:
+                ob.rotation_euler[i] = math.radians(90)
+            elif 90 < original_in_degrees < 135:
+                ob.rotation_euler[i] = math.radians(90)
+            elif 135 < original_in_degrees < 180:
+                ob.rotation_euler[i] = math.radians(180)
+            elif 180 < original_in_degrees < 225:
+                ob.rotation_euler[i] = math.radians(180)
+            elif 225 < original_in_degrees < 270:
+                ob.rotation_euler[i] = math.radians(270)
+            elif 270 < original_in_degrees < 315:
+                ob.rotation_euler[i] = math.radians(270)
+            else:
+                ob.rotation_euler[i] = 0
 
 
 def transfer_transforms(context):
