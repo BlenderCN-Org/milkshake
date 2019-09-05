@@ -30,24 +30,39 @@ def rename(context, rename_datablock):
     """Auto-rename the selected objects to their data, or vice-versa.\nOn selection or everything"""
 
     if len(context.selected_objects) > 0:
-        objects = context.selected_objects
+        objects = [ob for ob in context.selected_objects if ob.data]
     else:
-        objects = bpy.data.objects
+        objects = [ob for ob in bpy.data.objects if ob.data]
 
     for obj in objects:
-        if obj.data:
-            if rename_datablock:
-                if obj.data.library:
-                    core.log(f"Datablock {obj.data.name} is linked from a library.")
-                else:
-                    obj.data.name = obj.name
-                    core.log(f"Renamed datablock {obj.data.name}")
+        if rename_datablock:
+            if obj.data.library:
+                core.log(f"Datablock {obj.data.name} is linked from a library.")
             else:
-                if obj.library:
-                    core.log(f"Object {obj.name} is linked from a library.")
-                else:
-                    obj.name = obj.data.name
-                    core.log(f"Renamed object {obj.name}")
+                obj.data.name = obj.name
+                core.log(f"Renamed datablock {obj.data.name}")
+        else:
+            if obj.library:
+                core.log(f"Object {obj.name} is linked from a library.")
+            else:
+                obj.name = obj.data.name
+                core.log(f"Renamed object {obj.name}")
+
+
+def rename_collection_instances(context):
+    """Auto-rename the selected empties to the collection they instance.\nOn selection or everything"""
+
+    if len(context.selected_objects) > 0:
+        objects = [ob for ob in context.selected_objects if ob.instance_type == 'COLLECTION']
+    else:
+        objects = [ob for ob in bpy.data.objects if ob.instance_type == 'COLLECTION']
+
+    for obj in objects:
+        if obj.library:
+            core.log(f"Collection instancer {obj.name} is linked from a library.")
+        else:
+            obj.name = obj.instance_collection.name
+            core.log(f"Renamed instancer to {obj.name}")
 
 
 def rename_images(context):
