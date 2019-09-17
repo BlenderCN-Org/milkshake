@@ -76,6 +76,18 @@ class CLEANUP_OT_rename_images_from_filenames(bpy.types.Operator):
         return {'FINISHED'}
 
 
+class CLEANUP_OT_set_collection_instance_offset(bpy.types.Operator):
+    """Set the object's collection's instance offset to the object's origin.\nOn selection or everything."""
+
+    bl_idname = "milkshake.cleanup_ot_set_collection_instance_offset"
+    bl_label = "Set Collection Instance Offset"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+        func.set_collection_instance_offset(context)
+        return {'FINISHED'}
+
+
 ##############################################################################
 # Panels
 ##############################################################################
@@ -110,6 +122,10 @@ class PROPERTIES_PT_milkshake_cleanup(bpy.types.Panel):
         lay.label(text = "Auto-remove:")
         lay.operator("milkshake.remove_unused_materials", icon = 'MATERIAL')
 
+        lay.separator()
+
+        lay.operator("milkshake.cleanup_ot_set_collection_instance_offset", icon = 'OUTLINER_OB_EMPTY')
+
 
 ##############################################################################
 # Registration
@@ -122,6 +138,7 @@ classes = [
     CLEANUP_OT_rename_instances_from_collections,
     CLEANUP_OT_rename_images_from_filenames,
     CLEANUP_OT_rename_materials_from_textures,
+    CLEANUP_OT_set_collection_instance_offset,
     PROPERTIES_PT_milkshake_cleanup
 ]
 

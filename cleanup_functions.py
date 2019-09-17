@@ -107,3 +107,17 @@ def rename_selection(self, context):
             raise IndexError("No objects selected.")
     else:
         raise ValueError("You have to provide a name.")
+
+
+def set_collection_instance_offset(context):
+    """Set the object's collection's instance offset to the object's origin.\nOn selection or everything"""
+
+    if len(context.selected_objects) > 0:
+        objects = [ob for ob in context.selected_objects]
+    else:
+        objects = [ob for ob in bpy.data.objects]
+
+    for ob in objects:
+        collection = [coll for coll in bpy.data.collections if ob.name in coll.objects][0]
+        if collection:
+            collection.instance_offset = ob.location
