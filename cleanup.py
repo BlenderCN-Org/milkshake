@@ -26,53 +26,53 @@ class CLEANUP_OT_remove_unused_materials(bpy.types.Operator):
         return {'FINISHED'}
 
 
-class CLEANUP_OT_rename(bpy.types.Operator):
+class CLEANUP_OT_rename_objects_from_data(bpy.types.Operator):
     """Auto-rename the selected objects to their data, or vice-versa.\nOn selection or everything"""
 
-    bl_idname = "milkshake.cleanup_ot_rename"
+    bl_idname = "milkshake.cleanup_ot_rename_objects_from_data"
     bl_label = "Objects From Data"
     bl_options = {'REGISTER', 'UNDO'}
 
-    rename_datablock : bpy.props.BoolProperty(name = "Data From Objects", default = False)
+    data_from_objects : bpy.props.BoolProperty(name = "Data From Objects", default = False)
 
     def execute(self, context):
-        func.rename(context, rename_datablock = self.rename_datablock)
+        func.rename_objects_from_data(context, data_from_objects = self.data_from_objects)
         return {'FINISHED'}
 
 
-class CLEANUP_OT_rename_collection_instances(bpy.types.Operator):
+class CLEANUP_OT_rename_instances_from_collections(bpy.types.Operator):
     """Auto-rename the selected empties to the collection they instance.\nOn selection or everything"""
 
-    bl_idname = "milkshake.cleanup_ot_rename_collection_instances"
+    bl_idname = "milkshake.cleanup_ot_rename_instances_from_collections"
     bl_label = "Instances From Collections"
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
-        func.rename_collection_instances(context)
+        func.rename_instances_from_collections(context)
         return {'FINISHED'}
 
 
-class CLEANUP_OT_rename_materials_to_texture(bpy.types.Operator):
+class CLEANUP_OT_rename_materials_from_textures(bpy.types.Operator):
     """Auto-rename all materials to the name of their first Image Texture node's datablock"""
 
-    bl_idname = "milkshake.cleanup_ot_rename_materials_to_texture"
+    bl_idname = "milkshake.cleanup_ot_rename_materials_from_textures"
     bl_label = "Materials From Image Textures"
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
-        func.rename_materials_to_texture(context)
+        func.rename_materials_from_textures(context)
         return {'FINISHED'}
 
 
-class CLEANUP_OT_rename_images(bpy.types.Operator):
+class CLEANUP_OT_rename_images_from_filenames(bpy.types.Operator):
     """Auto-rename all images to their respective filename"""
 
-    bl_idname = "milkshake.cleanup_ot_rename_images"
+    bl_idname = "milkshake.cleanup_ot_rename_images_from_filenames"
     bl_label = "Images From Filenames"
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
-        func.rename_images(context)
+        func.rename_images_from_filenames(context)
         return {'FINISHED'}
 
 
@@ -101,11 +101,11 @@ class PROPERTIES_PT_milkshake_cleanup(bpy.types.Panel):
         lay.label(text = "Auto-rename:")
         autorename = lay.column(align = True)
         objects_data = autorename.row(align = True)
-        objects_data.operator("milkshake.cleanup_ot_rename", icon = 'OBJECT_DATA').rename_datablock = False
-        objects_data.operator("milkshake.cleanup_ot_rename", text = "Data From Objects", icon = 'MESH_DATA').rename_datablock = True
-        autorename.operator("milkshake.cleanup_ot_rename_images", icon = 'OUTLINER_OB_IMAGE')
-        autorename.operator("milkshake.cleanup_ot_rename_materials_to_texture", icon = 'MATERIAL')
-        autorename.operator("milkshake.cleanup_ot_rename_collection_instances", icon = 'OUTLINER_OB_GROUP_INSTANCE')
+        objects_data.operator("milkshake.cleanup_ot_rename_objects_from_data", icon = 'OBJECT_DATA').data_from_objects = False
+        objects_data.operator("milkshake.cleanup_ot_rename_objects_from_data", text = "Data From Objects", icon = 'MESH_DATA').data_from_objects = True
+        autorename.operator("milkshake.cleanup_ot_rename_images_from_filenames", icon = 'OUTLINER_OB_IMAGE')
+        autorename.operator("milkshake.cleanup_ot_rename_materials_from_textures", icon = 'MATERIAL')
+        autorename.operator("milkshake.cleanup_ot_rename_instances_from_collections", icon = 'OUTLINER_OB_GROUP_INSTANCE')
 
         lay.label(text = "Auto-remove:")
         lay.operator("milkshake.remove_unused_materials", icon = 'MATERIAL')
@@ -118,10 +118,10 @@ class PROPERTIES_PT_milkshake_cleanup(bpy.types.Panel):
 
 classes = [
     CLEANUP_OT_remove_unused_materials,
-    CLEANUP_OT_rename,
-    CLEANUP_OT_rename_collection_instances,
-    CLEANUP_OT_rename_images,
-    CLEANUP_OT_rename_materials_to_texture,
+    CLEANUP_OT_rename_objects_from_data,
+    CLEANUP_OT_rename_instances_from_collections,
+    CLEANUP_OT_rename_images_from_filenames,
+    CLEANUP_OT_rename_materials_from_textures,
     PROPERTIES_PT_milkshake_cleanup
 ]
 

@@ -26,30 +26,18 @@ def remove_unused_materials(context):
             bpy.ops.object.material_slot_remove_unused()
 
 
-def rename(context, rename_datablock):
-    """Auto-rename the selected objects to their data, or vice-versa.\nOn selection or everything"""
+def rename_images_from_filenames(context):
+    """Auto-rename all images to their respective filename"""
 
-    if len(context.selected_objects) > 0:
-        objects = [ob for ob in context.selected_objects if ob.data]
-    else:
-        objects = [ob for ob in bpy.data.objects if ob.data]
-
-    for obj in objects:
-        if rename_datablock:
-            if obj.data.library:
-                core.log(f"Datablock {obj.data.name} is linked from a library.")
-            else:
-                obj.data.name = obj.name
-                core.log(f"Renamed datablock {obj.data.name}")
-        else:
-            if obj.library:
-                core.log(f"Object {obj.name} is linked from a library.")
-            else:
-                obj.name = obj.data.name
-                core.log(f"Renamed object {obj.name}")
+    for image in bpy.data.images:
+        if not image.library:
+            filename = os.path.splitext(os.path.basename(image.filepath))[0]
+            if filename != "":
+                image.name = filename
+                core.log(f"Renamed {image.name}")
 
 
-def rename_collection_instances(context):
+def rename_instances_from_collections(context):
     """Auto-rename the selected empties to the collection they instance.\nOn selection or everything"""
 
     if len(context.selected_objects) > 0:
@@ -65,18 +53,7 @@ def rename_collection_instances(context):
             core.log(f"Renamed instancer to {obj.name}")
 
 
-def rename_images(context):
-    """Auto-rename all images to their respective filename"""
-
-    for image in bpy.data.images:
-        if not image.library:
-            filename = os.path.splitext(os.path.basename(image.filepath))[0]
-            if filename != "":
-                image.name = filename
-                core.log(f"Renamed {image.name}")
-
-
-def rename_materials_to_texture(context):
+def rename_materials_from_textures(context):
     """Auto-rename all materials to the name of their first Image Texture node's datablock"""
 
     for mat in bpy.data.materials:
@@ -89,6 +66,29 @@ def rename_materials_to_texture(context):
         if first_image_texture:
             mat.name = first_image_texture.image.name
             core.log(f"Renamed material {mat.name}")
+
+
+def rename_objects_from_data(context, data_from_objects):
+    """Auto-rename the selected objects to their data, or vice-versa.\nOn selection or everything"""
+
+    if len(context.selected_objects) > 0:
+        objects = [ob for ob in context.selected_objects if ob.data]
+    else:
+        objects = [ob for ob in bpy.data.objects if ob.data]
+
+    for obj in objects:
+        if data_from_objects:
+            if obj.data.library:
+                core.log(f"Datablock {obj.data.name} is linked from a library.")
+            else:
+                obj.data.name = obj.name
+                core.log(f"Renamed datablock {obj.data.name}")
+        else:
+            if obj.library:
+                core.log(f"Object {obj.name} is linked from a library.")
+            else:
+                obj.name = obj.data.name
+                core.log(f"Renamed object {obj.name}")
 
 
 def rename_selection(self, context):
