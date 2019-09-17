@@ -176,21 +176,21 @@ class PROPERTIES_PT_milkshake_modeling(bpy.types.Panel):
         lay.label(text = "Transfer Transforms:")
         box = lay.box()
         row = box.row()
+        row.scale_y = 1.5
 
-        col_settings = row.column()
-
-        row_a = col_settings.row(align = True)
-        row_a.operator("milkshake.modeling_ot_add_selection_to_tt_set", text = f"From Selection ({len(context.scene.milkshake_tt_set_a)})", icon = 'BACK').tt_set = 'a'
+        col_a = row.column()
+        row_a = col_a.row(align = True)
+        row_a.operator("milkshake.modeling_ot_add_selection_to_tt_set", text = f"From ({len(context.scene.milkshake_tt_set_a)})").tt_set = 'a'
         row_a.operator("milkshake.modeling_ot_clear_tt_set", icon = 'X', text = "").tt_set = 'a'
 
-        row_b = col_settings.row(align = True)
-        row_b.operator("milkshake.modeling_ot_add_selection_to_tt_set", text = f"To Selection ({len(context.scene.milkshake_tt_set_b)})", icon = 'FORWARD').tt_set = 'b'
-        row_b.operator("milkshake.modeling_ot_clear_tt_set", icon = 'X', text = "").tt_set = 'b'
+        col_go = row.column()
+        col_go.scale_x = 1.5
+        col_go.operator("milkshake.modeling_ot_transfer_transforms", icon = 'TRIA_RIGHT', text = "")
 
-        col_button = row.column()
-        col_button.scale_x = 1.5
-        col_button.scale_y = 2.1
-        col_button.operator("milkshake.modeling_ot_transfer_transforms", icon = 'TRIA_RIGHT', text = "")
+        col_b = row.column()
+        row_b = col_b.row(align = True)
+        row_b.operator("milkshake.modeling_ot_add_selection_to_tt_set", text = f"To ({len(context.scene.milkshake_tt_set_b)})").tt_set = 'b'
+        row_b.operator("milkshake.modeling_ot_clear_tt_set", icon = 'X', text = "").tt_set = 'b'
 
 
 ##############################################################################
