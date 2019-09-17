@@ -24,11 +24,11 @@ class MilkshakeSceneObject(bpy.types.PropertyGroup):
 ##############################################################################
 
 
-class MODELING_OT_add_selection_to_tt_set(bpy.types.Operator):
-    """Add selection of objects to the transfer transforms lists"""
+class MODELING_OT_replace_tt_set_with_selection(bpy.types.Operator):
+    """Replace transfer transform list with selection of objects"""
 
-    bl_idname = "milkshake.modeling_ot_add_selection_to_tt_set"
-    bl_label = "Add Selection"
+    bl_idname = "milkshake.modeling_ot_replace_tt_set_with_selection"
+    bl_label = "Replace With Selection"
     bl_options = {'REGISTER'}
 
     tt_set: bpy.props.EnumProperty(items = [('a', 'A', 'List A'), ('b', 'B', 'List B')])
@@ -180,7 +180,7 @@ class PROPERTIES_PT_milkshake_modeling(bpy.types.Panel):
 
         col_a = row.column()
         row_a = col_a.row(align = True)
-        row_a.operator("milkshake.modeling_ot_add_selection_to_tt_set", text = f"From ({len(context.scene.milkshake_tt_set_a)})").tt_set = 'a'
+        row_a.operator("milkshake.modeling_ot_replace_tt_set_with_selection", text = f"From ({len(context.scene.milkshake_tt_set_a)})").tt_set = 'a'
         row_a.operator("milkshake.modeling_ot_clear_tt_set", icon = 'X', text = "").tt_set = 'a'
 
         col_go = row.column()
@@ -189,7 +189,7 @@ class PROPERTIES_PT_milkshake_modeling(bpy.types.Panel):
 
         col_b = row.column()
         row_b = col_b.row(align = True)
-        row_b.operator("milkshake.modeling_ot_add_selection_to_tt_set", text = f"To ({len(context.scene.milkshake_tt_set_b)})").tt_set = 'b'
+        row_b.operator("milkshake.modeling_ot_replace_tt_set_with_selection", text = f"To ({len(context.scene.milkshake_tt_set_b)})").tt_set = 'b'
         row_b.operator("milkshake.modeling_ot_clear_tt_set", icon = 'X', text = "").tt_set = 'b'
 
 
@@ -200,7 +200,7 @@ class PROPERTIES_PT_milkshake_modeling(bpy.types.Panel):
 
 classes = [
     MilkshakeSceneObject,
-    MODELING_OT_add_selection_to_tt_set,
+    MODELING_OT_replace_tt_set_with_selection,
     MODELING_OT_clear_sharp,
     MODELING_OT_clear_tt_set,
     MODELING_OT_clear_vertex_groups,
