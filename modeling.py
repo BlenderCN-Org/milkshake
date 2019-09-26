@@ -24,6 +24,18 @@ class MilkshakeSceneObject(bpy.types.PropertyGroup):
 ##############################################################################
 
 
+class MODELING_OT_auto_smooth(bpy.types.Operator):
+    """Set meshes to auto smooth and maximum angle to 80 degrees.\nOn selection or everything"""
+
+    bl_idname = "milkshake.modeling_ot_auto_smooth"
+    bl_label = "Auto Smooth"
+    bl_options = {'REGISTER'}
+
+    def execute(self, context):
+        func.auto_smooth(context)
+        return {'FINISHED'}
+
+
 class MODELING_OT_replace_tt_set_with_selection(bpy.types.Operator):
     """Replace transfer transform list with selection of objects"""
 
@@ -171,6 +183,7 @@ class PROPERTIES_PT_milkshake_modeling(bpy.types.Panel):
         sub.operator("milkshake.modeling_ot_set_subdivision_to_adaptive")
         sub = col.row(align = True)
         sub.operator("milkshake.modeling_ot_snap_rotation", icon = 'CON_ROTLIMIT')
+        sub.operator("milkshake.modeling_ot_auto_smooth", icon = 'MOD_SMOOTH')
 
         # Transfer Transforms
         lay.label(text = "Transfer Transforms:")
@@ -200,10 +213,11 @@ class PROPERTIES_PT_milkshake_modeling(bpy.types.Panel):
 
 classes = [
     MilkshakeSceneObject,
-    MODELING_OT_replace_tt_set_with_selection,
+    MODELING_OT_auto_smooth,
     MODELING_OT_clear_sharp,
     MODELING_OT_clear_tt_set,
     MODELING_OT_clear_vertex_groups,
+    MODELING_OT_replace_tt_set_with_selection,
     MODELING_OT_select_unsubdivided,
     MODELING_OT_set_subdivision,
     MODELING_OT_set_subdivision_to_adaptive,

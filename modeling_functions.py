@@ -12,6 +12,19 @@ from . import core_functions as core
 ##############################################################################
 
 
+def auto_smooth(context):
+    """Set meshes to auto smooth and maximum angle to 80 degrees.\nOn selection or everything"""
+
+    if len(context.selected_objects) > 0:
+        objects = [ob for ob in context.selected_objects if ob.type == 'MESH']
+    else:
+        objects = [ob for ob in bpy.data.objects if ob.type == 'MESH']
+
+    for ob in objects:
+        ob.data.use_auto_smooth = True
+        ob.data.auto_smooth_angle = math.radians(80)
+
+
 def add_selection_to_tt_set(context, tt_set):
     """Add selection of objects to the transfer transforms lists"""
 
