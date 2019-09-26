@@ -14,15 +14,15 @@ reload(func)
 ##############################################################################
 
 
-class CLEANUP_OT_remove_unused_materials(bpy.types.Operator):
+class CLEANUP_OT_remove_unused_material_slots(bpy.types.Operator):
     """Remove unused material slots from meshes and curves.\nOn selection or everything"""
 
-    bl_idname = "milkshake.remove_unused_materials"
-    bl_label = "Unused materials"
+    bl_idname = "milkshake.remove_unused_material_slots"
+    bl_label = "Unused Material Slots"
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
-        func.remove_unused_materials(context)
+        func.remove_unused_material_slots(context)
         return {'FINISHED'}
 
 
@@ -77,7 +77,7 @@ class CLEANUP_OT_rename_images_from_filenames(bpy.types.Operator):
 
 
 class CLEANUP_OT_set_collection_instance_offset(bpy.types.Operator):
-    """Set the object's collection's instance offset to the object's origin.\nOn selection or everything."""
+    """Set the object's collections' instance offset to the object's origin.\nOn selection or everything."""
 
     bl_idname = "milkshake.cleanup_ot_set_collection_instance_offset"
     bl_label = "Set Collection Instance Offset"
@@ -120,7 +120,7 @@ class PROPERTIES_PT_milkshake_cleanup(bpy.types.Panel):
         autorename.operator("milkshake.cleanup_ot_rename_instances_from_collections", icon = 'OUTLINER_OB_GROUP_INSTANCE')
 
         lay.label(text = "Auto-remove:")
-        lay.operator("milkshake.remove_unused_materials", icon = 'MATERIAL')
+        lay.operator("milkshake.remove_unused_material_slots", icon = 'MATERIAL')
 
         lay.separator()
 
@@ -133,7 +133,7 @@ class PROPERTIES_PT_milkshake_cleanup(bpy.types.Panel):
 
 
 classes = [
-    CLEANUP_OT_remove_unused_materials,
+    CLEANUP_OT_remove_unused_material_slots,
     CLEANUP_OT_rename_objects_from_data,
     CLEANUP_OT_rename_instances_from_collections,
     CLEANUP_OT_rename_images_from_filenames,
