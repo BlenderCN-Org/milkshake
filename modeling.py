@@ -162,48 +162,40 @@ class MODELING_OT_transfer_transforms(bpy.types.Operator):
 class PROPERTIES_PT_milkshake_modeling(bpy.types.Panel):
 
     bl_idname = "PROPERTIES_PT_milkshake_modeling"
-    bl_label = "Milkshake: Modeling"
-    bl_context = "scene"
-    bl_region_type = 'WINDOW'
-    bl_space_type = 'PROPERTIES'
-    bl_options = {'DEFAULT_CLOSED'}
+    bl_label = "Modeling"
+    bl_category = "Milkshake"
+    bl_space_type = 'VIEW_3D'
+    bl_region_type = 'UI'
 
     def draw(self, context):
         lay = self.layout
 
         col = lay.column(align = True)
         col.scale_y = 1.5
-        sub = col.row(align = True)
-        sub.operator("milkshake.modeling_ot_clear_sharp", icon = 'EDGESEL')
-        sub.operator("milkshake.modeling_ot_clear_vertex_groups", icon = 'GROUP_VERTEX')
-        sub = col.row(align = True)
-        sub.operator("milkshake.modeling_ot_select_unsubdivided", icon = 'MOD_SUBSURF')
-        sub = col.row(align = True)
-        sub.operator("milkshake.modeling_ot_set_subdivision", icon = 'MOD_SUBSURF')
-        sub.operator("milkshake.modeling_ot_set_subdivision_to_adaptive")
-        sub = col.row(align = True)
-        sub.operator("milkshake.modeling_ot_snap_rotation", icon = 'CON_ROTLIMIT')
-        sub.operator("milkshake.modeling_ot_auto_smooth", icon = 'MOD_SMOOTH')
+        col.operator("milkshake.modeling_ot_auto_smooth", icon = 'MOD_SMOOTH')
+        col.operator("milkshake.modeling_ot_clear_sharp", icon = 'EDGESEL')
+        col.operator("milkshake.modeling_ot_clear_vertex_groups", icon = 'GROUP_VERTEX')
+        col.operator("milkshake.modeling_ot_select_unsubdivided", icon = 'MOD_SUBSURF')
+        col.operator("milkshake.modeling_ot_set_subdivision", icon = 'MOD_SUBSURF')
+        col.operator("milkshake.modeling_ot_set_subdivision_to_adaptive")
+        col.operator("milkshake.modeling_ot_snap_rotation", icon = 'CON_ROTLIMIT')
 
         # Transfer Transforms
         lay.label(text = "Transfer Transforms:")
-        box = lay.box()
-        row = box.row()
-        row.scale_y = 1.5
 
-        col_a = row.column()
-        row_a = col_a.row(align = True)
-        row_a.operator("milkshake.modeling_ot_replace_tt_set_with_selection", text = f"From ({len(context.scene.milkshake_tt_set_a)})").tt_set = 'a'
+        col = lay.column(align = True)
+
+        row_a = col.row(align = True)
         row_a.operator("milkshake.modeling_ot_clear_tt_set", icon = 'X', text = "").tt_set = 'a'
+        row_a.operator("milkshake.modeling_ot_replace_tt_set_with_selection", text = f"From {len(context.scene.milkshake_tt_set_a)} objects").tt_set = 'a'
 
-        col_go = row.column()
-        col_go.scale_x = 1.5
-        col_go.operator("milkshake.modeling_ot_transfer_transforms", icon = 'TRIA_RIGHT', text = "")
+        row_go = col.row(align = True)
+        row_go.scale_y = 1.5
+        row_go.operator("milkshake.modeling_ot_transfer_transforms", icon = 'TRIA_DOWN')
 
-        col_b = row.column()
-        row_b = col_b.row(align = True)
-        row_b.operator("milkshake.modeling_ot_replace_tt_set_with_selection", text = f"To ({len(context.scene.milkshake_tt_set_b)})").tt_set = 'b'
+        row_b = col.row(align = True)
         row_b.operator("milkshake.modeling_ot_clear_tt_set", icon = 'X', text = "").tt_set = 'b'
+        row_b.operator("milkshake.modeling_ot_replace_tt_set_with_selection", text = f"To {len(context.scene.milkshake_tt_set_b)} objects").tt_set = 'b'
 
 
 ##############################################################################
