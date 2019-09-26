@@ -14,6 +14,18 @@ reload(func)
 ##############################################################################
 
 
+class CLEANUP_OT_minimize_empties(bpy.types.Operator):
+    """Minimize draw size for empties.\nOn selection or everything"""
+
+    bl_idname = "milkshake.cleanup_ot_minimize_empties"
+    bl_label = "Minimize Empties"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+        func.minimize_empties(context)
+        return {'FINISHED'}
+
+
 class CLEANUP_OT_remove_unused_material_slots(bpy.types.Operator):
     """Remove unused material slots from meshes and curves.\nOn selection or everything"""
 
@@ -121,6 +133,7 @@ class PROPERTIES_PT_milkshake_cleanup(bpy.types.Panel):
         lay.separator()
 
         lay.operator("milkshake.cleanup_ot_set_collection_instance_offset", icon = 'OUTLINER_OB_EMPTY')
+        lay.operator("milkshake.cleanup_ot_minimize_empties", icon = 'OUTLINER_OB_EMPTY')
 
 
 ##############################################################################
@@ -129,11 +142,12 @@ class PROPERTIES_PT_milkshake_cleanup(bpy.types.Panel):
 
 
 classes = [
+    CLEANUP_OT_minimize_empties,
     CLEANUP_OT_remove_unused_material_slots,
-    CLEANUP_OT_rename_objects_from_data,
-    CLEANUP_OT_rename_instances_from_collections,
     CLEANUP_OT_rename_images_from_filenames,
+    CLEANUP_OT_rename_instances_from_collections,
     CLEANUP_OT_rename_materials_from_textures,
+    CLEANUP_OT_rename_objects_from_data,
     CLEANUP_OT_set_collection_instance_offset,
     PROPERTIES_PT_milkshake_cleanup
 ]

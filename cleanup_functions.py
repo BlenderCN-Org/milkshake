@@ -12,6 +12,18 @@ from . import core_functions as core
 ##############################################################################
 
 
+def minimize_empties(context):
+    """Minimize draw size for empties.\nOn selection or everything"""
+
+    if len(context.selected_objects) > 0:
+        objects = [ob for ob in context.selected_objects if ob.type == 'EMPTY' and not ob.library]
+    else:
+        objects = [ob for ob in bpy.data.objects if ob.type == 'EMPTY' and not ob.library]
+
+    for ob in objects:
+        ob.empty_display_size = 0
+
+
 def remove_unused_material_slots(context):
     """Remove unused material slots from meshes and curves.\nOn selection or everything"""
 
