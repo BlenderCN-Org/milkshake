@@ -106,10 +106,6 @@ class PROPERTIES_PT_milkshake_cleanup(bpy.types.Panel):
         lay = self.layout
         lay.use_property_split = True
 
-        lay.prop(context.scene, "milkshake_renamer_keyword")
-
-        lay.separator()
-
         lay.label(text = "Auto-rename:")
         autorename = lay.column(align = True)
         objects_data = autorename.row(align = True)
@@ -146,13 +142,8 @@ classes = [
 def register():
     for class_to_register in classes:
         bpy.utils.register_class(class_to_register)
-    bpy.types.Scene.milkshake_renamer_keyword = bpy.props.StringProperty(name = "Rename Selection", update = func.rename_selection)
 
 
 def unregister():
     for class_to_register in classes:
         bpy.utils.unregister_class(class_to_register)
-    try:
-        del bpy.types.Scene.milkshake_renamer_keyword
-    except:
-        pass
