@@ -94,6 +94,7 @@ def set_collection_instance_offset(context):
         collections = [coll for coll in bpy.data.collections if ob.name in coll.objects]
         for coll in collections:
             coll.instance_offset = ob.location
+            core.log(f"Set instance offset for {coll.name} to {ob.location[0]}, {ob.location[1]}, {ob.location[2]}.")
 
 
 def set_subdivision(context, iterations):
