@@ -204,7 +204,6 @@ def render_defaults(context):
     scene.view_settings.exposure                = 0
     scene.view_settings.gamma                   = 1
     # Performance
-    render.display_mode                         = 'AREA'
     render.engine                               = 'CYCLES'
     render.tile_x                               = 32
     render.tile_y                               = 32
