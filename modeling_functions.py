@@ -119,21 +119,6 @@ def set_subdivision(context, iterations):
         core.log(f"Set subdivision for {ob.name} to {iterations}")
 
 
-def set_subdivision_to_adaptive(context):
-    """Set subdivision to adaptive for meshes.\nOn selection or everything"""
-
-    if len(context.selected_objects) > 0:
-        objects = [ob for ob in context.selected_objects if ob.type == 'MESH' and not ob.library]
-    else:
-        objects = [ob for ob in bpy.data.objects if ob.type == 'MESH' and not ob.library]
-
-    context.scene.cycles.feature_set = 'EXPERIMENTAL'
-
-    for ob in objects:
-        ob.cycles.use_adaptive_subdivision = True
-        core.log(f"Enabled adaptive subdivision for {ob.name}")
-
-
 def snap_rotation(context):
     """Snap rotation to 90-degree steps"""
 

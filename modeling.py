@@ -118,18 +118,6 @@ class MODELING_OT_set_subdivision(bpy.types.Operator):
         return {'FINISHED'}
 
 
-class MODELING_OT_set_subdivision_to_adaptive(bpy.types.Operator):
-    """Set subdivision to adaptive for meshes.\nOn selection or everything"""
-
-    bl_idname = "milkshake.modeling_ot_set_subdivision_to_adaptive"
-    bl_label = "To Adaptive"
-    bl_options = {'REGISTER', 'UNDO'}
-
-    def execute(self, context):
-        func.set_subdivision_to_adaptive(context)
-        return {'FINISHED'}
-
-
 class MODELING_OT_snap_rotation(bpy.types.Operator):
     """Snap rotation to 90-degree steps.\nOn selection or everything"""
 
@@ -178,7 +166,6 @@ class VIEW3D_PT_milkshake_modeling(bpy.types.Panel):
         col.separator()
         col.operator("milkshake.modeling_ot_select_unsubdivided", icon = 'MOD_SUBSURF')
         col.operator("milkshake.modeling_ot_set_subdivision", icon = 'MOD_SUBSURF')
-        col.operator("milkshake.modeling_ot_set_subdivision_to_adaptive")
 
 
 class VIEW3D_PT_milkshake_setdress(bpy.types.Panel):
@@ -225,7 +212,6 @@ classes = [
     MODELING_OT_select_unsubdivided,
     MODELING_OT_set_collection_instance_offset,
     MODELING_OT_set_subdivision,
-    MODELING_OT_set_subdivision_to_adaptive,
     MODELING_OT_snap_rotation,
     MODELING_OT_transfer_transforms,
     VIEW3D_PT_milkshake_modeling,
