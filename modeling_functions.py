@@ -42,21 +42,6 @@ def add_selection_to_tt_set(context, tt_set):
         raise MilkshakeError("There's no active selection set.")
 
 
-def clear_sharp(context):
-    """Clear all sharp edges in meshes.\nOn selection or everything"""
-
-    if len(context.selected_objects) > 0:
-        objects = [ob for ob in context.selected_objects if ob.type == 'MESH' and not ob.data.library]
-    else:
-        objects = [ob for ob in bpy.data.objects if ob.type == 'MESH' and not ob.data.library]
-
-    for ob in objects:
-        for edge in ob.data.edges:
-            if edge.use_edge_sharp:
-                core.log(f"Cleared sharp on edge {edge}")
-                edge.use_edge_sharp = False
-
-
 def clear_tt_set(context, tt_set):
     """Clear all sharp edges in meshes.\nOn selection or everything"""
 
@@ -68,16 +53,16 @@ def clear_tt_set(context, tt_set):
         raise MilkshakeError("There's no active selection set.")
 
 
-def clear_vertex_groups(context):
-    """Delete all vertex groups.\nOn selection or everything"""
+def minimize_empties(context):
+    """Minimize draw size for empties.\nOn selection or everything"""
 
     if len(context.selected_objects) > 0:
-        objects = [ob for ob in context.selected_objects if ob.type == 'MESH' and not ob.library]
+        objects = [ob for ob in context.selected_objects if ob.type == 'EMPTY' and not ob.library]
     else:
-        objects = [ob for ob in bpy.data.objects if ob.type == 'MESH' and not ob.library]
+        objects = [ob for ob in bpy.data.objects if ob.type == 'EMPTY' and not ob.library]
 
     for ob in objects:
-        ob.vertex_groups.clear()
+        ob.empty_display_size = 0
 
 
 def select_unsubdivided(context):
@@ -95,6 +80,20 @@ def select_unsubdivided(context):
                 break
         if ob.name in context.view_layer.objects:
             ob.select_set(not has_enabled_subsurf_modifiers)
+
+
+def set_collection_instance_offset(context):
+    """Set the object's collections' instance offset to the object's origin.\nOn selection or everything"""
+
+    if len(context.selected_objects) > 0:
+        objects = [ob for ob in context.selected_objects if not ob.library]
+    else:
+        objects = [ob for ob in bpy.data.objects if not ob.library]
+
+    for ob in objects:
+        collections = [coll for coll in bpy.data.collections if ob.name in coll.objects]
+        for coll in collections:
+            coll.instance_offset = ob.location
 
 
 def set_subdivision(context, iterations):

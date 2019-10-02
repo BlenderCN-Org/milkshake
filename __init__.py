@@ -4,7 +4,7 @@ bl_info = {
     "author": "Sam Van Hulle",
     "version": (1, 0, 0),
     "blender": (2, 80, 0),
-    "location": "View3D > Tools",
+    "location": "Various",
     "category": "Tools"
 }
 
@@ -14,8 +14,8 @@ bl_info = {
 ##############################################################################
 
 
-from . import cleanup, comp, core_functions, render, modeling, sequencer
-modules = [cleanup, comp, render, modeling, sequencer]
+from . import comp, core_functions, render, modeling, cleanup, sequencer
+modules = [comp, render, modeling, cleanup, sequencer]
 core_functions.log("Loaded package modules.")
 
 if "bpy" in locals():

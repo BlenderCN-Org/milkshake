@@ -12,16 +12,31 @@ from . import core_functions as core
 ##############################################################################
 
 
-def minimize_empties(context):
-    """Minimize draw size for empties.\nOn selection or everything"""
+def clear_sharp(context):
+    """Clear all sharp edges in meshes.\nOn selection or everything"""
 
     if len(context.selected_objects) > 0:
-        objects = [ob for ob in context.selected_objects if ob.type == 'EMPTY' and not ob.library]
+        objects = [ob for ob in context.selected_objects if ob.type == 'MESH' and not ob.data.library]
     else:
-        objects = [ob for ob in bpy.data.objects if ob.type == 'EMPTY' and not ob.library]
+        objects = [ob for ob in bpy.data.objects if ob.type == 'MESH' and not ob.data.library]
 
     for ob in objects:
-        ob.empty_display_size = 0
+        for edge in ob.data.edges:
+            if edge.use_edge_sharp:
+                core.log(f"Cleared sharp on edge {edge}")
+                edge.use_edge_sharp = False
+
+
+def clear_vertex_groups(context):
+    """Delete all vertex groups.\nOn selection or everything"""
+
+    if len(context.selected_objects) > 0:
+        objects = [ob for ob in context.selected_objects if ob.type == 'MESH' and not ob.library]
+    else:
+        objects = [ob for ob in bpy.data.objects if ob.type == 'MESH' and not ob.library]
+
+    for ob in objects:
+        ob.vertex_groups.clear()
 
 
 def remove_unused_material_slots(context):
@@ -103,17 +118,3 @@ def rename_objects_from_data(context, data_from_objects):
         else:
             ob.name = ob.data.name
             core.log(f"Renamed object to {ob.name}")
-
-
-def set_collection_instance_offset(context):
-    """Set the object's collections' instance offset to the object's origin.\nOn selection or everything"""
-
-    if len(context.selected_objects) > 0:
-        objects = [ob for ob in context.selected_objects if not ob.library]
-    else:
-        objects = [ob for ob in bpy.data.objects if not ob.library]
-
-    for ob in objects:
-        collections = [coll for coll in bpy.data.collections if ob.name in coll.objects]
-        for coll in collections:
-            coll.instance_offset = ob.location
