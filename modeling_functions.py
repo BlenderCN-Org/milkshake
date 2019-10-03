@@ -53,6 +53,15 @@ def clear_tt_set(context, tt_set):
         raise MilkshakeError("There's no active selection set.")
 
 
+def delete_tt_set_a_objects(context):
+    """Delete the original objects"""
+
+    for milkshake_scene_object in context.scene.milkshake_tt_set_a:
+        if bpy.data.objects[milkshake_scene_object.obj_name]:
+            bpy.data.objects.remove(bpy.data.objects[milkshake_scene_object.obj_name])
+            core.log(f"Removed object {milkshake_scene_object.obj_name}.")
+
+
 def minimize_empties(context):
     """Minimize draw size for empties.\nOn selection or everything"""
 

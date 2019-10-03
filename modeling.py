@@ -36,6 +36,19 @@ class MODELING_OT_auto_smooth(bpy.types.Operator):
         return {'FINISHED'}
 
 
+class MODELING_OT_delete_tt_set_a_objects(bpy.types.Operator):
+    """Delete the original objects"""
+
+    bl_idname = "milkshake.modeling_ot_delete_tt_set_a_objects"
+    bl_label = "Delete Original Objects"
+    bl_options = {'REGISTER'}
+
+    def execute(self, context):
+        func.delete_tt_set_a_objects(context)
+        func.clear_tt_set(context, 'a')
+        return {'FINISHED'}
+
+
 class MODELING_OT_replace_tt_set_with_selection(bpy.types.Operator):
     """Replace transfer transform list with selection of objects"""
 
@@ -196,6 +209,8 @@ class VIEW3D_PT_milkshake_setdress(bpy.types.Panel):
         row_b = col.row(align = True)
         row_b.operator("milkshake.modeling_ot_clear_tt_set", icon = 'X', text = "").tt_set = 'b'
         row_b.operator("milkshake.modeling_ot_replace_tt_set_with_selection", text = f"To {len(context.scene.milkshake_tt_set_b)} objects").tt_set = 'b'
+        col.separator()
+        col.operator("milkshake.modeling_ot_delete_tt_set_a_objects", icon = 'X')
 
 
 ##############################################################################
@@ -207,6 +222,7 @@ classes = [
     MilkshakeSceneObject,
     MODELING_OT_auto_smooth,
     MODELING_OT_clear_tt_set,
+    MODELING_OT_delete_tt_set_a_objects,
     MODELING_OT_minimize_empties,
     MODELING_OT_replace_tt_set_with_selection,
     MODELING_OT_select_unsubdivided,
